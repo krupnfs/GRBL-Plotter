@@ -490,8 +490,8 @@ namespace GrblPlotter
                 SendCommand(btncmd.Trim());
             }
 
-            timerUpdateControlSource = "OnRaiseProbingEvent";
-            UpdateControlEnables();
+        //    timerUpdateControlSource = "OnRaiseProbingEvent";
+        //    UpdateControlEnables();
             Properties.Settings.Default.counterUseProbing += 1;
         }
 
@@ -553,7 +553,7 @@ namespace GrblPlotter
                 _setup_form.btnGCPWMZero.Click += MoveToPickup;
                 _setup_form.nUDImportGCPWMP93.ValueChanged += MoveToPickup;
                 _setup_form.nUDImportGCPWMP94.ValueChanged += MoveToPickup;
-
+                _setup_form.TbImportGCPWMSlider.ValueChanged += MoveToPickup;
                 _setup_form.SetLastLoadedFile(lastLoadSource);
                 gamePadTimer.Enabled = false;
                 EventCollector.SetOpenForm("Fstp");

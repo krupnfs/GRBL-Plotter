@@ -61,9 +61,9 @@
  * 2023-03-07 l:714/786/811 f:VirtualJoystickXY/Z/A_move if index =0 stop Jog -> if (!Grbl.isVersion_0) SendRealtimeCommand(133);
  * 2023-03-09 l:1213 bugfix start streaming
  * 2023-05-30 l:532 f:MainTimer_Tick add _message_form close
+ * 2023-09-11 l:270 f:SplashScreenTimer_Tick multiple file import and issue #360 -> new function MainFormLoadFile.cs - LoadFiles(string[] fileList, int minIndex)
 */
 
-using FastColoredTextBoxNS;
 using GrblPlotter.GUI;
 using Microsoft.Win32;
 using System;
@@ -258,13 +258,6 @@ namespace GrblPlotter
                 if (Properties.Settings.Default.ctrlUseSerialDIY)
                 { DIYControlopen(sender, e); }
 
-                string[] args = Environment.GetCommandLineArgs();
-                if (args.Length > 1)
-                {
-                    Logger.Info(culture, "Load file via CommandLineArgs[1] {0}", args[1]);
-                    LoadFile(args[1]);
-                }
-
                 if (_splashscreen != null)
                 {
                     _splashscreen.Close();
@@ -273,6 +266,59 @@ namespace GrblPlotter
                 _splashscreen = null;
                 Logger.Info(culture, "++++++ MainForm SplashScreen closed          -> mainTimer:{0}", mainTimerCount);
 
+                string[] args = Environment.GetCommandLineArgs();
+                LoadFiles(args, 1);
+                /*
+                if (args.Length > 1)
+                {
+                    if (Properties.Settings.Default.fromFormInsertEnable)
+                    {
+                        Graphic2GCode.multiImport = true;
+                        bool tmpUseCase = Properties.Settings.Default.importShowUseCaseDialog;
+                        bool tmpOffset = Properties.Settings.Default.importGraphicOffsetOrigin;
+                        decimal tmpOffsetX = Properties.Settings.Default.importGraphicOffsetOriginX;
+                        decimal tmpOffsetY = Properties.Settings.Default.importGraphicOffsetOriginY;
+                        decimal gap = Properties.Settings.Default.importGraphicMultiplyGraphicsDistance;
+                        int maxX = (int)Properties.Settings.Default.importGraphicMultiplyGraphicsDimX;
+                        int countX = 0;
+                        double graphicDimX = 0;
+
+                        Properties.Settings.Default.importGraphicOffsetOrigin = true;
+                        for (int i = 1; i < args.Length; i++)
+                        {
+                            Logger.Info(culture, "Load files via CommandLineArgs[{0}] {1}", i, args[1]);
+                            Graphic2GCode.multiImportNr = i;
+                            LoadFile(args[i]);
+                            countX++;
+
+                            Properties.Settings.Default.importShowUseCaseDialog = false;        // show dialog just 1 time
+
+                            graphicDimX = Graphic.actualDimension.maxx;
+                            if (graphicDimX !=0)
+                                Properties.Settings.Default.importGraphicOffsetOriginX += (decimal)graphicDimX + gap;
+                            else
+                                Properties.Settings.Default.importGraphicOffsetOriginX = (decimal)VisuGCode.xyzSize.maxx + gap;
+
+                            if (countX >= maxX)
+                            {
+                                countX = 0;
+                                Properties.Settings.Default.importGraphicOffsetOriginX = tmpOffsetX;
+                                Properties.Settings.Default.importGraphicOffsetOriginY = (decimal)VisuGCode.xyzSize.maxy + gap;
+                            }
+                        }
+
+                        Properties.Settings.Default.importShowUseCaseDialog = tmpUseCase;
+                        Properties.Settings.Default.importGraphicOffsetOrigin = tmpOffset;
+                        Properties.Settings.Default.importGraphicOffsetOriginX = tmpOffsetX;
+                        Properties.Settings.Default.importGraphicOffsetOriginY = tmpOffsetY;
+                    }
+                    else
+                    {
+                        Logger.Info(culture, "Load file via CommandLineArgs[1] {0}", args[1]);
+                        LoadFile(args[1]);
+                    }
+                }
+*/
                 SplashScreenTimer.Stop();
                 SplashScreenTimer.Interval = 2000;
                 SplashScreenTimer.Start();
@@ -283,8 +329,8 @@ namespace GrblPlotter
 
                 if (Properties.Settings.Default.processOpenOnProgStart)
                 { ProcessAutomationFormOpen(sender, e); }
-			
-				CheckProgramFiles();
+
+                CheckProgramFiles();
             }
             else
             {
@@ -540,15 +586,15 @@ namespace GrblPlotter
             mainTimerCount++;
         }
 
-		private bool CloseMessageForm(bool keepOpen=false)
-		{ 
-			if (_message_form != null)
-			{
-				if (keepOpen && _message_form.DontClose)
-					return false;
-				_message_form.Close();
-				_message_form = null;
-			}
+        private bool CloseMessageForm(bool keepOpen = false)
+        {
+            if (_message_form != null)
+            {
+                if (keepOpen && _message_form.DontClose)
+                    return false;
+                _message_form.Close();
+                _message_form = null;
+            }
             return true;
         }
 
@@ -717,7 +763,7 @@ namespace GrblPlotter
         }
 
         private void VirtualJoystickXY_JoyStickEvent(object sender, JogEventArgs e)
-        { 	VirtualJoystickXY_move(e.JogPosX, e.JogPosY); 		}
+        { VirtualJoystickXY_move(e.JogPosX, e.JogPosY); }
         private void VirtualJoystickXY_move(int index_X, int index_Y)
         {
             int indexX = Math.Abs(index_X);
@@ -733,10 +779,10 @@ namespace GrblPlotter
             { indexY = joystickXYStep.Length - 1; index_Y = indexY; }
             if (indexY < 0)
             { indexY = 0; index_Y = 0; }
-		
-			if ((index_X == 0) && (index_Y == 0))
-			{	if (!Grbl.isVersion_0) SendRealtimeCommand(133); return;}
-		
+
+            if ((index_X == 0) && (index_Y == 0))
+            { if (!Grbl.isVersion_0) SendRealtimeCommand(133); return; }
+
             int speed = (int)Math.Max(joystickXYSpeed[indexX], joystickXYSpeed[indexY]);
             String strX = Gcode.FrmtNum(joystickXYStep[indexX] * dirX);
             String strY = Gcode.FrmtNum(joystickXYStep[indexY] * dirY);
@@ -806,8 +852,8 @@ namespace GrblPlotter
             if (indexZ < 0)
             { indexZ = 0; }
 
-			if (index_Z == 0)
-			{	if (!Grbl.isVersion_0) SendRealtimeCommand(133); return;}
+            if (index_Z == 0)
+            { if (!Grbl.isVersion_0) SendRealtimeCommand(133); return; }
 
             virtualJoystickZ_lastIndex = indexZ;
             int speed = (int)joystickZSpeed[indexZ];
@@ -831,8 +877,8 @@ namespace GrblPlotter
             if (indexA < 0)
             { indexA = 0; }
 
-			if (index_A == 0)
-			{	if (!Grbl.isVersion_0) SendRealtimeCommand(133); return;}
+            if (index_A == 0)
+            { if (!Grbl.isVersion_0) SendRealtimeCommand(133); return; }
 
             virtualJoystickA_lastIndex = indexA;
             int speed = (int)joystickASpeed[indexA];
@@ -1236,7 +1282,7 @@ namespace GrblPlotter
             if (command.ToLower(culture).IndexOf("#start") >= 0) { StartStreaming(0, fCTBCode.LinesCount - 1); commandFound = true; }   //  BtnStreamStart_Click(this, null); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#stop") >= 0) { BtnStreamStop_Click(this, EventArgs.Empty); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#f100") >= 0) { SendRealtimeCommand(144); commandFound = true; }
-            else if (command.ToLower(culture).IndexOf("#f+10") >= 0) {  SendRealtimeCommand(145); commandFound = true; }
+            else if (command.ToLower(culture).IndexOf("#f+10") >= 0) { SendRealtimeCommand(145); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#f-10") >= 0) { SendRealtimeCommand(146); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#f+1") >= 0) { SendRealtimeCommand(147); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#f-1") >= 0) { SendRealtimeCommand(148); commandFound = true; }
@@ -1263,7 +1309,7 @@ namespace GrblPlotter
         {
             if (!pictureBox1.Focused && Properties.Settings.Default.guiShowFormInFront)
             {
-            //    pictureBox1.Focus();
+                //    pictureBox1.Focus();
                 markerSize = (float)((double)Properties.Settings.Default.gui2DSizeTool / (picScaling * zoomFactor));
             }
         }
@@ -1598,18 +1644,18 @@ namespace GrblPlotter
         private void ShowFormsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _serial_form?.BringToFront();
-            if(_text_form != null){ _text_form.WindowState = FormWindowState.Normal; _text_form.BringToFront(); }
-            if (_image_form != null){ _image_form.WindowState = FormWindowState.Normal; _image_form.BringToFront(); }
-            if (_shape_form != null){ _shape_form.WindowState = FormWindowState.Normal; _shape_form.BringToFront(); }
-            if (_barcode_form != null){ _barcode_form.WindowState = FormWindowState.Normal; _barcode_form.BringToFront(); }
+            if (_text_form != null) { _text_form.WindowState = FormWindowState.Normal; _text_form.BringToFront(); }
+            if (_image_form != null) { _image_form.WindowState = FormWindowState.Normal; _image_form.BringToFront(); }
+            if (_shape_form != null) { _shape_form.WindowState = FormWindowState.Normal; _shape_form.BringToFront(); }
+            if (_barcode_form != null) { _barcode_form.WindowState = FormWindowState.Normal; _barcode_form.BringToFront(); }
 
-            if (_setup_form != null){ _setup_form.WindowState = FormWindowState.Normal; _setup_form.BringToFront(); }
-            if (_camera_form != null){ _camera_form.WindowState = FormWindowState.Normal; _camera_form.BringToFront(); }
-            if (_coordSystem_form != null){ _coordSystem_form.WindowState = FormWindowState.Normal; _coordSystem_form.BringToFront(); }
-            if (_laser_form != null){ _laser_form.WindowState = FormWindowState.Normal; _laser_form.BringToFront(); }
-            if (_probing_form != null){ _probing_form.WindowState = FormWindowState.Normal; _probing_form.BringToFront(); }
-            if (_heightmap_form != null){ _heightmap_form.WindowState = FormWindowState.Normal; _heightmap_form.BringToFront(); }
-            if (_grbl_setup_form != null){ _grbl_setup_form.WindowState = FormWindowState.Normal; _grbl_setup_form.BringToFront(); }
+            if (_setup_form != null) { _setup_form.WindowState = FormWindowState.Normal; _setup_form.BringToFront(); }
+            if (_camera_form != null) { _camera_form.WindowState = FormWindowState.Normal; _camera_form.BringToFront(); }
+            if (_coordSystem_form != null) { _coordSystem_form.WindowState = FormWindowState.Normal; _coordSystem_form.BringToFront(); }
+            if (_laser_form != null) { _laser_form.WindowState = FormWindowState.Normal; _laser_form.BringToFront(); }
+            if (_probing_form != null) { _probing_form.WindowState = FormWindowState.Normal; _probing_form.BringToFront(); }
+            if (_heightmap_form != null) { _heightmap_form.WindowState = FormWindowState.Normal; _heightmap_form.BringToFront(); }
+            if (_grbl_setup_form != null) { _grbl_setup_form.WindowState = FormWindowState.Normal; _grbl_setup_form.BringToFront(); }
             //   _streaming_form.SendToBack();
         }
 

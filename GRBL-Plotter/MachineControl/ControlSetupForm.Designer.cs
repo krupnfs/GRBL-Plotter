@@ -478,6 +478,11 @@ namespace GrblPlotter
             this.tab1_2lbl31 = new System.Windows.Forms.Label();
             this.tabPage27 = new System.Windows.Forms.TabPage();
             this.tab1_2gB4 = new System.Windows.Forms.GroupBox();
+            this.LblImportGCPWMSliderSet = new System.Windows.Forms.Label();
+            this.LblImportGCPWMSliderMax = new System.Windows.Forms.Label();
+            this.LblImportGCPWMSliderMin = new System.Windows.Forms.Label();
+            this.TbImportGCPWMSlider = new System.Windows.Forms.TrackBar();
+            this.cBImportGCTTSSpeedPWM = new System.Windows.Forms.CheckBox();
             this.btnPWMAdvanced = new System.Windows.Forms.Button();
             this.lblPWMP94 = new System.Windows.Forms.Label();
             this.tBImportGCPWMTextP94 = new System.Windows.Forms.TextBox();
@@ -674,6 +679,26 @@ namespace GrblPlotter
             this.BtnHelp_Programstart = new System.Windows.Forms.Button();
             this.BtnOpenLogFile = new System.Windows.Forms.Button();
             this.cBExtendedLoggingCOM = new System.Windows.Forms.CheckBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.groupBox40 = new System.Windows.Forms.GroupBox();
+            this.label104 = new System.Windows.Forms.Label();
+            this.nUDMultipleLoadGap = new System.Windows.Forms.NumericUpDown();
+            this.CbMultipleLoadAllwaysClear = new System.Windows.Forms.CheckBox();
+            this.CbMultipleLoadAllwaysLoad = new System.Windows.Forms.CheckBox();
+            this.groupBox42 = new System.Windows.Forms.GroupBox();
+            this.label103 = new System.Windows.Forms.Label();
+            this.label102 = new System.Windows.Forms.Label();
+            this.nUDMultipleLoadDimY = new System.Windows.Forms.NumericUpDown();
+            this.nUDMultipleLoadDimX = new System.Windows.Forms.NumericUpDown();
+            this.nUDMultipleLoadNoY = new System.Windows.Forms.NumericUpDown();
+            this.RbMultipleLoadByX = new System.Windows.Forms.RadioButton();
+            this.nUDMultipleLoadNoX = new System.Windows.Forms.NumericUpDown();
+            this.RbMultipleLoadByY = new System.Windows.Forms.RadioButton();
+            this.groupBox41 = new System.Windows.Forms.GroupBox();
+            this.RbMultipleLoadLimitDim = new System.Windows.Forms.RadioButton();
+            this.RbMultipleLoadLimitNo = new System.Windows.Forms.RadioButton();
+            this.label101 = new System.Windows.Forms.Label();
             this.tabPage26 = new System.Windows.Forms.TabPage();
             this.BtnHelp_Programcontrol = new System.Windows.Forms.Button();
             this.GbAccessoryRunTime = new System.Windows.Forms.GroupBox();
@@ -1101,6 +1126,11 @@ namespace GrblPlotter
             this.NudProjectorPenDown = new System.Windows.Forms.NumericUpDown();
             this.NudProjectorTool = new System.Windows.Forms.NumericUpDown();
             this.tabPage33 = new System.Windows.Forms.TabPage();
+            this.groupBox43 = new System.Windows.Forms.GroupBox();
+            this.BtnResize4 = new System.Windows.Forms.Button();
+            this.BtnResize3 = new System.Windows.Forms.Button();
+            this.BtnResize2 = new System.Windows.Forms.Button();
+            this.BtnResize1 = new System.Windows.Forms.Button();
             this.BtnHelp_Misc2 = new System.Windows.Forms.Button();
             this.groupBox37 = new System.Windows.Forms.GroupBox();
             this.numericUpDown17 = new System.Windows.Forms.NumericUpDown();
@@ -1150,7 +1180,6 @@ namespace GrblPlotter
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.cBshowImportDialog = new System.Windows.Forms.CheckBox();
-            this.cBImportGCTTSSpeedPWM = new System.Windows.Forms.CheckBox();
             this.tabControl_Level1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabControl1_Level2.SuspendLayout();
@@ -1298,6 +1327,7 @@ namespace GrblPlotter
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCZDown)).BeginInit();
             this.tabPage27.SuspendLayout();
             this.tab1_2gB4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TbImportGCPWMSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCDlyP94)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCPWMP94)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCDlyP93)).BeginInit();
@@ -1346,6 +1376,15 @@ namespace GrblPlotter
             this.tab5gB1.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox25.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            this.groupBox40.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadGap)).BeginInit();
+            this.groupBox42.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadDimY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadDimX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadNoY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadNoX)).BeginInit();
+            this.groupBox41.SuspendLayout();
             this.tabPage26.SuspendLayout();
             this.GbAccessoryRunTime.SuspendLayout();
             this.tab5gB5.SuspendLayout();
@@ -1478,6 +1517,7 @@ namespace GrblPlotter
             ((System.ComponentModel.ISupportInitialize)(this.NudProjectorPenDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudProjectorTool)).BeginInit();
             this.tabPage33.SuspendLayout();
+            this.groupBox43.SuspendLayout();
             this.groupBox37.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).BeginInit();
             this.groupBox29.SuspendLayout();
@@ -1642,6 +1682,7 @@ namespace GrblPlotter
             this.NudImportGraphicOffsetOriginY.Name = "NudImportGraphicOffsetOriginY";
             this.toolTip1.SetToolTip(this.NudImportGraphicOffsetOriginY, resources.GetString("NudImportGraphicOffsetOriginY.ToolTip"));
             this.NudImportGraphicOffsetOriginY.Value = global::GrblPlotter.Properties.Settings.Default.importGraphicOffsetOriginY;
+            this.NudImportGraphicOffsetOriginY.ValueChanged += new System.EventHandler(this.NudImportGraphicOffsetOriginX_ValueChanged);
             // 
             // cBImportGCNoArcs
             // 
@@ -1695,6 +1736,7 @@ namespace GrblPlotter
             this.NudImportGraphicOffsetOriginX.Name = "NudImportGraphicOffsetOriginX";
             this.toolTip1.SetToolTip(this.NudImportGraphicOffsetOriginX, resources.GetString("NudImportGraphicOffsetOriginX.ToolTip"));
             this.NudImportGraphicOffsetOriginX.Value = global::GrblPlotter.Properties.Settings.Default.importGraphicOffsetOriginX;
+            this.NudImportGraphicOffsetOriginX.ValueChanged += new System.EventHandler(this.NudImportGraphicOffsetOriginX_ValueChanged);
             // 
             // cBImportGraphicSortDistanceRotatePath
             // 
@@ -5597,6 +5639,10 @@ namespace GrblPlotter
             // tab1_2gB4
             // 
             this.tab1_2gB4.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tab1_2gB4.Controls.Add(this.LblImportGCPWMSliderSet);
+            this.tab1_2gB4.Controls.Add(this.LblImportGCPWMSliderMax);
+            this.tab1_2gB4.Controls.Add(this.LblImportGCPWMSliderMin);
+            this.tab1_2gB4.Controls.Add(this.TbImportGCPWMSlider);
             this.tab1_2gB4.Controls.Add(this.cBImportGCTTSSpeedPWM);
             this.tab1_2gB4.Controls.Add(this.btnPWMAdvanced);
             this.tab1_2gB4.Controls.Add(this.lblPWMP94);
@@ -5631,6 +5677,42 @@ namespace GrblPlotter
             this.tab1_2gB4.Name = "tab1_2gB4";
             this.tab1_2gB4.TabStop = false;
             this.toolTip1.SetToolTip(this.tab1_2gB4, resources.GetString("tab1_2gB4.ToolTip"));
+            // 
+            // LblImportGCPWMSliderSet
+            // 
+            resources.ApplyResources(this.LblImportGCPWMSliderSet, "LblImportGCPWMSliderSet");
+            this.LblImportGCPWMSliderSet.Name = "LblImportGCPWMSliderSet";
+            // 
+            // LblImportGCPWMSliderMax
+            // 
+            resources.ApplyResources(this.LblImportGCPWMSliderMax, "LblImportGCPWMSliderMax");
+            this.LblImportGCPWMSliderMax.Name = "LblImportGCPWMSliderMax";
+            // 
+            // LblImportGCPWMSliderMin
+            // 
+            resources.ApplyResources(this.LblImportGCPWMSliderMin, "LblImportGCPWMSliderMin");
+            this.LblImportGCPWMSliderMin.Name = "LblImportGCPWMSliderMin";
+            // 
+            // TbImportGCPWMSlider
+            // 
+            resources.ApplyResources(this.TbImportGCPWMSlider, "TbImportGCPWMSlider");
+            this.TbImportGCPWMSlider.Maximum = 1000;
+            this.TbImportGCPWMSlider.Name = "TbImportGCPWMSlider";
+            this.TbImportGCPWMSlider.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.toolTip1.SetToolTip(this.TbImportGCPWMSlider, resources.GetString("TbImportGCPWMSlider.ToolTip"));
+            this.TbImportGCPWMSlider.Scroll += new System.EventHandler(this.TbImportGCPWMSlider_Scroll);
+            this.TbImportGCPWMSlider.ValueChanged += new System.EventHandler(this.TbImportGCPWMSlider_Scroll);
+            this.TbImportGCPWMSlider.VisibleChanged += new System.EventHandler(this.TbImportGCPWMSlider_VisibleChanged);
+            // 
+            // cBImportGCTTSSpeedPWM
+            // 
+            resources.ApplyResources(this.cBImportGCTTSSpeedPWM, "cBImportGCTTSSpeedPWM");
+            this.cBImportGCTTSSpeedPWM.BackColor = System.Drawing.Color.Transparent;
+            this.cBImportGCTTSSpeedPWM.Checked = global::GrblPlotter.Properties.Settings.Default.importGCTTSSpeed;
+            this.cBImportGCTTSSpeedPWM.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "importGCTTSSpeed", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cBImportGCTTSSpeedPWM.Name = "cBImportGCTTSSpeedPWM";
+            this.toolTip1.SetToolTip(this.cBImportGCTTSSpeedPWM, resources.GetString("cBImportGCTTSSpeedPWM.ToolTip"));
+            this.cBImportGCTTSSpeedPWM.UseVisualStyleBackColor = false;
             // 
             // btnPWMAdvanced
             // 
@@ -6921,6 +7003,7 @@ namespace GrblPlotter
             // tabControl4_Level2
             // 
             this.tabControl4_Level2.Controls.Add(this.tabPage13);
+            this.tabControl4_Level2.Controls.Add(this.tabPage7);
             this.tabControl4_Level2.Controls.Add(this.tabPage26);
             this.tabControl4_Level2.Controls.Add(this.tabPage25);
             this.tabControl4_Level2.Controls.Add(this.tabPage4);
@@ -7417,6 +7500,225 @@ namespace GrblPlotter
             this.cBExtendedLoggingCOM.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "guiExtendedLoggingCOMEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.cBExtendedLoggingCOM.Name = "cBExtendedLoggingCOM";
             this.cBExtendedLoggingCOM.UseVisualStyleBackColor = true;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.button2);
+            this.tabPage7.Controls.Add(this.groupBox40);
+            resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.SkyBlue;
+            resources.ApplyResources(this.button2, "button2");
+            this.button2.Name = "button2";
+            this.button2.Tag = "id=form-setup-4#file-loading";
+            this.toolTip1.SetToolTip(this.button2, resources.GetString("button2.ToolTip"));
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.BtnHelp_Click);
+            // 
+            // groupBox40
+            // 
+            this.groupBox40.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox40.Controls.Add(this.label104);
+            this.groupBox40.Controls.Add(this.nUDMultipleLoadGap);
+            this.groupBox40.Controls.Add(this.CbMultipleLoadAllwaysClear);
+            this.groupBox40.Controls.Add(this.CbMultipleLoadAllwaysLoad);
+            this.groupBox40.Controls.Add(this.groupBox42);
+            this.groupBox40.Controls.Add(this.groupBox41);
+            this.groupBox40.Controls.Add(this.label101);
+            resources.ApplyResources(this.groupBox40, "groupBox40");
+            this.groupBox40.Name = "groupBox40";
+            this.groupBox40.TabStop = false;
+            // 
+            // label104
+            // 
+            resources.ApplyResources(this.label104, "label104");
+            this.label104.Name = "label104";
+            this.toolTip1.SetToolTip(this.label104, resources.GetString("label104.ToolTip"));
+            // 
+            // nUDMultipleLoadGap
+            // 
+            this.nUDMultipleLoadGap.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::GrblPlotter.Properties.Settings.Default, "multipleLoadGap", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.nUDMultipleLoadGap.DecimalPlaces = 1;
+            resources.ApplyResources(this.nUDMultipleLoadGap, "nUDMultipleLoadGap");
+            this.nUDMultipleLoadGap.Name = "nUDMultipleLoadGap";
+            this.nUDMultipleLoadGap.Value = global::GrblPlotter.Properties.Settings.Default.multipleLoadGap;
+            // 
+            // CbMultipleLoadAllwaysClear
+            // 
+            resources.ApplyResources(this.CbMultipleLoadAllwaysClear, "CbMultipleLoadAllwaysClear");
+            this.CbMultipleLoadAllwaysClear.Checked = global::GrblPlotter.Properties.Settings.Default.multipleLoadAllwaysClear;
+            this.CbMultipleLoadAllwaysClear.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "multipleLoadAllwaysClear", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CbMultipleLoadAllwaysClear.Name = "CbMultipleLoadAllwaysClear";
+            this.toolTip1.SetToolTip(this.CbMultipleLoadAllwaysClear, resources.GetString("CbMultipleLoadAllwaysClear.ToolTip"));
+            this.CbMultipleLoadAllwaysClear.UseVisualStyleBackColor = true;
+            // 
+            // CbMultipleLoadAllwaysLoad
+            // 
+            resources.ApplyResources(this.CbMultipleLoadAllwaysLoad, "CbMultipleLoadAllwaysLoad");
+            this.CbMultipleLoadAllwaysLoad.Checked = global::GrblPlotter.Properties.Settings.Default.multipleLoadAllwaysLoad;
+            this.CbMultipleLoadAllwaysLoad.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CbMultipleLoadAllwaysLoad.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "multipleLoadAllwaysLoad", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CbMultipleLoadAllwaysLoad.Name = "CbMultipleLoadAllwaysLoad";
+            this.toolTip1.SetToolTip(this.CbMultipleLoadAllwaysLoad, resources.GetString("CbMultipleLoadAllwaysLoad.ToolTip"));
+            this.CbMultipleLoadAllwaysLoad.UseVisualStyleBackColor = true;
+            // 
+            // groupBox42
+            // 
+            this.groupBox42.Controls.Add(this.label103);
+            this.groupBox42.Controls.Add(this.label102);
+            this.groupBox42.Controls.Add(this.nUDMultipleLoadDimY);
+            this.groupBox42.Controls.Add(this.nUDMultipleLoadDimX);
+            this.groupBox42.Controls.Add(this.nUDMultipleLoadNoY);
+            this.groupBox42.Controls.Add(this.RbMultipleLoadByX);
+            this.groupBox42.Controls.Add(this.nUDMultipleLoadNoX);
+            this.groupBox42.Controls.Add(this.RbMultipleLoadByY);
+            resources.ApplyResources(this.groupBox42, "groupBox42");
+            this.groupBox42.Name = "groupBox42";
+            this.groupBox42.TabStop = false;
+            // 
+            // label103
+            // 
+            resources.ApplyResources(this.label103, "label103");
+            this.label103.Name = "label103";
+            // 
+            // label102
+            // 
+            resources.ApplyResources(this.label102, "label102");
+            this.label102.Name = "label102";
+            // 
+            // nUDMultipleLoadDimY
+            // 
+            this.nUDMultipleLoadDimY.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::GrblPlotter.Properties.Settings.Default, "machineLimitsRangeY", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.nUDMultipleLoadDimY.DecimalPlaces = 1;
+            this.nUDMultipleLoadDimY.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            resources.ApplyResources(this.nUDMultipleLoadDimY, "nUDMultipleLoadDimY");
+            this.nUDMultipleLoadDimY.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadDimY.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nUDMultipleLoadDimY.Name = "nUDMultipleLoadDimY";
+            this.toolTip1.SetToolTip(this.nUDMultipleLoadDimY, resources.GetString("nUDMultipleLoadDimY.ToolTip"));
+            this.nUDMultipleLoadDimY.Value = global::GrblPlotter.Properties.Settings.Default.machineLimitsRangeY;
+            // 
+            // nUDMultipleLoadDimX
+            // 
+            this.nUDMultipleLoadDimX.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::GrblPlotter.Properties.Settings.Default, "machineLimitsRangeX", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.nUDMultipleLoadDimX.DecimalPlaces = 1;
+            this.nUDMultipleLoadDimX.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            resources.ApplyResources(this.nUDMultipleLoadDimX, "nUDMultipleLoadDimX");
+            this.nUDMultipleLoadDimX.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadDimX.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nUDMultipleLoadDimX.Name = "nUDMultipleLoadDimX";
+            this.toolTip1.SetToolTip(this.nUDMultipleLoadDimX, resources.GetString("nUDMultipleLoadDimX.ToolTip"));
+            this.nUDMultipleLoadDimX.Value = global::GrblPlotter.Properties.Settings.Default.machineLimitsRangeX;
+            // 
+            // nUDMultipleLoadNoY
+            // 
+            this.nUDMultipleLoadNoY.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::GrblPlotter.Properties.Settings.Default, "multipleLoadNoY", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.nUDMultipleLoadNoY, "nUDMultipleLoadNoY");
+            this.nUDMultipleLoadNoY.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadNoY.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadNoY.Name = "nUDMultipleLoadNoY";
+            this.toolTip1.SetToolTip(this.nUDMultipleLoadNoY, resources.GetString("nUDMultipleLoadNoY.ToolTip"));
+            this.nUDMultipleLoadNoY.Value = global::GrblPlotter.Properties.Settings.Default.multipleLoadNoY;
+            // 
+            // RbMultipleLoadByX
+            // 
+            resources.ApplyResources(this.RbMultipleLoadByX, "RbMultipleLoadByX");
+            this.RbMultipleLoadByX.Checked = global::GrblPlotter.Properties.Settings.Default.multipleLoadByX;
+            this.RbMultipleLoadByX.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "multipleLoadByX", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.RbMultipleLoadByX.Name = "RbMultipleLoadByX";
+            this.RbMultipleLoadByX.TabStop = true;
+            this.RbMultipleLoadByX.UseVisualStyleBackColor = true;
+            // 
+            // nUDMultipleLoadNoX
+            // 
+            this.nUDMultipleLoadNoX.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::GrblPlotter.Properties.Settings.Default, "multipleLoadNoX", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.nUDMultipleLoadNoX, "nUDMultipleLoadNoX");
+            this.nUDMultipleLoadNoX.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadNoX.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDMultipleLoadNoX.Name = "nUDMultipleLoadNoX";
+            this.toolTip1.SetToolTip(this.nUDMultipleLoadNoX, resources.GetString("nUDMultipleLoadNoX.ToolTip"));
+            this.nUDMultipleLoadNoX.Value = global::GrblPlotter.Properties.Settings.Default.multipleLoadNoX;
+            // 
+            // RbMultipleLoadByY
+            // 
+            resources.ApplyResources(this.RbMultipleLoadByY, "RbMultipleLoadByY");
+            this.RbMultipleLoadByY.Name = "RbMultipleLoadByY";
+            this.RbMultipleLoadByY.UseVisualStyleBackColor = true;
+            // 
+            // groupBox41
+            // 
+            this.groupBox41.Controls.Add(this.RbMultipleLoadLimitDim);
+            this.groupBox41.Controls.Add(this.RbMultipleLoadLimitNo);
+            resources.ApplyResources(this.groupBox41, "groupBox41");
+            this.groupBox41.Name = "groupBox41";
+            this.groupBox41.TabStop = false;
+            // 
+            // RbMultipleLoadLimitDim
+            // 
+            resources.ApplyResources(this.RbMultipleLoadLimitDim, "RbMultipleLoadLimitDim");
+            this.RbMultipleLoadLimitDim.Name = "RbMultipleLoadLimitDim";
+            this.toolTip1.SetToolTip(this.RbMultipleLoadLimitDim, resources.GetString("RbMultipleLoadLimitDim.ToolTip"));
+            this.RbMultipleLoadLimitDim.UseVisualStyleBackColor = true;
+            // 
+            // RbMultipleLoadLimitNo
+            // 
+            resources.ApplyResources(this.RbMultipleLoadLimitNo, "RbMultipleLoadLimitNo");
+            this.RbMultipleLoadLimitNo.Checked = global::GrblPlotter.Properties.Settings.Default.multipleLoadLimitNo;
+            this.RbMultipleLoadLimitNo.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "multipleLoadLimitNo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.RbMultipleLoadLimitNo.Name = "RbMultipleLoadLimitNo";
+            this.RbMultipleLoadLimitNo.TabStop = true;
+            this.toolTip1.SetToolTip(this.RbMultipleLoadLimitNo, resources.GetString("RbMultipleLoadLimitNo.ToolTip"));
+            this.RbMultipleLoadLimitNo.UseVisualStyleBackColor = true;
+            this.RbMultipleLoadLimitNo.CheckedChanged += new System.EventHandler(this.RbMultipleLoadLimitNo_CheckedChanged);
+            // 
+            // label101
+            // 
+            resources.ApplyResources(this.label101, "label101");
+            this.label101.Name = "label101";
             // 
             // tabPage26
             // 
@@ -11629,6 +11931,7 @@ namespace GrblPlotter
             // 
             // tabPage33
             // 
+            this.tabPage33.Controls.Add(this.groupBox43);
             this.tabPage33.Controls.Add(this.BtnHelp_Misc2);
             this.tabPage33.Controls.Add(this.groupBox37);
             this.tabPage33.Controls.Add(this.groupBox29);
@@ -11637,6 +11940,48 @@ namespace GrblPlotter
             resources.ApplyResources(this.tabPage33, "tabPage33");
             this.tabPage33.Name = "tabPage33";
             this.tabPage33.UseVisualStyleBackColor = true;
+            // 
+            // groupBox43
+            // 
+            this.groupBox43.Controls.Add(this.BtnResize4);
+            this.groupBox43.Controls.Add(this.BtnResize3);
+            this.groupBox43.Controls.Add(this.BtnResize2);
+            this.groupBox43.Controls.Add(this.BtnResize1);
+            resources.ApplyResources(this.groupBox43, "groupBox43");
+            this.groupBox43.Name = "groupBox43";
+            this.groupBox43.TabStop = false;
+            // 
+            // BtnResize4
+            // 
+            resources.ApplyResources(this.BtnResize4, "BtnResize4");
+            this.BtnResize4.Name = "BtnResize4";
+            this.BtnResize4.Tag = "1920;1080";
+            this.BtnResize4.UseVisualStyleBackColor = true;
+            this.BtnResize4.Click += new System.EventHandler(this.BtnResize1_Click);
+            // 
+            // BtnResize3
+            // 
+            resources.ApplyResources(this.BtnResize3, "BtnResize3");
+            this.BtnResize3.Name = "BtnResize3";
+            this.BtnResize3.Tag = "1280;720";
+            this.BtnResize3.UseVisualStyleBackColor = true;
+            this.BtnResize3.Click += new System.EventHandler(this.BtnResize1_Click);
+            // 
+            // BtnResize2
+            // 
+            resources.ApplyResources(this.BtnResize2, "BtnResize2");
+            this.BtnResize2.Name = "BtnResize2";
+            this.BtnResize2.Tag = "1024;768";
+            this.BtnResize2.UseVisualStyleBackColor = true;
+            this.BtnResize2.Click += new System.EventHandler(this.BtnResize1_Click);
+            // 
+            // BtnResize1
+            // 
+            resources.ApplyResources(this.BtnResize1, "BtnResize1");
+            this.BtnResize1.Name = "BtnResize1";
+            this.BtnResize1.Tag = "900;680";
+            this.BtnResize1.UseVisualStyleBackColor = true;
+            this.BtnResize1.Click += new System.EventHandler(this.BtnResize1_Click);
             // 
             // BtnHelp_Misc2
             // 
@@ -12028,22 +12373,12 @@ namespace GrblPlotter
             this.cBshowImportDialog.Name = "cBshowImportDialog";
             this.cBshowImportDialog.UseVisualStyleBackColor = true;
             // 
-            // cBImportGCTTSSpeedPWM
-            // 
-            resources.ApplyResources(this.cBImportGCTTSSpeedPWM, "cBImportGCTTSSpeedPWM");
-            this.cBImportGCTTSSpeedPWM.BackColor = System.Drawing.Color.Transparent;
-            this.cBImportGCTTSSpeedPWM.Checked = global::GrblPlotter.Properties.Settings.Default.importGCTTSSpeed;
-            this.cBImportGCTTSSpeedPWM.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::GrblPlotter.Properties.Settings.Default, "importGCTTSSpeed", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cBImportGCTTSSpeedPWM.Name = "cBImportGCTTSSpeedPWM";
-            this.toolTip1.SetToolTip(this.cBImportGCTTSSpeedPWM, resources.GetString("cBImportGCTTSSpeedPWM.ToolTip"));
-            this.cBImportGCTTSSpeedPWM.UseVisualStyleBackColor = false;
-            // 
             // ControlSetupForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.cBshowImportDialog);
             this.Controls.Add(this.btnApplyChangings);
+            this.Controls.Add(this.cBshowImportDialog);
             this.Controls.Add(this.btnReloadFile);
             this.Controls.Add(this.tabControl_Level1);
             this.Name = "ControlSetupForm";
@@ -12245,6 +12580,7 @@ namespace GrblPlotter
             this.tabPage27.ResumeLayout(false);
             this.tab1_2gB4.ResumeLayout(false);
             this.tab1_2gB4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TbImportGCPWMSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCDlyP94)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCPWMP94)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDImportGCDlyP93)).EndInit();
@@ -12312,6 +12648,18 @@ namespace GrblPlotter
             this.groupBox13.PerformLayout();
             this.groupBox25.ResumeLayout(false);
             this.groupBox25.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.groupBox40.ResumeLayout(false);
+            this.groupBox40.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadGap)).EndInit();
+            this.groupBox42.ResumeLayout(false);
+            this.groupBox42.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadDimY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadDimX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadNoY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDMultipleLoadNoX)).EndInit();
+            this.groupBox41.ResumeLayout(false);
+            this.groupBox41.PerformLayout();
             this.tabPage26.ResumeLayout(false);
             this.GbAccessoryRunTime.ResumeLayout(false);
             this.GbAccessoryRunTime.PerformLayout();
@@ -12480,6 +12828,7 @@ namespace GrblPlotter
             ((System.ComponentModel.ISupportInitialize)(this.NudProjectorPenDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudProjectorTool)).EndInit();
             this.tabPage33.ResumeLayout(false);
+            this.groupBox43.ResumeLayout(false);
             this.groupBox37.ResumeLayout(false);
             this.groupBox37.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).EndInit();
@@ -13590,5 +13939,34 @@ namespace GrblPlotter
         private System.Windows.Forms.NumericUpDown NudImportGraphicOffsetOriginY;
         private System.Windows.Forms.NumericUpDown NudImportGraphicOffsetOriginX;
         private System.Windows.Forms.CheckBox cBImportGCTTSSpeedPWM;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.GroupBox groupBox40;
+        private System.Windows.Forms.Label label101;
+        private System.Windows.Forms.RadioButton RbMultipleLoadByY;
+        private System.Windows.Forms.RadioButton RbMultipleLoadByX;
+        private System.Windows.Forms.GroupBox groupBox41;
+        private System.Windows.Forms.GroupBox groupBox42;
+        private System.Windows.Forms.RadioButton RbMultipleLoadLimitDim;
+        private System.Windows.Forms.RadioButton RbMultipleLoadLimitNo;
+        private System.Windows.Forms.NumericUpDown nUDMultipleLoadNoY;
+        private System.Windows.Forms.NumericUpDown nUDMultipleLoadNoX;
+        private System.Windows.Forms.NumericUpDown nUDMultipleLoadDimX;
+        private System.Windows.Forms.Label label103;
+        private System.Windows.Forms.Label label102;
+        private System.Windows.Forms.NumericUpDown nUDMultipleLoadDimY;
+        private System.Windows.Forms.CheckBox CbMultipleLoadAllwaysClear;
+        private System.Windows.Forms.CheckBox CbMultipleLoadAllwaysLoad;
+        private System.Windows.Forms.Label label104;
+        private System.Windows.Forms.NumericUpDown nUDMultipleLoadGap;
+        private System.Windows.Forms.Button button2;
+        internal System.Windows.Forms.TrackBar TbImportGCPWMSlider;
+        private System.Windows.Forms.Label LblImportGCPWMSliderMax;
+        private System.Windows.Forms.Label LblImportGCPWMSliderMin;
+        private System.Windows.Forms.Label LblImportGCPWMSliderSet;
+        private System.Windows.Forms.GroupBox groupBox43;
+        private System.Windows.Forms.Button BtnResize1;
+        private System.Windows.Forms.Button BtnResize4;
+        private System.Windows.Forms.Button BtnResize3;
+        private System.Windows.Forms.Button BtnResize2;
     }
 }

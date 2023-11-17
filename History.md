@@ -1,5 +1,16 @@
 ## History
 Needs to be read from the bottom up ;-)  
+
+### 2023-07 Version 1.7.0.x
+- Multiple file import via drag & drop: added some options
+- Hatch fill extension: shrink enveloping path , delete enveloping path
+- Import parameter options: Largset object last, sort by dimension
+- Get GCode parameter from SVG meta data - idea from here: https://github.com/arkypita/LaserGRBL/issues/2052 
+ https://grbl-plotter.de/index.php?id=form-setup-1#format-related
+- Option to convert pen-width to S-value (spindle speed, laser power, servo position). To generate data, I modified the plotterfun tool: https://grbl-plotter.de/plotterfun-width/ Note: grouping must be disabled.
+- New language polish, thanks to Bartosz
+- Import Info during import https://grbl-plotter.de/index.php?id=form-setup-5#misc
+- Online help for setup options https://grbl-plotter.de/index.php?id=form-setup-1#path-interpretations
  
 ### 2023-03 Version 1.6.9.x 
 * VirtualJoyStick optional "Classic buttons" https://grbl-plotter.de/index.php?id=gui&setlang=en#CT
@@ -387,3 +398,8 @@ The most disturbing points were:
 * no automatic reconnect, when starting the program
 * no automatic set of the feed rate, when moving the stage the first time
 * poor manual control (joystick) via user interface
+
+
+[![Stargazers over time](https://starchart.cc/svenhb/GRBL-Plotter.svg)](https://starchart.cc/svenhb/GRBL-Plotter)
+[![Ryo-ma's github trophy](https://github-profile-trophy.vercel.app/?username=svenhb&row=1)](https://github.com/ryo-ma/github-profile-trophy)  
+[![Sparkline](https://stars.medv.io/svenhb/GRBL-Plotter.svg)](https://stars.medv.io/svenhb/GRBL-Plotter)

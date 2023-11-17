@@ -35,12 +35,15 @@
  * 2021-09-02 CreateGCode-TileObject add XML-Tag OffsetX,-Y
  * 2021-09-21 new GroupOption 'Label' - add txt to layer
  * 2022-01-23 line 466 switch index of "layer" and "type"
- * 2022-01-23 add proforma figure-tag if not figureEnable
+ * 2022-01-23 l:265 f:CreateGCode (group) add proforma figure-tag if not figureEnable
  * 2022-03-29 function 'arc' line 900 if full circle, end_angle = start_angle+360° issue #270
  * 2022-04-04 line 547 change "PathID" to "PathId"
  * 2022-11-04 change dash-apply algorithm in MoveToDashed to continue pattern in next move-segement 
  * 2023-03-07 l:256 f:CreateGCode  add color to ToolChange call "[color]"
  * 2023-03-14 l:610 f:StartPath	importGraphicLeadInEnable optional start at GcodeZUp value
+ * 2023-09-14 f:CreateGCode add CollectionStart /-End Tags
+ * 2023-11-03 l:357 f:CreateGCode (figure) add proforma figure-tag if not figureEnable
+ 
 */
 
 using System;
@@ -58,6 +61,13 @@ namespace GrblPlotter
 
         private static readonly StringBuilder gcodeString = new StringBuilder();
         private static readonly StringBuilder finalGcodeString = new StringBuilder();
+        public static bool multiImport = false;
+        public static int multiImportNr = 0;
+        public static string multiImportName = "";
+        public static decimal multiImportOffsetX = 0;
+        public static decimal multiImportOffsetY = 0;
+        public static double multiImportMaxX = 0;
+        public static double multiImportMaxY = 0;
 
         private static bool penIsDown = false;
         private static bool comments = false;
@@ -165,6 +175,7 @@ namespace GrblPlotter
 
             SetHalftoneMode(graphicInfo);
 
+            if (multiImport) { Gcode.Comment(finalGcodeString, string.Format("{0} Id=\"{1}\" Name=\"{2}\">", XmlMarker.CollectionStart, multiImportNr, multiImportName)); Logger.Info("Collection Tile"); }
             foreach (TileObject tileObject in tiledGraphic)
             {
                 xmlTag = string.Format("{0} Id=\"{1}\" Pos=\"{2}\" OffsetX=\"{3:0.000}\"  OffsetY=\"{4:0.000}\">", XmlMarker.TileStart, iDToSet, tileObject.Key, tileObject.Offset.X, tileObject.Offset.Y);
@@ -189,6 +200,7 @@ namespace GrblPlotter
                 Gcode.Comment(finalGcodeString, XmlMarker.TileEnd + ">");
                 iDToSet++;
             }
+            if (multiImport) { Gcode.Comment(finalGcodeString, string.Format("{0}>", XmlMarker.CollectionEnd)); }
 
             Gcode.JobEnd(finalGcodeString, "EndJob");       // Spindle / laser off
 
@@ -235,6 +247,7 @@ namespace GrblPlotter
 
             SetHalftoneMode(graphicInfo);
 
+            if (multiImport && !useTiles) { Gcode.Comment(finalGcodeString, string.Format("{0} Id=\"{1}\" Name=\"{2}\">", XmlMarker.CollectionStart, multiImportNr, multiImportName)); Logger.Info("Collection Group"); }
             foreach (GroupObject groupObject in completeGraphic)
             {
                 groupAttributes = GetGroupAttributes(groupObject, graphicInfo);
@@ -290,6 +303,8 @@ namespace GrblPlotter
                 Gcode.Comment(finalGcodeString, XmlMarker.GroupEnd + ">");
                 if (logEnable) Logger.Trace("-CreateGCode {0} >", XmlMarker.GroupEnd);
             }
+            if (multiImport && !useTiles) { Gcode.Comment(finalGcodeString, string.Format("{0}>", XmlMarker.CollectionEnd)); }
+
             mainGroupID = groupID;
             if (!useTiles)
             {
@@ -339,6 +354,14 @@ namespace GrblPlotter
             string toolColor;
             if (completeGraphic == null) return false;
 
+            if (!graphicInfo.FigureEnable)  // proforma figure tag
+            {
+                string figColor = "", figWidth = "";
+                figColor = string.Format(" PenColor=\"{0}\"", completeGraphic[0].Info.GroupAttributes[(int)GroupOption.ByColor]);
+                figWidth = string.Format(" PenWidth=\"{0}\"", completeGraphic[0].Info.GroupAttributes[(int)GroupOption.ByWidth]);
+                Gcode.Comment(gcodeString, string.Format("{0} Id=\"{1}\" {2} {3}>", XmlMarker.FigureStart, 0, figColor, figWidth));
+            }
+
             foreach (PathObject pathObject in completeGraphic)		// go through all graphics elements
             {
                 // get tool-nr by color or use color-id		 
@@ -365,12 +388,20 @@ namespace GrblPlotter
                 // add tool change after <Figure tag	   
                 ProcessPathObject(pathObject, graphicInfo, toolToUse, toolName + "=[" + toolColor + "]");	// create Dot or Path GCode
             }
+
             PenUp(" CreateGCode 2", true);    // set xmlMarker.figureEnd
+
+            if (!graphicInfo.FigureEnable)  // proforma figure tag
+            {
+                Gcode.Comment(gcodeString, XmlMarker.FigureEnd + ">");
+            }
 
             if (!useTiles)
             {
                 Gcode.JobStart(finalGcodeString, "StartJob");
+                if (multiImport) { Gcode.Comment(finalGcodeString, string.Format("{0} Id=\"{1}\" Name=\"{2}\">", XmlMarker.CollectionStart, multiImportNr, multiImportName)); Logger.Info("Collection Figure"); }
                 finalGcodeString.Append(gcodeString);
+                if (multiImport) { Gcode.Comment(finalGcodeString, string.Format("{0}>", XmlMarker.CollectionEnd)); }
                 Gcode.JobEnd(finalGcodeString, "EndJob");      // Spindle / laser off
                 return FinalGCode(graphicInfo.Title, graphicInfo.FilePath);
             }
