@@ -781,13 +781,7 @@
     <Content Include="data\buttons\Graphic_move_to_top_left_rapid.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\buttons\Graphic_move_to_top_left_slow.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="data\buttons\Graphic_move_to_top_right_rapid.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\buttons\Graphic_move_to_top_right_slow.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\buttons\Laser_off.ini">
