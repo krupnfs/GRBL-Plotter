@@ -3775,7 +3775,7 @@ Sağ alt kenar boşluğuna bir imza çizin: 0,1 veya daha düşük ölçeklendir
     <value>Titrek çizgiler oluşturun</value>
   </data>
   <data name="gBNoise.Text" xml:space="preserve">
-    <value>Gürültü</value>
+    <value>Titrek çizgiler</value>
   </data>
   <data name="CbImportGraphicHatchFillNoise.Text" xml:space="preserve">
     <value>Gürültü ekle</value>
@@ -3959,7 +3959,7 @@ Dönüşüm aynı zamanda Menü - GCode Dönüşümü - 'Kutupsal koordinatlara 
     <value>Geometrik İzleme (yavaş - geometrik şekiller için iyi)</value>
   </data>
   <data name="rBImportVectorizeAlgoPoTrace.Text" xml:space="preserve">
-    <value>PoTrace (hızlı - resimler ve çizimler için iyidir)</value>
+    <value>Potrace (hızlı - resimler ve çizimler için iyidir)</value>
   </data>
   <data name="groupBox48.Text" xml:space="preserve">
     <value>Vektörleştirme algoritması</value>
@@ -4001,7 +4001,7 @@ Dönüşüm aynı zamanda Menü - GCode Dönüşümü - 'Kutupsal koordinatlara 
     <value>Başvur</value>
   </data>
   <data name="groupBox45.Text" xml:space="preserve">
-    <value>Otomatik vektörleştirme</value>
+    <value>Otomatik vektörleştirme (sadece siyah beyaz)</value>
   </data>
   <data name="RrBImportVectorizeWidthSet.Text" xml:space="preserve">
     <value>Görüntü genişliğini şuna ayarla:</value>
@@ -4025,5 +4025,115 @@ Parlaklığın arka plan olarak tanınması için &gt;eşik olması gerekir veya
   </data>
   <data name="CbToolChangeM6PassThrough.ToolTip" xml:space="preserve">
     <value>Not: Arduino Uno üzerinde “klasik” Grbl, M6 komutunu işleyemiyor ve hata veriyor.</value>
+  </data>
+  <data name="BtnSetGrblCustomString.ToolTip" xml:space="preserve">
+    <value>Özel dizeyi ayarlayın/geçersiz kılın. Daha sonra özel dizeyi okumak için denetleyiciyi sıfırlayın.
+Bu dizeyi ayarlamak için Grbl $I=xxx gönderin; burada xxx, 80 karakterden kısa olan özelleştirme dizenizdir. Bu dize büyük harflerle saklanır, boşluklar kaldırılır ve yalnızca alfasayısal karakterler içerebilir.</value>
+  </data>
+  <data name="label115.Text" xml:space="preserve">
+    <value>Dize - gerekli dosya adı</value>
+  </data>
+  <data name="CbLoadMachineDefaults.Text" xml:space="preserve">
+    <value>Varsayılanları yükle</value>
+  </data>
+  <data name="CbLoadMachineDefaults.ToolTip" xml:space="preserve">
+    <value>Dosya adı bulunursa, bağlantıdan sonra varsayılanları yalnızca bir kez yükler.</value>
+  </data>
+  <data name="label114.Text" xml:space="preserve">
+    <value>data\usecases'ten bir kullanım senaryosu yüklemek için dosya adı olarak "$I" özel dizesini kullanır.
+‘Varsayılanları’ kaydetmek için “Makine Ayarlarını Dışa Aktar” seçeneğini kullanın.</value>
+  </data>
+  <data name="GbGrblDefaults.Text" xml:space="preserve">
+    <value>Bağlanırken varsayılanları yükle</value>
+  </data>
+  <data name="groupBox50.Text" xml:space="preserve">
+    <value>Bilgi metni</value>
+  </data>
+  <data name="CbShowVertexEnable.ToolTip" xml:space="preserve">
+    <value>Etki etmesi için grafiğin yeniden yüklenmesi gerekiyor.</value>
+  </data>
+  <data name="cB2DViewFigureId.ToolTip" xml:space="preserve">
+    <value>Etki etmesi için grafiğin yeniden yüklenmesi gerekiyor.</value>
+  </data>
+  <data name="cB2DViewDirectionArrow.ToolTip" xml:space="preserve">
+    <value>Etki etmesi için grafiğin yeniden yüklenmesi gerekiyor.</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>Dosyayı aç</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INI dosyasını metin düzenleyici Not Defteri'nde aç.</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>Ayarları kaydet</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INI dosyasına bazı önemli ayarları kaydet.</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>INI dosyasını test et</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INI dosyasının bazı önemli ayarlarını göster.</value>
+  </data>
+  <data name="BtnApply2DViewChanges.Text" xml:space="preserve">
+    <value>Uygula</value>
+  </data>
+  <data name="label118.Text" xml:space="preserve">
+    <value>Metin boyutu imleci</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>Metin boyutu bilgisi</value>
+  </data>
+  <data name="label116.Text" xml:space="preserve">
+    <value>Arka planın şeffaflığı</value>
+  </data>
+  <data name="groupBox43.Text" xml:space="preserve">
+    <value>Ana Formu Yeniden Boyutlandır</value>
+  </data>
+  <data name="NudInfoTextSize2.ToolTip" xml:space="preserve">
+    <value>İmlecin yakınındaki bilgi metninin metin boyutu</value>
+  </data>
+  <data name="NudInfoTextSize1.ToolTip" xml:space="preserve">
+    <value>2B görünümün sol üst kenarındaki bilgi metninin metin boyutu</value>
+  </data>
+  <data name="HsbInfoTransparency.ToolTip" xml:space="preserve">
+    <value>Metin arka planının şeffaflığı</value>
+  </data>
+  <data name="GbColorTheme.Text" xml:space="preserve">
+    <value>Renk teması</value>
+  </data>
+  <data name="label119.Text" xml:space="preserve">
+    <value>Ton düğmesi rengi</value>
+  </data>
+  <data name="label120.Text" xml:space="preserve">
+    <value>Ton paneli rengi</value>
+  </data>
+  <data name="CbColorThemeEnable.Text" xml:space="preserve">
+    <value>Program başlangıcında renk temasını uygula</value>
+  </data>
+  <data name="label125.Text" xml:space="preserve">
+    <value>Doygunluk</value>
+  </data>
+  <data name="label130.Text" xml:space="preserve">
+    <value>Parlaklık</value>
+  </data>
+  <data name="label139.Text" xml:space="preserve">
+    <value>mm cinsinden takım çapı</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbGerberFillEnable.Text" xml:space="preserve">
+    <value>PCB yollarını bir takımla doldur</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportSVGUseElement.Text" xml:space="preserve">
+    <value>'use' öğesini işle</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportVectorizeInvertResult.Text" xml:space="preserve">
+    <value>Sonucu Tersine Çevir</value>
+  </data>
+  <data name="CbImportVectorizeOptimize1.Text" xml:space="preserve">
+    <value>Kenar yumuşatma</value>
   </data>
 </root>

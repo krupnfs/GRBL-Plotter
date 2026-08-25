@@ -32,6 +32,7 @@
  * 2021-09-10 add Graphic.SetAuxInfo(lineIndex) in line 290
  * 2022-04-18 DrawTokenLFF / DrawLetter check if index ok
  * 2024-01-14 add option to create GCode directly (GenerateGCodeOnly), without using graphic-class
+ * 2026-06-02 l:269 accept \r\n and \n as line breaks for multi-line text
 */
 
 using System;
@@ -44,6 +45,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace GrblPlotter
 {
@@ -66,6 +68,7 @@ namespace GrblPlotter
         public static bool GCPauseWord { get; set; }
         public static bool GCPauseChar { get; set; }
         public static bool GCConnectLetter { get; set; }
+        public static bool GCSmoothPath { get; set; }
         public static bool GenerateGCodeOnly { get; set; }
         public static StringBuilder GCode { get; set; }
 
@@ -131,6 +134,7 @@ namespace GrblPlotter
             GCFontName = "\\lff\\standard.lff"; GCText = ""; GCFont = 0; GCAttachPoint = 7;
             GCHeight = 4; GCWidth = 0; GCAngleRad = 0; GCSpacing = 1; GCOffX = 0; GCOffY = 0;
             GCPauseLine = false; GCPauseWord = false; GCPauseChar = false;
+            GCSmoothPath = false;
             useLFF = false; GCLineDistance = 1.5; GCFontDistance = 0;
             useSVGFile = true; GenerateGCodeOnly = false; GCode = new StringBuilder();
         }
@@ -263,7 +267,8 @@ namespace GrblPlotter
             }
             else
             {
-                lines = GCText.Split('\n');
+            //    lines = GCText.Split('\n');
+				lines = GCText.Replace("\r", "").Split('\n');    // accept \r\n and \n as line breaks
             }
             int maxCharCount = 0;
             foreach (string tmp in lines)
@@ -399,7 +404,7 @@ namespace GrblPlotter
                 return;
             }
 
-            /* fill dictionary */
+            /* FillToolListElements dictionary */
             svgGlyphs = new Dictionary<string, Glyph>();
             double x = 0; string d = "";
             int cntChar = 0;
@@ -675,7 +680,7 @@ namespace GrblPlotter
         }
 
         private static void GcodePenUp(string cmt)
-        { if (!GenerateGCodeOnly) Graphic.StopPath(cmt); }
+        { if (!GenerateGCodeOnly) Graphic.StopPath(cmt, GCSmoothPath); }
         private static void GcodePause()//string cmt)
         { if (!GenerateGCodeOnly) Graphic.OptionInsertPause(); }
 

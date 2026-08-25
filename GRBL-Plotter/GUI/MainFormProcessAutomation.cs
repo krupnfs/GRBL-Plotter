@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,8 +19,12 @@
 /* 
  * 2024-02-12 split file MainFormOtherForms.cs
  * 2024-12-02 l:114 f:OnRaiseProcessEvent add "G-Code Data"
+ * by fclinton Bulk text-from-spreadsheet automation (xlsx import, text size/align/line, verify dimension, goto) #467
+ * 2026-06-02 add "CreateText Size", "CreateText Align" and "CreateText LineDistance" automation commands
+ * 2026-06-02 add "2D-View Regenerate" to re-create the current graphic with current pen/import settings
 */
 
+using GrblPlotter.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -67,6 +71,7 @@ namespace GrblPlotter
         private void OnRaiseProcessEvent(object sender, ProcessEventArgs e)
         {
             string act = e.Command.ToLower();
+            MyControl.ProcessAutomationRunning = true;
             //    string val = e.Value.ToLower();
 
             Logger.Trace("➤➤➤➤ OnRaiseProcessEvent  {0}  {1} ", e.Command, e.Value);
@@ -154,6 +159,40 @@ namespace GrblPlotter
 
                 if (_text_form != null)
                 {
+                  if (act.Contains("size"))           // CreateText Size  -> Value = height in mm
+                    {
+						if (double.TryParse(e.Value.Replace(',', '.'), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double sz))
+                        {
+							_text_form.SetFontSize(sz);
+                            _process_form?.Feedback(e.Command, "size " + e.Value, true);
+                        }
+                        else
+                        { _process_form?.Feedback(e.Command, "bad size: " + e.Value, false); }
+                    }
+                    else if (act.Contains("align"))     // CreateText Align -> Value = left|center|right (or 1|2|3)
+                    {
+                        _text_form.SetAlignment(e.Value);
+                        _process_form?.Feedback(e.Command, "align " + e.Value, true);
+                    }
+                    else if (act.Contains("line") || act.Contains("distance") || act.Contains("spacing"))   // CreateText LineDistance -> Value = mm
+                    {
+                        if (double.TryParse(e.Value.Replace(',', '.'), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double ld))
+                        {
+                            _text_form.SetLineDistance(ld);
+                            _process_form?.Feedback(e.Command, "line distance " + e.Value, true);
+                        }
+                        else
+                        { _process_form?.Feedback(e.Command, "bad line distance: " + e.Value, false); }
+                    }
+                    else
+                    {
+                        _text_form.SetText(e.Value);
+                        _process_form?.Feedback(e.Command, e.Value, true);
+                    }							
+				}
+/*
+                if (_text_form != null)
+                {
                     string opt = "";
                     double size = 0;
                     if (act.Contains(" w")) { opt = "w"; }
@@ -170,6 +209,7 @@ namespace GrblPlotter
                     _text_form.SetText(e.Value);//, opt, size);
                     _process_form?.Feedback(e.Command, e.Value, true);
                 }
+*/				
                 else
                 {
                     _process_form?.Feedback(e.Command, "Text form is not open", false);
@@ -287,12 +327,30 @@ namespace GrblPlotter
                         Logger.Trace("Last codeInsert:{0}  {1}", codeInsert.X, lineStart);
 
                         TransformStart("Scale");
-                        SetFctbCodeText(VisuGCode.TransformGCodeScale(size, size));
+                        SetFctbCodeText(VisuGCode.TransformGCodeScale(size, size, false));
                         SelectionHandle.ClearSelected();
                         TransformEnd();
                         _process_form?.Feedback(e.Command, "Scale applied", true);
                     }
                 }
+
+				else if (act.Contains("regenerate") || act.Contains("refresh"))
+                {
+                    // Re-generate the last form graphic (text / barcode / image / shape) with the
+                    // CURRENT pen / import settings - same path the Setup form uses after a setting change.
+                    // Temporarily switch to 'replace' so the regenerated graphic overwrites the current
+                    // one instead of stacking a duplicate. Place this BEFORE 2D-View Offset/Rotate/Scale,
+                    // because re-generating resets the graphic to its origin.
+                    bool prevInsert = LoadProperties.MultipleImportFromForm;
+                    bool prevMulti = Graphic2GCode.multiImport;
+                    LoadProperties.MultipleImportFromForm = false;
+                    Graphic2GCode.multiImport = false;
+                    ReStartConvertFile(this, e, false, -1);
+                    LoadProperties.MultipleImportFromForm = prevInsert;
+                    Graphic2GCode.multiImport = prevMulti;
+                    _process_form?.Feedback(e.Command, "Graphic reloaded", true);
+                }	
+				
             }
 
             else if (act == "checkform")

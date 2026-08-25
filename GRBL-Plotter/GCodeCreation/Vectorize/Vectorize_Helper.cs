@@ -138,12 +138,12 @@ namespace GrblPlotter
                 /*   if (pP[i].d >= limit)
                    {
                        pP[i].isEdge = true;
-                       BitmapMarkPixel(pP[i].p, Color.LawnGreen);
+                       BitmapMarkPixel(pP[i].p, GroupColor.LawnGreen);
                        if (logEdge) Logger.Trace("    MarkEdge long dist pos:{0}  dist:{1}   limit:{2}", i, pP[i].d, limit);
                        if (i > 0)
                        {
                            pP[i - 1].isEdge = true;
-                           BitmapMarkPixel(pP[i - 1].p, Color.LawnGreen);
+                           BitmapMarkPixel(pP[i - 1].p, GroupColor.LawnGreen);
                            if (logEdge) Logger.Trace("    MarkEdge long dist {0}  limit:{1}", pP[i - 1].p, limit);
                        }
                    }*/
@@ -338,30 +338,35 @@ namespace GrblPlotter
         private static void CheckForMissingEdge(ref int start, ref int end)
         {
             /* check for missing edge = high diatance at 1st or last point */
-            Point pStart = pixelPath[Geti(start)].p;
-            Point pEnd = pixelPath[Geti(end)].p;
-            int h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 1)].p);
-            int h1 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 2)].p);
-            int h2 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 3)].p);
-            if ((Math.Abs(h0 + h1) > 10 * pixelScale * pixelScale))// || (Math.Abs(h1 + h2) > 10 * pixelScale * pixelScale))
+            try
             {
-                start++;
-                pStart = pixelPath[Geti(start)].p;
-                h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 1)].p);
-                pixelPath[Geti(start)].isEdge = true;
-                if (log) Logger.Trace("---- CheckForMissingEdge Reduce start to {0}  high step {1}", start, (h0 + h1) / 2);
-            }
-            h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 1)].p);
-            h1 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 2)].p);
-            h2 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 3)].p);
-            if ((Math.Abs(h0 + h1) > 10 * pixelScale * pixelScale))// || (Math.Abs(h1 + h2) > 10 * pixelScale * pixelScale))
-            {
-                end--;
-                pEnd = pixelPath[Geti(end)].p;
+                Point pStart = pixelPath[Geti(start)].p;
+                Point pEnd = pixelPath[Geti(end)].p;
+                int h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 1)].p);
+                int h1 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 2)].p);
+                int h2 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 3)].p);
+                if ((Math.Abs(h0 + h1) > 10 * pixelScale * pixelScale))// || (Math.Abs(h1 + h2) > 10 * pixelScale * pixelScale))
+                {
+                    start++;
+                    pStart = pixelPath[Geti(start)].p;
+                    h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(start + 1)].p);
+                    pixelPath[Geti(start)].isEdge = true;
+                    if (log) Logger.Trace("---- CheckForMissingEdge Reduce start to {0}  high step {1}", start, (h0 + h1) / 2);
+                }
                 h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 1)].p);
-                pixelPath[Geti(end)].isEdge = true;
-                if (log) Logger.Trace("---- CheckForMissingEdge Reduce end to {0}  high step {1}", end, (h0 + h1) / 2);
+                h1 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 2)].p);
+                h2 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 3)].p);
+                if ((Math.Abs(h0 + h1) > 10 * pixelScale * pixelScale))// || (Math.Abs(h1 + h2) > 10 * pixelScale * pixelScale))
+                {
+                    end--;
+                    pEnd = pixelPath[Geti(end)].p;
+                    h0 = PerpendicularDistanceInt(pStart, pEnd, pixelPath[Geti(end - 1)].p);
+                    pixelPath[Geti(end)].isEdge = true;
+                    if (log) Logger.Trace("---- CheckForMissingEdge Reduce end to {0}  high step {1}", end, (h0 + h1) / 2);
+                }
             }
+            catch (Exception e)
+            { Logger.Error(e, "CheckForMissingEdge "); }
         }
 
         private static List<Point> CheckDiagonalSegemnts(int start, int end, int nr)
@@ -976,7 +981,7 @@ namespace GrblPlotter
             }
             //segment, section
             //      if (log) Logger.Trace("   shift:{0}   avg shift:{1}", dist, dist / cnt);
-            //  int maxd = (int)Math.Max(GetDistance(pixelPath[Geti(start)].p, pixelPath[Geti(end)].p) / 10, pixelScale * pixelScale);
+            //  int maxd = (int)Math.ZMax(GetDistance(pixelPath[Geti(start)].p, pixelPath[Geti(end)].p) / 10, pixelScale * pixelScale);
             /* if deviation is too high... */
             int maxd = 3 * pixelScale;// * pixelScale;
             if ((dist / cnt) > maxd)

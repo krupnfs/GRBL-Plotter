@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2023 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,15 @@
 
 /*
  * 2023-01-02 check if (value != null)
+ * 2026-05-09 use of Colors.TryConvertColor
  */
 
+using GrblPlotter.Helper;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+//using System.Windows.Media;
 
 namespace GrblPlotter.MachineControl
 {
@@ -54,7 +57,7 @@ namespace GrblPlotter.MachineControl
             {
                 if ((value != null) && (value.Length > 2))
                 {
-                    BtnAttributeColor.BackColor = GetColor(value);
+                    BtnAttributeColor.BackColor =Colors.TryConvertColor(value);
                     BtnAttributeColor.Enabled = true;
                 }
             }
@@ -64,8 +67,8 @@ namespace GrblPlotter.MachineControl
         {
             InitializeComponent();
             this.Icon = Properties.Resources.Icon;
-            //    BtnAttributeColor.Enabled = false;
-            //    NudAttributeWidth.Enabled = false;
+            //    BtnAttributeColor.Enable = false;
+            //    NudAttributeWidth.Enable = false;
             //    AttributePenColor = "000000";
         }
         private void GCodeSelectionProperties_Load(object sender, EventArgs e)
@@ -96,8 +99,10 @@ namespace GrblPlotter.MachineControl
         { return c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2"); }
 
         private Color GetColor(string pencolor)
-        {   //return (Color)System.Windows.Media.ColorConverter.ConvertFromString("#" + tmp);
-            if (UInt32.TryParse(pencolor, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint clr))  // try Hex code #00ff00
+        {
+            return Colors.TryConvertColor(pencolor);
+            //return (GroupColor)System.Windows.Media.ColorConverter.ConvertFromString("#" + tmp);
+        /*    if (UInt32.TryParse(pencolor, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint clr))  // try Hex code #00ff00
             {
                 clr |= 0xff000000; // remove alpha
                 return System.Drawing.Color.FromArgb((int)clr);
@@ -105,7 +110,7 @@ namespace GrblPlotter.MachineControl
             else
             {
                 return Color.FromName(pencolor);
-            }
+            }*/
         }
         private void ApplyColor(Button btn)
         {

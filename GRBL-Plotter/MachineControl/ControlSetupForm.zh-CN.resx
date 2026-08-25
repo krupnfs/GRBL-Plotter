@@ -3746,7 +3746,7 @@ Pushbullet：出于安全原因，您应该使用“垃圾桶”帐户，访问�
     <value>生成摆动线</value>
   </data>
   <data name="gBNoise.Text" xml:space="preserve">
-    <value>噪音</value>
+    <value>不稳定的线条</value>
   </data>
   <data name="CbImportGraphicHatchFillNoise.Text" xml:space="preserve">
     <value>添加噪音</value>
@@ -4619,7 +4619,7 @@ SpindleEnable;</value>
     <value>对于自绘像素图形</value>
   </data>
   <data name="rBImportVectorizeAlgoPoTrace.Text" xml:space="preserve">
-    <value>PoTrace（快速 - 适合图片和草图）</value>
+    <value>Potrace（快速 - 适合图片和草图）</value>
   </data>
   <data name="groupBox48.Text" xml:space="preserve">
     <value>矢量化算法</value>
@@ -4666,12 +4666,123 @@ SpindleEnable;</value>
     <value>申请</value>
   </data>
   <data name="groupBox45.Text" xml:space="preserve">
-    <value>自动矢量化</value>
+    <value>自动矢量化（仅限黑白）</value>
   </data>
   <data name="CbToolChangeM6PassThrough.Text" xml:space="preserve">
     <value>将M6命令传递通过，无需GRBL绘图仪进一步处理</value>
   </data>
   <data name="CbToolChangeM6PassThrough.ToolTip" xml:space="preserve">
     <value>注意：Arduino Uno 上的“经典”Grbl 无法处理 M6 命令并给出错误。</value>
+  </data>
+  <data name="BtnSetGrblCustomString.Text" xml:space="preserve">
+    <value>放</value>
+  </data>
+  <data name="BtnSetGrblCustomString.ToolTip" xml:space="preserve">
+    <value>设置/覆盖自定义字符串。然后重置控制器以读取自定义字符串。
+要设置此字符串，请发送 Grbl $I=xxx，其中 xxx 是少于 80 个字符的自定义字符串。该字符串以大写形式存储，空格被删除，并且只能包含字母数字字符。</value>
+  </data>
+  <data name="label115.Text" xml:space="preserve">
+    <value>字符串 - 需要的文件名</value>
+  </data>
+  <data name="CbLoadMachineDefaults.Text" xml:space="preserve">
+    <value>加载默认值</value>
+  </data>
+  <data name="CbLoadMachineDefaults.ToolTip" xml:space="preserve">
+    <value>如果找到文件名，则在连接后仅加载默认值一次。</value>
+  </data>
+  <data name="label114.Text" xml:space="preserve">
+    <value>实际的自定义字符串 - 用作文件名
+加载机器默认值
+如果找到文件名，则在连接后仅加载默认值一次。</value>
+  </data>
+  <data name="GbGrblDefaults.Text" xml:space="preserve">
+    <value>连接时加载默认值</value>
+  </data>
+  <data name="groupBox50.Text" xml:space="preserve">
+    <value>信息文本</value>
+  </data>
+  <data name="CbShowVertexEnable.ToolTip" xml:space="preserve">
+    <value>需要重新加载图形才能生效。</value>
+  </data>
+  <data name="cB2DViewFigureId.ToolTip" xml:space="preserve">
+    <value>需要重新加载图形才能生效。</value>
+  </data>
+  <data name="cB2DViewDirectionArrow.ToolTip" xml:space="preserve">
+    <value>需要重新加载图形才能生效。</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>使用文本编辑器（记事本）打开 INI 文件。</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>保存设置</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>在 INI 文件中保存一些重要设置。</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>测试 INI 文件</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>显示 INI 文件的一些重要设置。</value>
+  </data>
+  <data name="BtnApply2DViewChanges.Text" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="label118.Text" xml:space="preserve">
+    <value>文本大小光标</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>文本大小信息</value>
+  </data>
+  <data name="label116.Text" xml:space="preserve">
+    <value>背景透明度</value>
+  </data>
+  <data name="NudInfoTextSize2.ToolTip" xml:space="preserve">
+    <value>光标附近信息文本的文本大小</value>
+  </data>
+  <data name="NudInfoTextSize1.ToolTip" xml:space="preserve">
+    <value>2D 视图左上边缘信息文本的文本大小</value>
+  </data>
+  <data name="HsbInfoTransparency.ToolTip" xml:space="preserve">
+    <value>文本背景的透明度</value>
+  </data>
+  <data name="GbColorTheme.Text" xml:space="preserve">
+    <value>颜色主题</value>
+  </data>
+  <data name="label119.Text" xml:space="preserve">
+    <value>色调按钮颜色</value>
+  </data>
+  <data name="label120.Text" xml:space="preserve">
+    <value>色调面板颜色</value>
+  </data>
+  <data name="CbColorThemeEnable.Text" xml:space="preserve">
+    <value>程序启动时应用颜色主题</value>
+  </data>
+  <data name="label125.Text" xml:space="preserve">
+    <value>饱和度</value>
+  </data>
+  <data name="label130.Text" xml:space="preserve">
+    <value>亮度</value>
+  </data>
+  <data name="label139.Text" xml:space="preserve">
+    <value>刀具直径（毫米）</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbGerberFillEnable.Text" xml:space="preserve">
+    <value>使用刀具填充 PCB 走线</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportSVGUseElement.Text" xml:space="preserve">
+    <value>处理 'use' 元素</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportVectorizeInvertResult.Text" xml:space="preserve">
+    <value>反转结果</value>
+  </data>
+  <data name="CbImportVectorizeOptimize1.Text" xml:space="preserve">
+    <value>边缘平滑</value>
   </data>
 </root>

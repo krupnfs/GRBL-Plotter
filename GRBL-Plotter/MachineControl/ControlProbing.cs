@@ -245,7 +245,7 @@ namespace GrblPlotter
                     if ((probingAxisIndex >= 0) && (probingAxisIndex <= 2))
                     {
                         SendCommandEvent(new CmdEventArgs((string.Format("{0} {1}{2:0.000}", CoordCommand, probingAxis[probingAxisIndex], tmpProbePos).Replace(',', '.'))));
-                        probingMoveSave = string.Format("G90 G00 {0}{1} (move to save pos.)", probingAxis[probingAxisIndex], probingSave[probingAxisIndex]);    // will be sent in timer1_Tick
+                        probingMoveSave = string.Format("G90 G00 {0}{1} (move to save pos.)", probingAxis[probingAxisIndex], probingSave[probingAxisIndex]);    // will be sent in Timer_Tick
                         lblEFProgress.Text = tmpEF;
                     }
                     angle = probePosOld.AngleTo(probePosNew);
@@ -577,7 +577,7 @@ namespace GrblPlotter
             rBCF2.Image = RotateImageUsi(!isActive ? Properties.Resources.cfOn2 : Properties.Resources.cfOff2, -(float)nUDFindCenterAngle.Value);
 
             cBFindCenterStartFromCenter.Enabled = !isActive;
-            //cBFindCenterUseX.Enabled = cBFindCenterUseY.Enabled = isActive;
+            //cBFindCenterUseX.Enable = cBFindCenterUseY.Enable = isActive;
 
             SetNudEnable(0, true);
             SetNudEnable(1, true);

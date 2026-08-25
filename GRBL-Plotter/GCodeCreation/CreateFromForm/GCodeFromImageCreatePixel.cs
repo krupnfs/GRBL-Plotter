@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2018-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2018-2025 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,11 +18,16 @@
 */
 /*
  * 2024-12-12 New routines to draw pixels dot by dot
+ * 2024-12-18 Shape from script
+ * 2025-04-08 add special function
+ * 2025-06-07 FillToolListElements specialCodexxx variables
 */
 
+using GrblPlotter.Helper;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -38,6 +43,14 @@ namespace GrblPlotter
         private static double pixelArtDistance = 1.1;
         private static double pixelArtPenRadius = 0.2;
         private static bool pixelArtFill = false;
+
+        private static string specialCodeBefore = "G90 G1 Z1 F1000";
+        private static string specialCodeValue1 = "G91 A";
+        private static string specialCodeValue2 = "F10000";
+        private static string specialCodeAfter = "G90 G0 Z5";
+
+
+        private static StringBuilder pixelArtShapeScript = new StringBuilder();
         private void ConvertColorMapPixelArt()
         {
             pixelArtDotWidth = (double)NuDPixelArtDotSize.Value;
@@ -45,11 +58,20 @@ namespace GrblPlotter
             pixelArtDistance = pixelArtDotWidth + pixelArtGapWidth;
             pixelArtPenRadius = (double)NuDPixelArtShapePenDiameter.Value / 2;
             pixelArtFill = CbPixelArtShapeFill.Checked;
+            pixelArtShapeScript.Clear();
 
+            string pixelArtSource = "S";
+            if (RbStartGrayZ.Checked)
+                pixelArtSource = "Z";
+            specialCodeValue1 = tBCodeValue1.Text;
+            if (RbStartGraySpecial.Checked && (specialCodeValue1.Length > 1))
+            {
+                pixelArtSource = specialCodeValue1.Substring(specialCodeValue1.Length - 1);
+            }
             Logger.Info("▼▼  ConvertColorMapPixelArt  px-dist:{0}  colorMapCount:{1}", pixelArtDistance, colorMap.Count);
-            Gcode.Comment(finalString, string.Format("{0} Width=\"{1:0.0}\" />", XmlMarker.PixelArt, pixelArtDotWidth));
+            Gcode.Comment(finalString, string.Format("{0} Source=\"{1}\" Dot-count=\"{2}\"/>", XmlMarker.PixelArt, pixelArtSource, (resultImage.Width * resultImage.Height)));
             int toolNr, skipTooNr = 1;
-            short key;
+        //   short key;
             PointF tmpP;
             int pathCount = 0;
 
@@ -57,38 +79,43 @@ namespace GrblPlotter
             if (RbPixelArtShape.Checked)
                 gCodeWidth = pixelArtPenRadius * 2;
 
-            for (int index = 0; index < toolTableCount; index++)  	// go through lists
-            {
-                ToolTable.SetIndex(index);                      	// set index in class
-                key = (short)ToolTable.IndexToolNR();               // if tool-nr == known key go on
-                                                                    //    if (ToolTable.IndexSelected())
-                if (logEnable) Logger.Trace("ConvertColorMapPixelArt  index:{0}  key:{1}   IndexSelected:{2}  colorMap.ContainsKey:{3}  color:{4}", index, key, ToolTable.IndexSelected(), colorMap.ContainsKey(key), ToolTable.IndexColor());
+            int drawType = CheckDrawShapeType();
 
-                if (colorMap.ContainsKey(key) && ToolTable.IndexSelected())
+            for (int index = 0; index < Colors.MyPalette.Count; index++)  	// go through lists
+            {
+         //       ToolTable.SetIndex(index);                      	// set index in class
+          //      key = (short)ToolTable.IndexToolNR();               // if tool-nr == known key go on
+             //   key = (short)(index + 1);                                             //    if (ToolTable.IndexSelected())
+                                                                                      //        if (logEnable) Logger.Trace("ConvertColorMapPixelArt  index:{0}  key:{1}   IndexSelected:{2}  colorMap.ContainsKey:{3}  color:{4}", index, key, ToolTable.IndexSelected(), colorMap.ContainsKey(key), ToolTable.IndexColor());
+                toolNr = Colors.MyPalette[index].ToolNr;
+                if (colorMap.ContainsKey(toolNr) && Colors.MyPalette[index].Use)//                ToolTable.IndexSelected())
                 {
-                    toolNr = key;                               // use tool in palette order
-                    if (cbSkipToolOrder.Checked)
-                        toolNr = skipTooNr++;                   // or start tool-nr at 1
+                  //  toolNr = key;                               // use tool in palette order
+                 //   if (cbSkipToolOrder.Checked)
+                 //       toolNr = skipTooNr++;                   // or start tool-nr at 1
 
                     finalString.AppendLine("\r\n( +++++ Tool change +++++ )");
 
-                    Gcode.Tool(finalString, toolNr, 0, ToolTable.IndexName() + " [" + ColorTranslator.ToHtml(ToolTable.IndexColor()) + "]");  // + svgPalette.pixelCount());
+                    Gcode.Tool(finalString, toolNr, 0, Colors.MyPalette[index].Name + " [" + ColorTranslator.ToHtml(Colors.MyPalette[index].Col) + "]");  // + svgPalette.pixelCount());
 
-                    Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"{2}\" PenName=\"{3}\" PenWidth=\"{4:0.00}\">", XmlMarker.GroupStart, (++pathCount), ColorTranslator.ToHtml(ToolTable.IndexColor()).Substring(1), ToolTable.IndexName(), gCodeWidth));		//toolTable.indexName()));
+                    Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"{2}\" PenName=\"{3}\" PenWidth=\"{4:0.00}\">", XmlMarker.GroupStart, (++pathCount), ColorTranslator.ToHtml(Colors.MyPalette[index].Col).Substring(1), Colors.MyPalette[index].Name, gCodeWidth));		//toolTable.indexName()));
                     Gcode.ReduceGCode = false;
-                    Gcode.PenUp(finalString, " start ");
-                    Gcode.ReduceGCode = true;
+                    Gcode.PenUp(finalString, "PU"); // start
+
+                    if (drawType < 2)
+                        Gcode.ReduceGCode = true;
 
                     int factor = resoFactorX;
                     int start = 0;// factor / 2;
 
-                    Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" Geometry=\"Pixel\" PenColor=\"{2}\" PenWidth=\"{3:0.00}\">", XmlMarker.FigureStart, pathCount, ColorTranslator.ToHtml(ToolTable.IndexColor()).Substring(1), gCodeWidth));
+                    Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" Geometry=\"Pixel\" PenColor=\"{2}\" PenWidth=\"{3:0.00}\">", XmlMarker.FigureStart, pathCount, ColorTranslator.ToHtml(Colors.MyPalette[index].Col).Substring(1), gCodeWidth));
                     Logger.Trace("adaptRadius = pixelArtDotWidth / 2 - pixelArtPenRadius; {0}  {1}", pixelArtDotWidth, pixelArtPenRadius);
 
+                    Logger.Trace("▼▼▼ DrawColorMapPixelArt toolNr:{0}  start:{1}  drawType:{2}", toolNr, start, drawType);
                     for (int y = start; y < resultImage.Height; y += factor)  // go through all lines
                     {
-                        while (colorMap[key][y].Count > 1)          // start at line 0 and check line by line
-                            DrawColorMapPixelArt(key, y, 0);
+                        while (colorMap[toolNr][y].Count > 1)          // start at line 0 and check line by line
+                            DrawColorMapPixelArt(toolNr, y, 0, drawType);
                     }
                     Gcode.Comment(finalString, string.Format("{0}>", XmlMarker.FigureEnd));
                     Gcode.Comment(finalString, string.Format("{0}>", XmlMarker.GroupEnd));
@@ -106,14 +133,23 @@ namespace GrblPlotter
             pixelArtDistance = pixelArtDotWidth + pixelArtGapWidth;
             pixelArtPenRadius = (double)NuDPixelArtShapePenDiameter.Value / 2;
             pixelArtFill = CbPixelArtShapeFill.Checked;
+            pixelArtShapeScript.Clear();
+
+            string pixelArtSource = "S";
+            if (RbStartGrayZ.Checked)
+                pixelArtSource = "Z";
+            if (RbStartGraySpecial.Checked)
+                pixelArtSource = specialCodeValue1.Substring(specialCodeValue1.Length - 1);
 
             Logger.Info("▼▼  ConvertColorMapBWPixelArt reso:{0}", pixelArtDistance);
-            Gcode.Comment(finalString, string.Format("{0} Width=\"{1:0.0}\" />", XmlMarker.PixelArt, pixelArtDotWidth));
+            Gcode.Comment(finalString, string.Format("{0} Source=\"{1}\" />", XmlMarker.PixelArt, pixelArtSource));
             short key;
             PointF tmpP;
             int pathCount = 0;
             SortByGrayValue(false);
             short grayVal;
+
+            int drawType = CheckDrawShapeType();
 
             for (int index = 0; index <= 255; index++)  // go through possible gray values
             {
@@ -127,18 +163,21 @@ namespace GrblPlotter
 
                     Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"{2}\" PenName=\"{3}\" PenWidth=\"{4:0.00}\">", XmlMarker.GroupStart, (++pathCount), ColorTranslator.ToHtml(Color.FromArgb(key, key, key)).Substring(1), key, pixelArtDistance));     //toolTable.indexName()));
                     Gcode.ReduceGCode = false;
-                    Gcode.PenUp(finalString, " start ");
-                    Gcode.ReduceGCode = true;
+                    Gcode.PenUp(finalString, "PU"); // start
+
+                    if (drawType < 2)
+                        Gcode.ReduceGCode = true;
 
                     int factor = resoFactorX;
                     int start = factor / 2;
 
                     Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" Geometry=\"Pixel\" PenColor=\"{2}\" PenWidth=\"{3:0.00}\">", XmlMarker.FigureStart, pathCount, ColorTranslator.ToHtml(Color.FromArgb(key, key, key)).Substring(1), pixelArtDistance));
 
+                    Logger.Trace("▼▼▼ DrawColorMapPixelArt toolNr:{0}  start:{1}  drawType:{2}", key, start, drawType);
                     for (int y = start; y < resultImage.Height; y += factor)  // go through all lines
                     {
                         while (colorMap[key][y].Count > 1)          // start at line 0 and check line by line
-                            DrawColorMapPixelArt(key, y, 0);
+                            DrawColorMapPixelArt(key, y, 0, drawType);
                     }
                     Gcode.Comment(finalString, string.Format("{0}>", XmlMarker.FigureEnd));
                     Gcode.Comment(finalString, string.Format("{0}>", XmlMarker.GroupEnd));
@@ -146,21 +185,65 @@ namespace GrblPlotter
             }
         }
 
+        private int CheckDrawShapeType()
+        {
+            int drawType = 0;
+            if (RbPixelArtDrawShapeRect.Checked)
+            { drawType = 1; }
+            if (RbPixelArtDrawShapeScript.Checked)
+            {
+                drawType = 2;
+                Gcode.ReduceGCode = false;
 
+                string command = TbPixelArtDrawShapeScript.Text;
+                if (string.IsNullOrEmpty(command))
+                    return drawType;
+
+                if (!command.StartsWith("(") && command.Contains("\\"))
+                {
+                    string file = Datapath.MakeAbsolutePath(command);
+                    if (File.Exists(file))
+                    {
+                        Gcode.SetSubroutine(command, 89);
+
+                        Gcode.PenDown(pixelArtShapeScript, "PD");
+                        pixelArtShapeScript.AppendFormat("M98 P89 (pixel art)\r\n");
+                        Gcode.PenUp(pixelArtShapeScript, "PU");
+                        return drawType;
+                    }
+                    else
+                    {
+                        Gcode.PenDown(pixelArtShapeScript, "PD");
+                        pixelArtShapeScript.AppendFormat("(Script not found)\r\n");
+                        Gcode.PenUp(pixelArtShapeScript, "PU");
+                        Logger.Warn("ProcessCommands Script/file does not exists: {0} -> {1}", command, file);
+                    }
+                }
+                else
+                {
+                    string[] commands = command.Split(';');
+
+                    Gcode.PenDown(pixelArtShapeScript, "PD");
+                    foreach (string cmd in commands)
+                    { pixelArtShapeScript.AppendFormat("{0}\r\n", cmd); }
+                    Gcode.PenUp(pixelArtShapeScript, "PU");
+                }
+            }
+            return drawType;
+        }
 
         /// <summary>
         /// check recursive line by line for same color near by, by given x-value
         /// </summary>
-        private void DrawColorMapPixelArt(int toolNr, int line, int startIndex)
+        private void DrawColorMapPixelArt(int toolNr, int line, int startIndex, int drawType)
         {
             int start, stop, newIndex;
             int factor = resoFactorX;
             bool useZnotS = RbStartGrayZ.Checked;
             bool drawShape = RbPixelArtShape.Checked;
+            bool drawSpecial = RbStartGraySpecial.Checked;
             double coordY = pixelArtDistance * (double)line + pixelArtDistance / 2;
-            int drawType = 0;
-            if (RbPixelArtDrawShapeRect.Checked)
-                drawType = 1;
+        //    Logger.Trace("▼▼▼ DrawColorMapPixelArt special:{0}  useZ:{1}  shape:{2}", drawSpecial, useZnotS, drawShape);
 
             if (colorMap[toolNr][line].Count > 1)   // at least two numbers needed: start, stop
             {
@@ -218,8 +301,8 @@ namespace GrblPlotter
                             newIndex = nextLine.IndexOf(k);             // first check direction were I came from
                             if (newIndex >= 0)                          // entry found
                             {
-                                DrawColorMapPixelArt(toolNr, line + factor, newIndex);  // go on with next line
-                                                                                        //   end = false;
+                                DrawColorMapPixelArt(toolNr, line + factor, newIndex, drawType);  // go on with next line
+                                                                                                  //   end = false;
                                 break;
                             }
                         }
@@ -231,8 +314,8 @@ namespace GrblPlotter
                             newIndex = nextLine.IndexOf(k);             // first check direction were I came from
                             if (newIndex >= 0)                          // entry found
                             {
-                                DrawColorMapPixelArt(toolNr, line + factor, newIndex);  // go on with next line
-                                                                                        //     end = false;
+                                DrawColorMapPixelArt(toolNr, line + factor, newIndex, drawType);  // go on with next line
+                                                                                                  //     end = false;
                                 break;
                             }
                         }
@@ -246,6 +329,7 @@ namespace GrblPlotter
             double adaptRadius = pixelArtDotWidth / 2 - pixelArtPenRadius;
             if (drawType == 0)
             {
+                /* circle */
                 if (upDown)
                 {
                     Gcode.MoveToRapid(finalString, centerX - adaptRadius, centerY, "");
@@ -263,8 +347,9 @@ namespace GrblPlotter
                 }
                 if (upDown) Gcode.PenUp(finalString, "(PU)");
             }
-            else
+            else if (drawType == 1)
             {
+                /* rectangle */
                 if (upDown)
                 {
                     Gcode.MoveToRapid(finalString, centerX - adaptRadius, centerY - adaptRadius, "");
@@ -287,14 +372,22 @@ namespace GrblPlotter
 
                 if (upDown) Gcode.PenUp(finalString, "(PU)");
             }
+            else if (drawType == 2)
+            {
+                string command = TbPixelArtDrawShapeScript.Text;
+                upDown = true;// CbPixelArtShapeUpDown.Checked;
+                Gcode.MoveToRapid(finalString, centerX - adaptRadius, centerY - adaptRadius, "");
+
+                finalString.Append(pixelArtShapeScript);
+            }
         }
 
         private void SetPixelColorMap(StringBuilder finalString, bool useZnotS)
         {
             if (useZnotS)
             {
-                finalString.AppendFormat("G{0} Z{1} F{2} (PD)\r\n", Gcode.FrmtCode(1), Gcode.FrmtNum(nUDZBottom.Value), Gcode.GcodeZFeed);
-                finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(Gcode.GcodeZUp));
+                finalString.AppendFormat("G{0} Z{1} F{2} (PD)\r\n", Gcode.FrmtCode(1), Gcode.FrmtNum(nUDZBottom.Value), Gcode.OptionZAxis.Feed);
+                finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(Gcode.OptionZAxis.Up));
                 cncCoordLastZ = cncCoordZ = (float)nUDZTop.Value;
             }
             else
@@ -306,31 +399,47 @@ namespace GrblPlotter
             }
         }
 
-        private void CreatePixelPatternHeight(int width, int height, bool useZnotS)
+        private long CreatePixelPatternHeight(int width, int height, bool useZnotS, bool special)
         {
             pixelArtDotWidth = (double)NuDPixelArtDotSize.Value;
             pixelArtGapWidth = (double)NuDPixelArtGapSize.Value;
+            pixelArtDistance = pixelArtDotWidth + pixelArtGapWidth;
+
+            specialCodeBefore = tBCodeBefore.Text;
+            specialCodeValue1 = tBCodeValue1.Text;
+            specialCodeValue2 = tBCodeValue2.Text;
+            specialCodeAfter = tBCodeAfter.Text;
+
             bool drawShape = RbPixelArtShape.Checked;
             int drawType = 0;
             if (RbPixelArtDrawShapeRect.Checked)
                 drawType = 1;
 
-            Logger.Trace("CreatePixelPattern  width:{0}  heigth:{1} resultImg-w:{2}  resultImg-h:{3}  cncPixelResoX:{4}  resoDesiredX:{5}", width, height, resultImage.Width, resultImage.Height, cncPixelResoX, resoDesiredX);
+            int dotLineCount = 4;
+            if (!special)
+            {
+                if (useZnotS) { dotLineCount = 3; }
+                else { dotLineCount = 5; }
+            }
+            long lineCount = width * height * dotLineCount;
+
+            Logger.Trace("▼▼▼ CreatePixelPatternHeight  Img-width:{0}  Img-heigth:{1} resultImg-w:{2}  resultImg-h:{3:0.0000}  cncPixelResoX:{4:0.0000}  resoDesiredX:{5:0.0000}  useZ:{6}  special:{7}", width, height, resultImage.Width, resultImage.Height, cncPixelResoX, resoDesiredX, useZnotS, special);
             int x, y;
             for (y = 0; y < height; y++)
             {
                 for (x = 0; x < width; x++)
                 {
-                    ApplyPixelValueHeight(x, y);
+                    ApplyPixelValueHeight(x, y);		// left to right
                 }
                 if (++y < height)
                 {
                     for (x = width - 1; x >= 0; x--)
                     {
-                        ApplyPixelValueHeight(x, y);
+                        ApplyPixelValueHeight(x, y);	// right to left
                     }
                 }
             }
+            return lineCount;
 
             void ApplyPixelValueHeight(int xx, int yy)
             {
@@ -343,55 +452,77 @@ namespace GrblPlotter
                     brightnes = -1;
                     return;
                 }
-                cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+                cncCoordLastZ = cncCoordZ = Gcode.OptionZAxis.Up;
+
+                // move to xy position
                 if (drawShape)
-                    finalString.AppendFormat("G{0} X{1} Y{2}\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(pixelPosX- adaptRadius), Gcode.FrmtNum(pixelPosY));
+                    finalString.AppendFormat("G{0} X{1} Y{2}\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(pixelPosX - adaptRadius), Gcode.FrmtNum(pixelPosY));
                 else
                     finalString.AppendFormat("G{0} X{1} Y{2}\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(pixelPosX), Gcode.FrmtNum(pixelPosY));
 
-                SetPixelHeight(brightnes, useZnotS, false);
+                // apply brightnes as Gcode value as Z, S or special
+                SetPixelHeight(brightnes, useZnotS, special, false);
 
-                if (drawShape)
-                {
+                if (!special)
+                {	// apply up movement for Z or S
+                    if (drawShape)
+                    {
                         Gcode.Arc(finalString, 2, pixelPosX - adaptRadius, pixelPosY, adaptRadius, 0, "");
-                   // SetShapeColorMap(finalString, drawType, pixelPosX, pixelPosX, false);
-                }
+                        // SetShapeColorMap(finalString, drawType, pixelPosX, pixelPosX, false);
+                    }
 
-                if (useZnotS)
-                {
-                    finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(nUDZTop.Value), Gcode.GcodeXYFeed);
-                    cncCoordLastZ = cncCoordZ = (float)nUDZTop.Value;
-                }
-                else
-                {
-                    finalString.AppendFormat("G{0} P{1} (PD)\r\n", Gcode.FrmtCode(4), Gcode.FrmtNum(Properties.Settings.Default.importGCPWMDlyDown));
-                    finalString.AppendFormat("S{0} (PU DOT)\r\n", Math.Round(nUDSTop.Value));
-                    finalString.AppendFormat("G{0} P{1}\r\n", Gcode.FrmtCode(4), Gcode.FrmtNum(Properties.Settings.Default.importGCPWMDlyUp));
+                    if (useZnotS)
+                    {
+                        finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(nUDZTop.Value), Gcode.GcodeXYFeed);
+                        cncCoordLastZ = cncCoordZ = (float)nUDZTop.Value;
+                    }
+                    else
+                    {
+                        finalString.AppendFormat("G{0} P{1} (PD)\r\n", Gcode.FrmtCode(4), Gcode.FrmtNum(Properties.Settings.Default.importGCPWMDlyDown));
+                        finalString.AppendFormat("S{0} (PU DOT)\r\n", Math.Round(nUDSTop.Value));
+                        finalString.AppendFormat("G{0} P{1}\r\n", Gcode.FrmtCode(4), Gcode.FrmtNum(Properties.Settings.Default.importGCPWMDlyUp));
+                    }
                 }
                 cncCoordLastZ = cncCoordZ = (float)nUDZTop.Value;
 
             }
         }
 
-        private void SetPixelHeight(int bright, bool useZnotS, bool relative)
+        private void SetPixelHeight(int bright, bool useZnotS, bool special, bool relative)
         {
             if (bright > 255) { bright = 255; }
             if (bright < 0) { bright = 0; }
             int height = 255 - bright;    // pixelVal 0=black, 255=white
             string SZ;
 
-            if (useZnotS)
-            {
-                cncCoordZ = (float)nUDZTop.Value - height * (float)(nUDZTop.Value - nUDZBottom.Value) / 255;    // calc Z value
-                if (relative) { SZ = string.Format("Z{0}", Gcode.FrmtNum(cncCoordZ - cncCoordLastZ)); }
-                else { SZ = string.Format("Z{0}", Gcode.FrmtNum(cncCoordZ)); }
-                finalString.AppendFormat("G{0} {1} F{2} (PD)\r\n", Gcode.FrmtCode(1), SZ, Gcode.GcodeZFeed);
+            if (special)
+            {	// apply code for down and up
+                float sval = (float)nUDSpecialTop.Value - height * (float)(nUDSpecialTop.Value - nUDSpecialBottom.Value) / 255;
+                if (specialCodeBefore != "")
+                {
+                    finalString.AppendFormat("{0}\r\n", specialCodeBefore);
+                    finalString.AppendFormat("{0}{1}{2} (PD DOT)\r\n", specialCodeValue1, Gcode.FrmtNum(sval), specialCodeValue2);
+                }
+                else
+                    finalString.AppendFormat("{0}{1}{2} (PD DOT)\r\n", specialCodeValue1, Gcode.FrmtNum(sval), specialCodeValue2);
+
+                finalString.AppendFormat("{0} (PU)\r\n", specialCodeAfter);
             }
             else
-            {
-                int sVal = (int)Math.Abs((float)nUDSTop.Value + (((255 - bright) * (float)(nUDSBottom.Value - nUDSTop.Value)) / 255));
-                SZ = string.Format("S{0}", sVal);
-                finalString.AppendFormat("{0} (PD)\r\n", SZ);
+            {	// apply code only for down
+                if (useZnotS)
+                {
+                    cncCoordZ = (float)nUDZTop.Value - height * (float)(nUDZTop.Value - nUDZBottom.Value) / 255;    // calc Z value
+                    if (relative) { SZ = string.Format("Z{0}", Gcode.FrmtNum(cncCoordZ - cncCoordLastZ)); }
+                    else { SZ = string.Format("Z{0}", Gcode.FrmtNum(cncCoordZ)); }
+                    finalString.AppendFormat("G{0} {1} F{2} (PD)\r\n", Gcode.FrmtCode(1), SZ, Gcode.OptionZAxis.Feed);
+                }
+                else
+                {
+                    int sVal = (int)Math.Abs((float)nUDSTop.Value + (((255 - bright) * (float)(nUDSBottom.Value - nUDSTop.Value)) / 255));
+                    SZ = string.Format("S{0}", sVal);
+                    finalString.AppendFormat("{0} (PD)\r\n", SZ);
+                }
             }
         }
 
@@ -407,10 +538,9 @@ namespace GrblPlotter
             decimal gapWidth = NuDPixelArtGapSize.Value;
             decimal w = NuDPixelArtDotsPerPixel.Value * (penWidth + gapWidth) * originalImage.Width;
             decimal h = NuDPixelArtDotsPerPixel.Value * (penWidth + gapWidth) * originalImage.Height;
-            LbLSizeXCode.Text = w.ToString(); 
+            LbLSizeXCode.Text = w.ToString();
             LbLSizeYCode.Text = h.ToString();
         }
-
     }
 
     class PixelBox : PictureBox

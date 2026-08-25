@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,20 +19,21 @@
 
 /*  GCodeFromSVG.cs a static class to convert SVG data into G-Code 
     Not implemented: 
-        Basic-shapes: Image
+        Basic-shapes: ImageForm
         Transform: rotation with offset, skewX, skewY
 
     GCode will be written to gcodeString[gcodeStringIndex] where gcodeStringIndex corresponds with color of element to draw
 */
 /* 
  * 2022-08-06 implement text import		// https://www.w3.org/TR/SVG2/text.html    https://www.w3.org/TR/SVG11/text.html
- * 2022-09-29 line 676, 765 add (fill != "none"))
- * 2023-01-12 line 368 set default for fill and stroke; line 282
+ * 2022-09-29 line 676, 765 add (FillToolListElements != "none"))
+ * 2023-01-12 line 368 set default for FillToolListElements and stroke; line 282
  * 2023-01-13 add textLetterSpacing
  * 2023-07-02 f:ReadAttributs replaced ConvertToPixel by ConvertFontSize
  * 2023-11-11 replace floats by double
- * 2024-04-22 l:555 f:ReadAttributs	set attributes for stroke, stroke-widthh, fill (Graphic.SetPenColor, SetPenWidth, SetPenFill)
+ * 2024-04-22 l:555 f:ReadAttributs	set attributes for stroke, stroke-widthh, FillToolListElements (Graphic.SetPenColor, SetPenWidth, SetPenFill)
  * 2024-07-22 l:725 f:ExportString don't inc. text length, if empty
+ * 2026-07-21 l:318 f:AddText limit log-output size to 3 digits
 */
 
 using System;
@@ -110,7 +111,7 @@ namespace GrblPlotter
                     txt = StripWhiteSpace(node.ToString(), textPathCount, tspan);
                     if (txt.Length > 0)
                     {
-                        // Logger.Trace("►► ParseTextElement  id:{0}  ci:{1}   stroke:'{2}'  fill:'{3}'  text:'{4}'  style:'{5}'", pathElement.Attribute("id"), newTextProp.CharIndex, newTextProp.stroke, newTextProp.fill, txt, newTextProp.fontStyle);
+                        // Logger.Trace("►► ParseTextElement  id:{0}  ci:{1}   stroke:'{2}'  FillToolListElements:'{3}'  text:'{4}'  style:'{5}'", pathElement.Attribute("id"), newTextProp.CharIndex, newTextProp.stroke, newTextProp.FillToolListElements, txt, newTextProp.fontStyle);
                         // Logger.Info("►► ParseTextElement  id:{0}  ci:{1}   ref-ci:{2}", pathElement.Attribute("id"), newTextProp.CharIndex, newTextPathCharIndex);
                         Graphic.SetGeometry("text");
                         origin = AddText(txt, newTextProp, origin, ref textPathCharIndex);
@@ -140,7 +141,7 @@ namespace GrblPlotter
             for (int i = 0; i < lines.Length; i++)
             {
                 tmpLine = lines[i];
-                Logger.Trace("tmpLine: {0}  '{1}'  textWasFound:{2}", i, tmpLine, textWasFound);
+                Logger.Trace("  ● StripWhiteSpace tmpLine:{0}  '{1}'  textWasFound:{2}", i, tmpLine, textWasFound);
 
                 if (false)
                 {
@@ -245,7 +246,7 @@ namespace GrblPlotter
                                 int objCount = 0;
                                 getTextPath = true;
                                 foreach (string token in tokens)
-                                    objCount += ParsePathCommandGraphicsPath(token);    // fill graphics path with shape
+                                    objCount += ParsePathCommandGraphicsPath(token);    // FillToolListElements graphics path with shape
                                 getTextPath = false;
                             }
                             else
@@ -255,7 +256,7 @@ namespace GrblPlotter
                         {
                             getTextPath = true;
                             lastTransformMatrix.SetIdentity();
-                            ParseBasicElement(id, level);                               // fill graphics path with shape  incl. ParseTransform and ParseAttributs
+                            ParseBasicElement(id, level);                               // FillToolListElements graphics path with shape  incl. ParseTransform and ParseAttributs
                             getTextPath = false;
                         }
                     }
@@ -314,7 +315,7 @@ namespace GrblPlotter
 
         private static PointF AddText(string svgText, TextProperties textProp, PointF origin, ref int charIndex)
         {
-            Logger.Info("► AddText text:'{0}'  size:{1}   family:{2}   offsetX:{3}  offsetY:{4}   globalX:{5}  globalY:{6}", svgText, textProp.fontSize, textProp.fontFamily, origin.X, origin.Y, offsetX, offsetY);
+            Logger.Info("► AddText text:'{0}'  size:{1:0.000}   family:{2}   offsetX:{3}  offsetY:{4}   globalX:{5}  globalY:{6}", svgText, textProp.fontSize, textProp.fontFamily, origin.X, origin.Y, offsetX, offsetY);
 
             textProp.SetX(origin.X);
             textProp.SetY(origin.Y);
@@ -467,7 +468,7 @@ namespace GrblPlotter
 
                 if (strokeWidth != "") { Graphic.SetPenWidth(strokeWidth); }
                 if (stroke != "") { Graphic.SetPenColor(stroke.StartsWith("#") ? stroke.Substring(1) : stroke); }  //Logger.Info("SetPenColor '{0}'", stroke); 
-                if ((fill != "") && (fill != "none")) { Graphic.SetPenFill(fill.StartsWith("#") ? fill.Substring(1) : fill); }     //Logger.Info("SetPenFill  '{0}'", fill); 
+                if ((fill != "") && (fill != "none")) { Graphic.SetPenFill(fill.StartsWith("#") ? fill.Substring(1) : fill); }     //Logger.Info("SetPenFill  '{0}'", FillToolListElements); 
 
                 try
                 {

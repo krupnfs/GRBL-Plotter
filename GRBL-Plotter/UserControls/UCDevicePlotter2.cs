@@ -1,0 +1,172 @@
+﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
+    This file is part of the GRBL-Plotter application.
+   
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+*/
+
+using System;
+using System.Windows.Forms;
+
+namespace GrblPlotter.UserControls
+{
+    public partial class UCDevicePlotter2 : UserControl
+    {
+        private readonly int customButtonNr = 30;
+        public event EventHandler<UserControlCmdEventArgs> RaiseCmdEvent;
+        internal virtual void OnRaiseCmdEvent(UserControlCmdEventArgs e)
+        { RaiseCmdEvent?.Invoke(this, e); }
+
+        public event EventHandler<UserControlGuiControlEventArgs> RaiseGuiControlEvent;
+        protected virtual void OnRaiseGuiControlEvent(UserControlGuiControlEventArgs e)
+        { RaiseGuiControlEvent?.Invoke(this, e); }
+
+        public UCDevicePlotter2()
+        {
+            InitializeComponent();
+        }
+
+        public void ShowPanelPenChange(bool show)
+        {
+            this.Height = show ? 150 : 75;
+
+        }
+        /*    internal void UpdateToolTip()
+            {
+                toolTip1.SetToolTip(BtnPenUp, string.Format("send 'M3 S{0}'", Properties.Settings.Default.importGCPWMUp));
+                toolTip1.SetToolTip(BtnPenDown, string.Format("send 'M3 S{0}'", Properties.Settings.Default.importGCPWMDown));
+            }*/
+
+        public void SetButtonProp(int btnNr, string prop)
+        {
+            if (btnNr == 1)
+            {
+                toolTip1.SetToolTip(btnCustom1, MyControl.SetButtonProperty(btnCustom1, prop));
+            }
+        }
+        private void BtnPenUp_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.DevicePlotterControlIndex == 0)
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("M3 S{0}", Properties.Settings.Default.importGCPWMUp).Replace(",", "."), 0, sender, e));
+            }
+            else
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("$J=G90 Z{0} F{1}", Gcode.FrmtNum(Properties.Settings.Default.DevicePlotterZUp), Properties.Settings.Default.DevicePlotterSpeedZ).Replace(",", "."), 0, sender, e));
+            }
+        }
+
+        private void BtnPenZero_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.DevicePlotterControlIndex == 0)
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("M3 S{0}", Properties.Settings.Default.importGCPWMZero).Replace(",", "."), 0, sender, e));
+            }
+            else
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("$J=G90 Z{0} F{1}", Gcode.FrmtNum(0f), Properties.Settings.Default.DevicePlotterSpeedZ).Replace(",", "."), 0, sender, e));
+            }
+        }
+
+        private void BtnPenDown_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.DevicePlotterControlIndex == 0)
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("M3 S{0}", Properties.Settings.Default.importGCPWMDown).Replace(",", "."), 0, sender, e));
+            }
+            else
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("$J=G90 Z{0} F{1}", Gcode.FrmtNum(Properties.Settings.Default.DevicePlotterZDown), Properties.Settings.Default.DevicePlotterSpeedZ).Replace(",", "."), 0, sender, e));
+            }
+        }
+
+        private void BtnPenDownUp_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.DevicePlotterControlIndex == 0)
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("M3 S{0}", Properties.Settings.Default.importGCPWMDown).Replace(",", "."), 0, sender, e));
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("G4 P{0}", Properties.Settings.Default.importGCPWMDlyDown).Replace(",", "."), 0, sender, e));
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("M3 S{0}", Properties.Settings.Default.importGCPWMUp).Replace(",", "."), 0, sender, e));
+            }
+            else
+            {
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("$J=G90 Z{0} F{1}", Gcode.FrmtNum(Properties.Settings.Default.DevicePlotterZDown), Properties.Settings.Default.DevicePlotterSpeedZ).Replace(",", "."), 0, sender, e));
+                OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("$J=G90 Z{0} F{1}", Gcode.FrmtNum(Properties.Settings.Default.DevicePlotterZUp), Properties.Settings.Default.DevicePlotterSpeedZ).Replace(",", "."), 0, sender, e));
+            }
+        }
+
+        private void UCDevicePlotter2_BackColorChanged(object sender, EventArgs e)
+        {
+            MyControl.ChangeColor(this);
+            MyControl.ChangeColor(TableLayoutPanel1);
+        }
+
+        private void BtnCustom1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int btnNr = customButtonNr;
+            if (e.Button == MouseButtons.Right)
+                btnNr *= -1;
+            OnRaiseGuiControlEvent(new UserControlGuiControlEventArgs(GuiControl.customButton, btnNr));
+        }
+
+        private void BtnStartToolSelect_Click(object sender, EventArgs e)
+        {
+            int penNr = (int)NudToolNr.Value;
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("T{0}", penNr).Replace(",", "."), 0, sender, e));
+            SendScript(Properties.Settings.Default.ctrlToolScriptSelect, sender, e);                                                                                                                       //   LocalOnRaiseCmdEvent(new UserControlCmdEventArgs(Properties.Settings.Default.ctrlToolScriptGet, 1, sender, e));
+        }
+        private void BtnStartToolTake_Click(object sender, EventArgs e)
+        {
+            int penNr = (int)NudToolNr.Value;
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("T{0}", penNr).Replace(",", "."), 0, sender, e));
+            SendScript(Properties.Settings.Default.ctrlToolScriptGet, sender, e);
+        }
+        private void BtnStartToolRemove_Click(object sender, EventArgs e)
+        {
+            int penNr = (int)NudToolNr.Value;
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("T{0}", penNr).Replace(",", "."), 0, sender, e));
+            SendScript(Properties.Settings.Default.ctrlToolScriptPut, sender, e);
+        }
+        private void BtnStartToolProbe_Click(object sender, EventArgs e)
+        {
+            int penNr = (int)NudToolNr.Value;
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("T{0}", penNr).Replace(",", "."), 0, sender, e));
+            SendScript(Properties.Settings.Default.ctrlToolScriptProbe, sender, e);
+        }
+        private void SendScript(string script, object sender, EventArgs e)
+        {
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(Datapath.MakeAbsolutePath(script), 1, sender, e));// use ProcessCommands instead of _serial_form.RequestSend
+        }
+
+
+        private void BtnGripperOpen_Click(object sender, EventArgs e)
+        {
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("{0}", Properties.Settings.Default.ctrlToolCommandGripperOpen).Replace(",", "."), 0, sender, e));
+        }
+        private void BtnGripperClose_Click(object sender, EventArgs e)
+        {
+            OnRaiseCmdEvent(new UserControlCmdEventArgs(string.Format("{0}", Properties.Settings.Default.ctrlToolCommandGripperClose).Replace(",", "."), 0, sender, e));
+        }
+
+        internal void SetToolNr(int toolNr)
+        {
+            if ((toolNr > 0) && (toolNr < 100))
+                NudToolNr.Value = toolNr;
+        }
+    }
+}

@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2025 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,8 +40,12 @@
  * 2024-07-21 l:337 f:SaveSettings only save custom buttons if edited
  * 2024-11-18 l:250 f:SetupForm_Load change (encodeIndex < GuiVariables.SaveEncoding.Length) to (encodeIndex < CBoxSaveEncoding.Items.Count)   
  * 2025-02-23 add M6PassThrough CbToolChangeM6PassThrough #435
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+ * 2026-06-11 f:ImportCSVToDgv disable tool table related functions
 */
 
+using GrblPlotter.Helper;
+using GrblPlotter.UserControls;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -83,7 +87,13 @@ namespace GrblPlotter
                 BtnGetFilterValueKeepWidth.Text = value;
             }
         }
-
+        internal string NewCustomString
+        {
+            set
+            {
+                TbGrblCustomString.Text = value;
+            }
+        }
         public ControlSetupForm()
         {
             Logger.Trace("++++++ ControlSetupForm START ++++++");
@@ -121,16 +131,16 @@ namespace GrblPlotter
                 Logger.Error(err, "SetupForm_Load path nok:{0}", tpath);
                 //throw;		// unknown exception...
             }
-            defaultToolList = tpath + "\\" + ToolTable.DefaultFileName;
+        //    defaultToolList = tpath + "\\" + ToolTable.DefaultFileName;
 
-            if ((!ImportCSVToDgv(defaultToolList)) || (dGVToolList.Rows.Count == 1))
+        /*    if ((!ImportCSVToDgv(defaultToolList)) || (dGVToolList.Rows.Count == 1))
             {
                 string[] tmp = ToolTable.defaultTool;  // { "1", "000000", "Black", "0.0", "0.0", "0.0", "3.0", "500" };
                 dGVToolList.Rows.Add(tmp);
-            }
-            FillToolTableFileList(Datapath.Tools);
+            }*/
+        //    FillToolTableFileList(Datapath.Tools);
             FillUseCaseFileList(Datapath.Usecases);
-            lblToolListLoaded.Text = Properties.Settings.Default.toolTableLastLoaded;
+        //    lblToolListLoaded.Text = Properties.Settings.Default.toolTableLastLoaded;
             tab2gB1.Text += " ( " + Datapath.Tools + " )";
 
             SetCustomBtnTable();
@@ -244,7 +254,12 @@ namespace GrblPlotter
             ListHotkeys();
             lblJoystickSize.Text = hScrollBar1.Value.ToString();
 
-            cBoxPollInterval.SelectedIndex = Properties.Settings.Default.grblPollIntervalIndex;
+            int sIndex = Properties.Settings.Default.grblPollIntervalIndex;
+            if (sIndex < cBoxPollInterval.Items.Count)
+                cBoxPollInterval.SelectedIndex = sIndex;
+            else
+                cBoxPollInterval.SelectedIndex = 2;
+
             foreach (Encoding encode in GuiVariables.SaveEncoding)
             { CBoxSaveEncoding.Items.Add(encode.BodyName); }
             int encodeIndex = Properties.Settings.Default.FCTBSaveEncodingIndex;
@@ -296,18 +311,18 @@ namespace GrblPlotter
             CbAux1ZMode.SelectedIndex = Properties.Settings.Default.importGCAux1ZMode;
             CbAux2ZMode.SelectedIndex = Properties.Settings.Default.importGCAux2ZMode;
 
-            if (Properties.Settings.Default.guiJoystickApperance1)
+            if (Properties.Settings.Default.UserControlJogControlShowButtons)
                 RbApperance1.Checked = true;
             else
                 RbApperance2.Checked = true;
 
             if (Properties.Settings.Default.importGraphicFilterChoiceRemove)
             {
-                RbimportGraphicFilterChoiceRemove1.Checked = true; //GbFilterRemove.BackColor = Color.Yellow; GbFilterKeep.BackColor = Color.WhiteSmoke;
+                RbimportGraphicFilterChoiceRemove1.Checked = true; //GbFilterRemove.BackColor = GroupColor.Yellow; GbFilterKeep.BackColor = GroupColor.WhiteSmoke;
             }
             else
             {
-                RbimportGraphicFilterChoiceRemove2.Checked = true; //GbFilterRemove.BackColor = Color.WhiteSmoke; GbFilterKeep.BackColor = Color.Yellow;
+                RbimportGraphicFilterChoiceRemove2.Checked = true; //GbFilterRemove.BackColor = GroupColor.WhiteSmoke; GbFilterKeep.BackColor = GroupColor.Yellow;
             }
 
             LblZEngrave.Text = Properties.Settings.Default.importGCZDown.ToString("0.0");
@@ -332,6 +347,21 @@ namespace GrblPlotter
             }
 
             CbImportGraphicSortDistanceStart.SelectedIndex = Properties.Settings.Default.importGraphicSortDistanceStart;
+
+            TbGrblCustomString.Text = Grbl.GetInfo("VER1");
+
+            tabControl_Level1.TabPages.Remove(tabPage14);   // disable Tool table page
+        }
+
+        public void ShowTab(string tab)
+        {
+            if (tab == "setup")
+                tabControl_Level1.SelectedIndex = 1;
+        }
+        public void UpdateToolTable()
+        {
+            Logger.Trace("UpdateToolTable  {0}", Properties.Settings.Default.toolTableLastLoaded);
+            LoadToolList(Properties.Settings.Default.toolTableLastLoaded);
         }
 
         private void SaveSettings()
@@ -352,8 +382,8 @@ namespace GrblPlotter
 
             Properties.Settings.Default.Save();
 
-            ExportDgvToCSV(defaultToolList);
-            ToolTable.Init(" (SaveSettings)");
+        //    ExportDgvToCSV(defaultToolList);
+        //    ToolTable.Init(" (SaveSettings)");
             SetCustomBtnTable();
         }
 
@@ -393,33 +423,34 @@ namespace GrblPlotter
         { SaveSettings(); }
 
         private void BtnColorBackground_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorBackground, "gui2DColorBackground"); }
+        { ApplyColor(btnColorBackground, "gui2DColorBackground"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorBackgroundPath_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorBackgroundPath, "gui2DColorBackgroundPath"); }
+        { ApplyColor(btnColorBackgroundPath, "gui2DColorBackgroundPath"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorDimension_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorDimension, "gui2DColorDimension"); }
+        { ApplyColor(btnColorDimension, "gui2DColorDimension"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorRuler_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorRuler, "gui2DColorRuler"); }
+        { ApplyColor(btnColorRuler, "gui2DColorRuler"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorPenUp_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorPenUp, "gui2DColorPenUp"); }
+        { ApplyColor(btnColorPenUp, "gui2DColorPenUp"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorPenDown_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorPenDown, "gui2DColorPenDown"); }
+        { ApplyColor(btnColorPenDown, "gui2DColorPenDown"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorRotaryInfo_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorRotaryInfo, "gui2DColorRotaryInfo"); }
+        { ApplyColor(btnColorRotaryInfo, "gui2DColorRotaryInfo"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorTool_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorTool, "gui2DColorTool"); }
+        { ApplyColor(btnColorTool, "gui2DColorTool"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorMarker_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorMarker, "gui2DColorMarker"); }
+        { ApplyColor(btnColorMarker, "gui2DColorMarker"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorHeightMap_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorHeightMap, "gui2DColorHeightMap"); }
+        { ApplyColor(btnColorHeightMap, "gui2DColorHeightMap"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorMachineLimit_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorMachineLimit, "gui2DColorMachineLimit"); }
+        { ApplyColor(btnColorMachineLimit, "gui2DColorMachineLimit"); BtnApply2DViewChanges.PerformClick(); }
         private void BtnColorSimulation_Click(object sender, EventArgs e)
-        { ApplyColor(btnColorSimulation, "gui2DColorSimulation"); }
+        { ApplyColor(btnColorSimulation, "gui2DColorSimulation"); BtnApply2DViewChanges.PerformClick(); }
 
         private void ApplyColor(Button btn, string settings)
         {
             colorDialog1.AnyColor = true;
+            colorDialog1.SolidColorOnly = false;
             colorDialog1.Color = (Color)Properties.Settings.Default[settings];
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -711,7 +742,7 @@ namespace GrblPlotter
                         if (!firstColumn)
                             csv.Append(',');                            // csv delimiter
                         if (val == null)
-                            csv.Append(ToolTable.defaultTool[j]);       // fill with default value
+                            csv.Append(ToolTable.defaultTool[j]);       // FillToolListElements with default value
                         else
                         {
                             format = "{0," + cellWidth[j].ToString() + "}";
@@ -789,7 +820,7 @@ namespace GrblPlotter
                             if (j < col.Length)
                             {
                                 tmp = col[j].Trim();
-                                dGVToolList.Rows[row].Cells[j].Value = tmp;  // fill up empty cells
+                                dGVToolList.Rows[row].Cells[j].Value = tmp;  // FillToolListElements up empty cells
                             }
                             else
                                 dGVToolList.Rows[row].Cells[j].Value = ToolTable.defaultTool[j];
@@ -921,7 +952,7 @@ namespace GrblPlotter
         private void BtnToolExport_Click(object sender, EventArgs e)
         {
             // Displays a SaveFileDialog so the user can save the List
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog
+        /*    SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
                 InitialDirectory = importPath,
                 Filter = "CSV File|*.csv",
@@ -934,7 +965,7 @@ namespace GrblPlotter
                 ExportDgvToCSV(saveFileDialog1.FileName);
             }
             FillToolTableFileList(Datapath.Tools);
-            saveFileDialog1.Dispose();
+            saveFileDialog1.Dispose();*/
         }
 
         private static readonly string importPath = Datapath.Tools;
@@ -954,6 +985,7 @@ namespace GrblPlotter
         }
         private void LoadToolList(string filename)
         {
+        /*    Logger.Trace("LoadToolList {0}", filename);
             ImportCSVToDgv(filename);
             Properties.Settings.Default.toolTableOriginal = true;
             Properties.Settings.Default.toolTableLastLoaded = filename; // Path.GetFileName(filename);
@@ -961,6 +993,7 @@ namespace GrblPlotter
             lblToolListChanged.Text = "orginal";
             lblToolListChanged.BackColor = Color.Transparent;
             ExportDgvToCSV(defaultToolList);
+            this.Refresh();*/
         }
         private void BtnLoadToolTable_Click(object sender, EventArgs e)
         {
@@ -1114,9 +1147,9 @@ namespace GrblPlotter
                 GbFilter.BackColor = Color.WhiteSmoke;
 
             /*    if (RbimportGraphicFilterChoiceRemove1.Checked)
-                { GbFilterRemove.BackColor = Color.Yellow; GbFilterKeep.BackColor = Color.WhiteSmoke; }
+                { GbFilterRemove.BackColor = GroupColor.Yellow; GbFilterKeep.BackColor = GroupColor.WhiteSmoke; }
                 else
-                { GbFilterRemove.BackColor = Color.WhiteSmoke; GbFilterKeep.BackColor = Color.Yellow; }
+                { GbFilterRemove.BackColor = GroupColor.WhiteSmoke; GbFilterKeep.BackColor = GroupColor.Yellow; }
             */
             if (cBDashedLine1.Checked)
             { cBDashedLine1.BackColor = cBDashedLine2.BackColor = Color.Yellow; }
@@ -1236,7 +1269,7 @@ namespace GrblPlotter
         private void BtnFileDialogTT1_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
-            //            MessageBox.Show(clickedButton.Name);
+            //            MessageBox.Show(clickedButton.ToolName);
             if (clickedButton.Name.IndexOf("TT1") > 0)
                 SetFilePath(tBToolChangeScriptPut);
             else if (clickedButton.Name.IndexOf("TT2") > 0)
@@ -1400,7 +1433,7 @@ namespace GrblPlotter
 
         private void RbImportSVGGroupItem0_CheckedChanged(object sender, EventArgs e)
         {
-            //   int group = Properties.Settings.Default.importGroupItem;
+            //   int group = Properties.ListSettings.Default.importGroupItem;
             if (rBImportSVGGroupItem1.Checked) Properties.Settings.Default.importGroupItem = 1;
             if (rBImportSVGGroupItem2.Checked) Properties.Settings.Default.importGroupItem = 2;
             if (rBImportSVGGroupItem3.Checked) Properties.Settings.Default.importGroupItem = 3;
@@ -1507,9 +1540,9 @@ namespace GrblPlotter
             bool enable = cBToolTableUse.Checked;
             cBImportGCTTSSpeed.Enabled = enable;
             cBImportGCTTXYFeed.Enabled = enable;
-            //       cBImportGCTTZDeepth.Enabled = (enable && cBImportGCUseZ.Checked);
+            //       cBImportGCTTZDeepth.Enable = (enable && cBImportGCUseZ.Checked);
             cBImportGCTTZAxis.Enabled = (enable && cBImportGCUseZ.Checked);
-            //       cBImportGCTTZIncrement.Enabled = (enable && cBImportGCUseZ.Checked && cBImportGCZIncEnable.Checked);
+            //       cBImportGCTTZIncrement.Enable = (enable && cBImportGCUseZ.Checked && cBImportGCZIncEnable.Checked);
             cBToolTableDefault.Enabled = enable;
             numericUpDown2.Enabled = cBToolTableDefault.Checked && enable;
 
@@ -1522,7 +1555,7 @@ namespace GrblPlotter
             nUDImportGCZDown.Enabled = (optionUseZ && !(cBImportGCTTZAxis.Checked && cBImportGCTTZAxis.Enabled));
             cBImportGCZIncEnable.Enabled = optionUseZ;
             //			if (cBImportGCTangential.Checked)
-            //			{	cBImportGCZIncEnable.Enabled = false; cBImportGCZIncEnable.Checked=false; }
+            //			{	cBImportGCZIncEnable.Enable = false; cBImportGCZIncEnable.Checked=false; }
             tab1_2lbl35.Enabled = (optionUseZ && cBImportGCZIncEnable.Checked);
             cBImportGCZIncNoZUp.Enabled = cBImportGCZIncStartZero.Enabled = (optionUseZ && cBImportGCZIncEnable.Checked);
             nUDImportGCZIncrement.Enabled = (optionUseZ && !(cBImportGCTTZAxis.Checked && cBImportGCTTZAxis.Enabled) && cBImportGCZIncEnable.Checked);
@@ -1535,10 +1568,10 @@ namespace GrblPlotter
         private void CbImportGCUsePWM_CheckedChanged(object sender, EventArgs e)
         {
             bool enable = cBImportGCUsePWM.Checked;
-            //tab1_2lbl41.Enabled = enable;
-            //tab1_2lbl42.Enabled = enable;
-            //tab1_2lbl43.Enabled = enable;
-            //tab1_2lbl44.Enabled = enable;
+            //tab1_2lbl41.Enable = enable;
+            //tab1_2lbl42.Enable = enable;
+            //tab1_2lbl43.Enable = enable;
+            //tab1_2lbl44.Enable = enable;
             nUDImportGCPWMUp.Enabled = enable;
             nUDImportGCDlyUp.Enabled = enable;
             nUDImportGCPWMDown.Enabled = enable;
@@ -1593,7 +1626,7 @@ namespace GrblPlotter
 
         private void CbImportGCNoArcs_CheckedChanged(object sender, EventArgs e)
         {
-            //            nUDImportGCSegment.Enabled = cBImportGCNoArcs.Checked;
+            //            nUDImportGCSegment.Enable = cBImportGCNoArcs.Checked;
             HighlightPenOptions_Click(sender, e);
         }
 
@@ -1630,7 +1663,7 @@ namespace GrblPlotter
 
                 dGVToolList.CellEndEdit -= new DataGridViewCellEventHandler(DgvToolList_CellLeave);
                 dGVToolList.CellLeave -= new DataGridViewCellEventHandler(DgvToolList_CellLeave);
-                ImportCSVToDgv(defaultToolList);
+            //    ImportCSVToDgv(defaultToolList);
                 dGVToolList.CellEndEdit += new DataGridViewCellEventHandler(DgvToolList_CellLeave);
                 dGVToolList.CellLeave += new DataGridViewCellEventHandler(DgvToolList_CellLeave);
 
@@ -1843,7 +1876,7 @@ namespace GrblPlotter
         { groupBox3.Visible = true; }
 
         private void CheckZEngraveExceed()
-        { }// lblImportPenWidthToZWarning.Visible = (nUDImportGCZDown.Value > Math.Min(nUDImportPenWidthToZMax.Value, nUDImportPenWidthToZMin.Value)); }
+        { }// lblImportPenWidthToZWarning.Visible = (nUDImportGCZDown.Value > Math.ZMin(nUDImportPenWidthToZMax.Value, nUDImportPenWidthToZMin.Value)); }
            //
         private void NudImportPenWidthToZMin_ValueChanged(object sender, EventArgs e)
         {
@@ -2291,7 +2324,7 @@ namespace GrblPlotter
                     result = (prop.importGraphicClipEnable);
                     break;
                 case 5:
-                    result = (prop.importGCToolTableUse);
+                    result = (prop.importGCToolListUse);
                     break;
                 case 6:
                     result = (prop.importGraphicFilterEnable);
@@ -2401,8 +2434,8 @@ namespace GrblPlotter
 
         private void NudImportGraphicOffsetOriginX_ValueChanged(object sender, EventArgs e)
         {
-            GuiVariables.offsetOriginX = (double)Properties.Settings.Default.importGraphicOffsetOriginX;
-            GuiVariables.offsetOriginY = (double)Properties.Settings.Default.importGraphicOffsetOriginY;
+            GuiVariables.offsetOriginX = (double)NudImportGraphicOffsetOriginX.Value;   //Properties.ListSettings.Default.importGraphicOffsetOriginX;
+            GuiVariables.offsetOriginY = (double)NudImportGraphicOffsetOriginY.Value;   //Properties.ListSettings.Default.importGraphicOffsetOriginY;
 
         }
 
@@ -2489,7 +2522,7 @@ namespace GrblPlotter
             cBImportGraphicOffsetLargestRemove.Enabled = enable;
         }
 
-        private void checkBox15_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox15_CheckedChanged(object sender, EventArgs e)
         {
 
         }
@@ -2505,7 +2538,128 @@ namespace GrblPlotter
         private void CbToolChangeM6PassThrough_CheckedChanged(object sender, EventArgs e)
         {
             gBToolChange.Enabled = !CbToolChangeM6PassThrough.Checked;
-            CbToolChangeM6PassThrough.BackColor = CbToolChangeM6PassThrough.Checked? Color.Yellow: SystemColors.Control;
+            CbToolChangeM6PassThrough.BackColor = CbToolChangeM6PassThrough.Checked ? Color.Yellow : SystemColors.Control;
+        }
+
+        private void BtnSetGrblCustomString_Click(object sender, EventArgs e)
+        {
+            commandToSend = String.Format("$I={0};RST", TbGrblCustomString.Text);
+        }
+
+        private void BtnSetGrblCustomStringIniFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string fname = TbGrblCustomString.Text;
+                if (fname == "") return;
+
+                string section = "Info";
+                string localDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string iniPath = Datapath.Usecases + "\\" + fname + ".ini";
+                var MyIni = new IniFile(iniPath);
+
+                if (!File.Exists(iniPath))  // WriteXML entry manually to force UTF-16 encoding
+                {
+                    string myunicode = string.Format("[{0}]\r\nDate={1}\r\nUse case info={2}", section, localDate, fname);
+                    File.WriteAllText(iniPath, myunicode, Encoding.Unicode);
+                }
+
+                MyIni.Write("Date", localDate, section);
+                //    MyIni.WriteXML("Use case info", fname);
+                MyIni.Write("Set Defaults", "True", section);
+                MyIni.WriteSection(IniFile.sectionSetupGcodeGeneration);
+                MyIni.WriteSection(IniFile.sectionSetupMachineLimits);
+                var setup = Properties.Settings.Default;
+                MyIni.Write("PauseCode Enable", setup.flowControlEnable.ToString(), "Flow Control");
+                MyIni.Write("PauseCode Code", setup.flowControlText.ToString(), "Flow Control");
+
+                //   MyIni.WriteButtons();
+                //      MyIni.WriteJoystick();
+                MyIni.WriteGrblSetting();
+                Logger.Info("Save machine parameters as '{0}' {1}", "SetupGcodeGeneration", iniPath);
+            }
+            catch (Exception err)
+            {
+                EventCollector.StoreException("BtnSetGrblCustomStringIniFile_Click " + err.Message);
+                Logger.Error(err, "BtnSetGrblCustomStringIniFile_Click ");
+                MessageBox.Show("SaveMachineParameters: \r\n" + err.Message, "Error");
+            }
+        }
+
+        MessageForm _message_form = null;
+        private void BtnTestGrblCustomStringIniFile_Click(object sender, EventArgs e)
+        {
+            string fname = TbGrblCustomString.Text;
+            if (fname == "") return;
+
+            string path = Datapath.Usecases + "\\" + fname + ".ini";
+            if (!File.Exists(path))
+            {
+                Logger.Trace("⚠⚠⚠ BtnTestGrblCustomStringIniFile - FAIL ini-file not found: '{0}'", path);
+                MessageBox.Show("Error", "File not found");
+                return;
+            }
+            var MyIni = new IniFile(path);
+
+            if (_message_form != null)
+            {
+                _message_form.Close();
+                _message_form = null;
+            }
+            if (true)
+            {
+                uint duration = 5;
+                _message_form = new MessageForm();
+                _message_form.Show();
+
+                if (_message_form != null)
+                {
+                    string html = MyIni.ShowIniMachineSettingsHTML("Machine defaults");
+                    _message_form.DontClose = false;
+                    _message_form.ShowMessage(600, 800, "Saved Machine Defaults", html, (int)duration);     // show graphic import options
+                }
+            }
+        }
+
+        private void BtnOpenGrblCustomStringIniFile_Click(object sender, EventArgs e)
+        {
+            string fname = TbGrblCustomString.Text;
+            if (fname == "") return;
+            string iniPath = Datapath.Usecases + "\\" + fname + ".ini";
+            Process.Start("notepad.exe", iniPath);
+        }
+
+        private void NudInfoTextSize1_ValueChanged(object sender, EventArgs e)
+        {
+            BtnApply2DViewChanges.PerformClick();
+        }
+
+        private void BtnApply2DViewChanges_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
+        public event EventHandler<UserControlGuiControlEventArgs> RaiseGuiControlEvent;
+        protected virtual void OnRaiseGuiControlEvent(UserControlGuiControlEventArgs e)
+        { RaiseGuiControlEvent?.Invoke(this, e); }
+        private void TrackButton_Scroll(object sender, EventArgs e)
+        {
+            Color buttonBackColor = Colors.ColorFromHSV(TrackButtonH.Value, (double)TrackButtonS.Value / 100, (double)TrackButtonV.Value / 100);
+            Color panelBackColor = Colors.ColorFromHSV(TrackPanelH.Value, (double)TrackPanelS.Value / 100, (double)TrackPanelV.Value / 100);
+            Properties.Settings.Default.guiColorThemePanel = panelBackColor;
+            Properties.Settings.Default.guiColorThemeButton = buttonBackColor;
+            Color panelForeColor = Colors.ContrastColor(panelBackColor);
+            Color buttonForeColor = Colors.ContrastColor(buttonBackColor);
+            MyControl.PanelBackColor = panelBackColor;
+            MyControl.PanelForeColor = panelForeColor;
+            MyControl.ButtonBackColor = buttonBackColor;
+            MyControl.ButtonForeColor = buttonForeColor;
+
+            LblColorThemeHButton.Text = TrackButtonH.Value.ToString();
+            LblColorThemeHPanel.Text = TrackPanelH.Value.ToString();
+            LblColorThemeS.Text = TrackButtonS.Value.ToString();
+            LblColorThemeV.Text = TrackButtonV.Value.ToString();
+            MyControl.TriggerColorTheme(sender);
         }
     }
 }

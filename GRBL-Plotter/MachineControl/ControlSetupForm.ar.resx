@@ -3733,7 +3733,7 @@ Pushbullet: لأسباب تتعلق بالسلامة ، يجب عليك استخ
     <value>توليد خطوط متذبذبة</value>
   </data>
   <data name="gBNoise.Text" xml:space="preserve">
-    <value>ضوضاء</value>
+    <value>خطوط متذبذبة</value>
   </data>
   <data name="CbImportGraphicHatchFillNoise.Text" xml:space="preserve">
     <value>زد الضوضاء</value>
@@ -3938,7 +3938,7 @@ Pushbullet: لأسباب تتعلق بالسلامة ، يجب عليك استخ
     <value>التتبع الهندسي (بطيء - جيد للأشكال الهندسية)</value>
   </data>
   <data name="rBImportVectorizeAlgoPoTrace.Text" xml:space="preserve">
-    <value>PoTrace (سريع - جيد للصور والرسومات)</value>
+    <value>Potrace (سريع - جيد للصور والرسومات)</value>
   </data>
   <data name="groupBox48.Text" xml:space="preserve">
     <value>خوارزمية المتجهات</value>
@@ -3980,7 +3980,7 @@ Pushbullet: لأسباب تتعلق بالسلامة ، يجب عليك استخ
     <value>تقدم بطلب للحصول على</value>
   </data>
   <data name="groupBox45.Text" xml:space="preserve">
-    <value>المتجهات التلقائية</value>
+    <value>التحويل التلقائي إلى متجه (أبيض وأسود فقط)</value>
   </data>
   <data name="RrBImportVectorizeWidthSet.Text" xml:space="preserve">
     <value>اضبط عرض الصورة على</value>
@@ -4004,5 +4004,118 @@ Pushbullet: لأسباب تتعلق بالسلامة ، يجب عليك استخ
   </data>
   <data name="CbToolChangeM6PassThrough.ToolTip" xml:space="preserve">
     <value>ملحوظة: لا يمكن لـ Grbl "الكلاسيكي" على Arduino Uno معالجة أمر M6 ويعطي خطأ.</value>
+  </data>
+  <data name="BtnSetGrblCustomString.Text" xml:space="preserve">
+    <value>تعيين</value>
+  </data>
+  <data name="BtnSetGrblCustomString.ToolTip" xml:space="preserve">
+    <value>تعيين/تجاوز السلسلة المخصصة. ثم قم بإعادة ضبط وحدة التحكم لقراءة السلسلة المخصصة.
+لتعيين هذه السلسلة، أرسل Grbl $I=xxx، حيث xxx هي سلسلة التخصيص الخاصة بك والتي يقل طولها عن 80 حرفًا. يتم تخزين هذه السلسلة بأحرف كبيرة، ويتم إزالة المسافات، ويمكن أن تحتوي على أحرف أبجدية رقمية فقط.</value>
+  </data>
+  <data name="label115.Text" xml:space="preserve">
+    <value>سلسلة - اسم الملف المطلوب</value>
+  </data>
+  <data name="CbLoadMachineDefaults.Text" xml:space="preserve">
+    <value>تحميل الإعدادات الافتراضية</value>
+  </data>
+  <data name="CbLoadMachineDefaults.ToolTip" xml:space="preserve">
+    <value>يقوم بتحميل الإعدادات الافتراضية مرة واحدة فقط، بعد الاتصال، إذا تم العثور على اسم الملف.</value>
+  </data>
+  <data name="label114.Text" xml:space="preserve">
+    <value>يستخدم السلسلة المخصصة "$I" كاسم ملف لتحميل حالة الاستخدام من data\usecases.
+استخدم "تصدير إعدادات الجهاز" لحفظ "الإعدادات الافتراضية".</value>
+  </data>
+  <data name="GbGrblDefaults.Text" xml:space="preserve">
+    <value>تحميل الإعدادات الافتراضية عند الاتصال</value>
+  </data>
+  <data name="groupBox50.Text" xml:space="preserve">
+    <value>نص المعلومات</value>
+  </data>
+  <data name="CbShowVertexEnable.ToolTip" xml:space="preserve">
+    <value>يجب إعادة تحميل الرسم البياني حتى يسري مفعوله.</value>
+  </data>
+  <data name="cB2DViewFigureId.ToolTip" xml:space="preserve">
+    <value>يجب إعادة تحميل الرسم البياني حتى يسري مفعوله.</value>
+  </data>
+  <data name="cB2DViewDirectionArrow.ToolTip" xml:space="preserve">
+    <value>يجب إعادة تحميل الرسم البياني حتى يسري مفعوله.</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>فتح ملف</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>افتح ملف INI في محرر النصوص "المفكرة".</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>احفظ الإعدادات</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>احفظ بعض الإعدادات المهمة في ملف INI.</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>اختبر ملف INI</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>اعرض بعض الإعدادات المهمة في ملف INI.</value>
+  </data>
+  <data name="BtnApply2DViewChanges.Text" xml:space="preserve">
+    <value>تطبيق</value>
+  </data>
+  <data name="label118.Text" xml:space="preserve">
+    <value>مؤشر حجم النص</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>معلومات حجم النص</value>
+  </data>
+  <data name="label116.Text" xml:space="preserve">
+    <value>شفافية الخلفية</value>
+  </data>
+  <data name="groupBox43.Text" xml:space="preserve">
+    <value>تغيير حجم النموذج الرئيسي</value>
+  </data>
+  <data name="NudInfoTextSize2.ToolTip" xml:space="preserve">
+    <value>حجم نص المعلومات بجوار المؤشر</value>
+  </data>
+  <data name="NudInfoTextSize1.ToolTip" xml:space="preserve">
+    <value>حجم نص المعلومات في الحافة العلوية اليسرى للعرض ثنائي الأبعاد</value>
+  </data>
+  <data name="HsbInfoTransparency.ToolTip" xml:space="preserve">
+    <value>شفافية خلفية النص</value>
+  </data>
+  <data name="GbColorTheme.Text" xml:space="preserve">
+    <value>سمة الألوان</value>
+  </data>
+  <data name="label119.Text" xml:space="preserve">
+    <value>لون زر Hue</value>
+  </data>
+  <data name="label120.Text" xml:space="preserve">
+    <value>لون لوحة Hue</value>
+  </data>
+  <data name="CbColorThemeEnable.Text" xml:space="preserve">
+    <value>تطبيق سمة الألوان عند بدء البرنامج</value>
+  </data>
+  <data name="label125.Text" xml:space="preserve">
+    <value>التشبع</value>
+  </data>
+  <data name="label130.Text" xml:space="preserve">
+    <value>السطوع</value>
+  </data>
+  <data name="label139.Text" xml:space="preserve">
+    <value>قطر الأداة بالملليمتر</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbGerberFillEnable.Text" xml:space="preserve">
+    <value>ملء مسارات لوحة الدائرة المطبوعة (PCB) باستخدام أداة</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportSVGUseElement.Text" xml:space="preserve">
+    <value>معالجة عنصر "use"</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportVectorizeInvertResult.Text" xml:space="preserve">
+    <value>عكس النتيجة</value>
+  </data>
+  <data name="CbImportVectorizeOptimize1.Text" xml:space="preserve">
+    <value>تنعيم الحواف</value>
   </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2025 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * 2020-03-11 add gui class
  * 2020-05-01 add setDimensionArc
  * 2020-07-26 fix setDimensionCircle line 371
- * 2020-09-30 Preset variable GMIZ and GMAZ with Properties.Settings.Default.importGCZUp and -Down
+ * 2020-09-30 Preset variable GMIZ and GMAZ with Properties.ListSettings.Default.importGCZUp and -Down
  * 2021-07-27 code clean up / code quality
  * 2021-11-22 change AppDataFolder start-path
  * 2021-11-23 line 688 add check (form != null)
@@ -32,6 +32,9 @@
  * 2023-03-04 l:68 f:Datapath add path for "filter"
  * 2024-01-20 l:484 f: struct ImgPoint change from float to double
  * 2024-08-24 l:126 f:MakeAbsolutePath add try catch for Path.IsPathRooted
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+ * 2026-04-09 Add ColorPalette
+ * 2026-06-06 fclinton: Bulk text-from-spreadsheet automation (xlsx import, text size/align/line, verify dimension, goto) #467
 */
 
 using GrblPlotter.Resources;
@@ -52,7 +55,7 @@ namespace GrblPlotter
 
     public static class MyApplication
     {
-        private static readonly string VersionAddOn = "";
+        private static readonly string VersionAddOn = "";   // ".a"
 
         internal static bool ESCwasPressed = false;
 
@@ -101,16 +104,16 @@ namespace GrblPlotter
         
         // https://stackoverflow.com/questions/66430190/how-do-i-get-access-to-c-program-files-in-c-sharp
         internal static string Application = System.Windows.Forms.Application.StartupPath;
-        //        public static string AppDataFolder = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.CommonAppDataPath);   // without vers.Nr
+        //        public static string AppDataFolder = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.CommonAppDataPath);   // without vers.ToolNr
         // https://stackoverflow.com/questions/10563148/where-is-the-correct-place-to-store-my-application-specific-data#:~:text=AppData%20(maps%20to%20C%3A%5C,their%20save%20games%20into%20Environment.
         // https://docs.microsoft.com/en-us/dotnet/api/system.environment.specialfolder?view=netframework-4.7.2
         internal static string AppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);   // will be changed by MainFormUpdate()-GetAppDataPath
         public static string Automations { get => AppDataFolder + "\\data\\automations"; }
         public static string Fonts { get => AppDataFolder + "\\data\\fonts"; }
         public static string Tools { get => AppDataFolder + "\\data\\tools"; }
+        public static string ColorPalette { get => AppDataFolder + "\\data\\palettes"; }
         public static string Scripts { get => AppDataFolder + "\\data\\scripts"; }
         public static string Usecases { get => AppDataFolder + "\\data\\usecases"; }
-        public static string Hotkeys { get => AppDataFolder + "\\data\\hotkeys.xml"; }
         public static string Examples { get => AppDataFolder + "\\data\\examples"; }
         public static string Extension { get => AppDataFolder + "\\data\\extensions"; }
         public static string Buttons { get => AppDataFolder + "\\data\\buttons"; }
@@ -120,6 +123,10 @@ namespace GrblPlotter
         public static string LogFiles { get => AppDataFolder + "\\logfiles"; }
         public static string Data { get => AppDataFolder + "\\data"; }
 
+        public static string Hotkeys { get => AppDataFolder + "\\data\\hotkeys.xml"; }
+        public static string Papersize { get => AppDataFolder + "\\data\\papersize.xml"; }
+
+		public static string HelpURL { get => "https://grbl-plotter.de/index.php"; }
 
         public static string MakeAbsolutePath(string fileName)
         {
@@ -144,7 +151,7 @@ namespace GrblPlotter
 
     public static class GuiVariables
     {
-        // origin of imported file onload = Properties.Settings.Default.importGraphicOffsetOriginX
+        // origin of imported file onload = Properties.ListSettings.Default.importGraphicOffsetOriginX
         internal static double offsetOriginX = 0;
         internal static double offsetOriginY = 0;
 
@@ -413,7 +420,6 @@ namespace GrblPlotter
             Y = Math.Round(Y, decimals);
             return this;
         }
-
         /*    public static xyPoint Round(xyPoint tmpIn, int decimals = 4)
             {   xyPoint tmpOut = new xyPoint();
                 tmpOut.X = Math.Round(tmpIn.X,decimals);
@@ -515,235 +521,6 @@ namespace GrblPlotter
             return Math.Sqrt(distanceCodeX * distanceCodeX + distanceCodeY * distanceCodeY);
         }
     }
-
-    /// <summary>
-    /// calculate overall dimensions of drawing
-    /// </summary>
-    internal class Dimensions
-    {
-        public double minx, maxx, miny, maxy, minz, maxz;
-        public double dimx, dimy, dimz;
-
-        public Dimensions(Dimensions old)
-        {
-            minx = old.minx;
-            maxx = old.maxx;
-            miny = old.miny;
-            maxy = old.maxy;
-            minz = old.minz;
-            maxz = old.maxz;
-            dimx = old.dimx;
-            dimy = old.dimy;
-            dimz = old.dimz;
-        }
-
-        public Dimensions()
-        { ResetDimension(); }
-
-        public void AddDimensionXY(Dimensions tmp)
-        {
-            SetDimensionXY(tmp.minx, tmp.miny);
-            SetDimensionXY(tmp.maxx, tmp.maxy);
-        }
-        public void SetDimensionXYZ(double? x, double? y, double? z)
-        {
-            if (x != null) { SetDimensionX((double)x); }
-            if (y != null) { SetDimensionY((double)y); }
-            if (z != null) { SetDimensionZ((double)z); }
-        }
-
-        public void SetDimensionXY(System.Windows.Point tmp)
-        { SetDimensionXY(tmp.X, tmp.Y); }
-        public void SetDimensionXY(XyPoint tmp)
-        { SetDimensionXY(tmp.X, tmp.Y); }
-        public void SetDimensionXY(double? x, double? y)
-        {
-            if (x != null) { SetDimensionX((double)x); }
-            if (y != null) { SetDimensionY((double)y); }
-        }
-        public void SetDimensionX(double value)
-        {
-            if ((value == Double.MaxValue) || (value == Double.MinValue))
-                return;
-            minx = Math.Min(minx, value);
-            maxx = Math.Max(maxx, value);
-            dimx = maxx - minx;
-        }
-        public void SetDimensionY(double value)
-        {
-            if ((value == Double.MaxValue) || (value == Double.MinValue))
-                return;
-            miny = Math.Min(miny, value);
-            maxy = Math.Max(maxy, value);
-            dimy = maxy - miny;
-        }
-        public void SetDimensionZ(double value)
-        {
-            if ((value == Double.MaxValue) || (value == Double.MinValue))
-                return;
-            minz = Math.Min(minz, value);
-            maxz = Math.Max(maxz, value);
-            dimz = maxz - minz;
-        }
-        public void OffsetXY(double x, double y)
-        { minx += x; maxx += x; miny += y; maxy += y; }
-        public void ScaleXY(double scaleX, double scaleY)
-        { minx *= scaleX; maxx *= scaleX; miny *= scaleY; maxy *= scaleY; dimx = maxx - minx; dimy = maxy - miny; }
-
-        public double GetArea()
-        { return dimx * dimy; }
-
-        // calculate min/max dimensions of a circle
-        public void SetDimensionCircle(double x, double y, double radius, double startDeg, double deltaDeg)
-        {
-            double end = startDeg + deltaDeg;
-            double i = startDeg;
-
-            if (Math.Abs(Math.Abs(deltaDeg) - 360) < 0.00001)
-            {
-                SetDimensionXY(x - radius, y - radius);
-                SetDimensionXY(x + radius, y + radius);
-            }
-            else
-            {
-                SetDimensionX(x + radius * Math.Cos(i / 180 * Math.PI));
-                SetDimensionY(y + radius * Math.Sin(i / 180 * Math.PI));
-                i = end;
-                SetDimensionX(x + radius * Math.Cos(i / 180 * Math.PI));
-                SetDimensionY(y + radius * Math.Sin(i / 180 * Math.PI));
-
-                for (int k = -360; k <= 360; k += 90)
-                {
-                    if (deltaDeg > 0)
-                    {
-                        if ((k > startDeg) && (k < end))
-                        {
-                            i = k;
-                            SetDimensionX(x + radius * Math.Cos(i / 180 * Math.PI));
-                            SetDimensionY(y + radius * Math.Sin(i / 180 * Math.PI));
-                        }
-                    }
-                    else
-                    {
-                        if ((k < startDeg) && (k > end))
-                        {
-                            i = k;
-                            SetDimensionX(x + radius * Math.Cos(i / 180 * Math.PI));
-                            SetDimensionY(y + radius * Math.Sin(i / 180 * Math.PI));
-                        }
-                    }
-                }
-            }
-        }
-
-        public void SetDimensionArc(XyPoint oldPos, XyPoint newPos, double i, double j, bool isG2)
-        {
-            ArcProperties arcMove;
-            arcMove = GcodeMath.GetArcMoveProperties(oldPos, newPos, i, j, isG2);
-
-            float x1 = (float)(arcMove.center.X - arcMove.radius);
-            float x2 = (float)(arcMove.center.X + arcMove.radius);
-            float y1 = (float)(arcMove.center.Y - arcMove.radius);
-            float y2 = (float)(arcMove.center.Y + arcMove.radius);
-            //   float r2 = 2 * (float)arcMove.radius;
-            float aStart = (float)(arcMove.angleStart * 180 / Math.PI);
-            float aDiff = (float)(arcMove.angleDiff * 180 / Math.PI);
-
-            if (GcodeMath.IsEqual(oldPos, newPos))
-            {
-                SetDimensionXY(x1, y1);
-                SetDimensionXY(x2, y2);
-            }
-            else
-                SetDimensionCircle(arcMove.center.X, arcMove.center.Y, arcMove.radius, aStart, aDiff);        // calculate new dimensions
-        }
-
-        public void ResetDimension()
-        {
-            minx = Double.MaxValue;
-            miny = Double.MaxValue;
-            minz = Double.MaxValue;
-            maxx = Double.MinValue;
-            maxy = Double.MinValue;
-            maxz = Double.MinValue;
-            dimx = 0;
-            dimy = 0;
-            dimz = 0;
-        }
-
-        public bool IsXYSet()
-        { return ((minx != Double.MaxValue) && (miny != Double.MaxValue) && (maxx != Double.MinValue) && (maxy != Double.MinValue)); }
-        //		{	return ((dimx != 0) || (dimy != 0));}
-
-        public XyPoint GetCenter()
-        {
-            if (IsXYSet())
-            {
-                double cx = minx + ((maxx - minx) / 2);
-                double cy = miny + ((maxy - miny) / 2);
-                return new XyPoint(cx, cy);
-            }
-            else
-                return new XyPoint();
-        }
-
-        // return string with dimensions
-        public String GetXYString()
-        { return String.Format("minX:{0:0.000} minY:{1:0.000} maxX:{2:0.000}  maxY:{3:0.000}", minx, miny, maxx, maxy); }
-
-        public String GetMinMaxString()
-        {
-            string x = String.Format("X:{0,8:####0.000} |{1,8:####0.000} |{2,8:####0.000}\r\n", minx, maxx, dimx);
-            string y = String.Format("Y:{0,8:####0.000} |{1,8:####0.000} |{2,8:####0.000}\r\n", miny, maxy, dimy);
-            string z = String.Format("Z:{0,8:####0.000} |{1,8:####0.000} |{2,8:####0.000}", minz, maxz, dimz);
-            if ((minx == Double.MaxValue) || (maxx == Double.MinValue))
-                x = "X: unknown | unknown\r\n";
-            if ((miny == Double.MaxValue) || (maxy == Double.MinValue))
-                y = "Y: unknown | unknown\r\n";
-            if ((minz == Double.MaxValue) || (maxz == Double.MinValue))
-                z = "";// z = "Z: unknown | unknown";
-            return "    Min.   |   Max.  | Dimension\r\n" + x + y + z;
-        }
-        public bool WithinLimits(XyzPoint actualMachine, XyzPoint actualWorld)
-        {
-            return (WithinLimits(actualMachine, minx - actualWorld.X, miny - actualWorld.Y) && WithinLimits(actualMachine, maxx - actualWorld.X, maxy - actualWorld.Y));
-        }
-        public static bool WithinLimits(XyzPoint actualMachine, double tstx, double tsty)
-        {
-            double minlx = (double)Properties.Settings.Default.machineLimitsHomeX;
-            double maxlx = minlx + (double)Properties.Settings.Default.machineLimitsRangeX;
-            double minly = (double)Properties.Settings.Default.machineLimitsHomeY;
-            double maxly = minly + (double)Properties.Settings.Default.machineLimitsRangeY;
-            tstx += actualMachine.X;
-            tsty += actualMachine.Y;
-            if ((tstx < minlx) || (tstx > maxlx))
-                return false;
-            if ((tsty < minly) || (tsty > maxly))
-                return false;
-            return true;
-        }
-
-        public bool IsWithin(Dimensions tmp)
-        {
-            return ((minx >= tmp.minx) && (miny >= tmp.miny) && (maxx <= tmp.maxx) && (maxy <= tmp.maxy));
-        }
-    }
-
-
-    /*   class eventArgsTemplates    // just copy and paste 
-       {
-           public event EventHandler<XYZEventArgs> RaiseXYZEvent;
-           protected virtual void OnRaiseXYZEvent(XYZEventArgs e)
-           {
-               EventHandler<XYZEventArgs> handler = RaiseXYZEvent;
-               if (handler != null)
-               {
-                   handler(this, e);
-               }
-           }
-       }
-       */
-
 
     public class ProcessEventArgs : EventArgs
     {

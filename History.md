@@ -1,7 +1,29 @@
 ## History
 Needs to be read from the bottom up ;-)  
 
-### [2024-12 Version 1.7.5.x](https://github.com/svenhb/GRBL-Plotter/releases/tag/v.1.7.5.0)
+### [2026-06 Version 1.8.0.x](https://github.com/svenhb/GRBL-Plotter/releases/tag/v.1.8.0.2)
+- Process automation: bulk text generation from a spreadsheet (one job per data row)
+  - Load `.xlsx` spreadsheets as the data source (in addition to CSV / TXT)
+  - New "Wait User" action: on-screen "Continue" checkpoint to validate positioning between jobs
+  - "CreateText Data" / "CreateBarcode … Data" values accept `{n}` column templates, e.g. `{0} {1} - {2}` (n is 0-based)
+  - Multi-line spreadsheet cells (e.g. addresses) are kept intact and rendered as multi-line text
+  - New "CreateText Size" and "CreateText Align" actions to set text height (mm) and line alignment from the script
+  - Example: `data\automations\BulkText\`
+    
+### [2026-05 Version 1.8.0.1](https://github.com/svenhb/GRBL-Plotter/releases/tag/v.1.8.0.1)
+- Slightly redesign of the user interface - see https://grbl-plotter.de/index.php?id=new-1800
+- Device selection (Laser, Plotter, Router) with most of the possible options on the front.
+- Remove of "tool table" and use of "tool list", also on the front.
+- Individual color-scheme.
+- Foldable control Panels.
+- Tried to make it DPI Aware.
+
+### [2025-08 Version 1.7.6.x](https://github.com/svenhb/GRBL-Plotter/releases/tag/v.1.7.6.0)
+- Add input from a graphic tablet stylus See https://youtube.com/shorts/Y4klsFDjydk and https://youtube.com/shorts/0bLMerLpylU
+  
+### [2025-04 Version 1.7.5.x](https://github.com/svenhb/GRBL-Plotter/releases/tag/v.1.7.5.0)
+- Uses the $I command on 1st connect to identify the machine and automatically load the connected INI file
+- Pixel art, individual command, e.g. for liquid dispenser
 - Quick vectorize - just drag & drop to get the outline of a graphic
 - Pixel Art [Video](https://youtu.be/pgTwDJtapdc)
 

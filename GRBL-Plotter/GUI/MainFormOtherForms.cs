@@ -1,7 +1,7 @@
 /*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,8 +28,13 @@
  * 2023-12-01 l:682 f:OnRaiseProcessEvent add new action "Probing"
  * 2024-02-07 l:698 f:OnRaiseProcessEvent add Barcode, CreatText, 2D-View
  * 2024-02-12 split file, new  MainFormProcessAutomation.cs
+ * 2025-06-03 add _tablet_form
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+ * 2026-06-11 l:365 f:Control2ndGRBLToolStripMenuItem_Click  if (_serial_form == null)
+ * 2026-08-09 add ControlATC form
 */
 
+//using GrblPlotter.GCodeCreation.CreateFromForm;
 using GrblPlotter.MachineControl;
 using System;
 using System.Windows.Forms;
@@ -43,28 +48,32 @@ namespace GrblPlotter
          * Handle additional Forms, which can be opened via Menu strip
          * Handles just open, close, add event handler
          ********************************************************************/
-        GCodeFromText _text_form = null;
-        GCodeFromImage _image_form = null;
-        GCodeFromShape _shape_form = null;
-        GCodeForBarcode _barcode_form = null;
-        GCodeForWireCutter _wireCutter_form = null;
+        GCodeFromText _text_form = null;					// 11
+        GCodeForBarcode _barcode_form = null;				// 12
+        GCodeFromImage _image_form = null;					// 13
+        GCodeFromShape _shape_form = null;					// 14
+        GCodeFromTablet _tablet_form = null;				// 15
+        GCodeForWireCutter _wireCutter_form = null;			// 16
+        ControlJogPathCreator _jogPathCreator_form = null;	// 17
 
-        ControlStreamingForm _streaming_form = null;
-        ControlStreamingForm2 _streaming_form2 = null;
+        ControlProbing _probing_form = null;				// 21
+        ControlHeightMapForm _heightmap_form = null;		// 22
+
+        ControlLaser _laser_form = null;					// 31
+        ControlCoordSystem _coordSystem_form = null;		// 32
+        ControlDiyControlPad _diyControlPad = null;			// 33
+        ControlCameraForm _camera_form = null;				// 34
+        ControlStreamingForm _streaming_form = null;		// 35
+        ControlStreamingForm2 _streaming_form2 = null;		// 36
+		
         ControlSerialForm _serial_form2 = null;
         SimpleSerialForm _serial_form3 = null;
         Control2ndGRBL _2ndGRBL_form = null;
-        ControlCameraForm _camera_form = null;
-        ControlDiyControlPad _diyControlPad = null;
-        ControlCoordSystem _coordSystem_form = null;
-        ControlLaser _laser_form = null;
-        ControlProbing _probing_form = null;
-        ControlHeightMapForm _heightmap_form = null;
         ControlSetupForm _setup_form = null;
-        ControlJogPathCreator _jogPathCreator_form = null;
         ControlProjector _projector_form = null;
         ProcessAutomation _process_form = null;
         GrblSetupForm _grbl_setup_form = null;
+        ControlATC _atc_setup_form = null;
 
         private void UpdateIniVariables()
         {
@@ -114,6 +123,7 @@ namespace GrblPlotter
                 _text_form.FormClosed += FormClosed_TextToGCode;
                 _text_form.btnApply.Click += GetGCodeFromText;      // assign btn-click event
                 EventCollector.SetOpenForm("Ftxt");
+                _text_form.SetActiveDevice(TC_RouterPlotterLaserLastSelected);
             }
             else
             {
@@ -130,7 +140,7 @@ namespace GrblPlotter
         { _text_form = null; EventCollector.SetOpenForm("FCtxt"); }
 
         /********************************************************************
-         * Image
+         * ImageForm
          * _image_form
          ********************************************************************/
         private void ImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -139,6 +149,7 @@ namespace GrblPlotter
             {
                 _image_form = new GCodeFromImage();
                 _image_form.FormClosed += FormClosed_ImageToGCode;
+                _image_form.RaiseGuiControlEvent += OnRaiseGuiControlEvent;
                 _image_form.btnGenerate.Click += GetGCodeFromImage;      // assign btn-click event in MainFormgetCodetransform.cs
                 _image_form.BtnReloadPattern.Click += LoadLastGraphic;
                 _image_form.CBoxPatternFiles.SelectedIndexChanged += LoadSelectedGraphicImage;
@@ -183,6 +194,92 @@ namespace GrblPlotter
         }
         private void FormClosed_ShapeToGCode(object sender, FormClosedEventArgs e)
         { _shape_form = null; EventCollector.SetOpenForm("FCsis"); }
+
+        /********************************************************************
+         * Direct control
+         * _tablet_form
+         ********************************************************************/
+        private void DirectControlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_tablet_form == null)
+            {
+                _tablet_form = new GCodeFromTablet();
+                _tablet_form.RaiseCmdEvent += OnRaiseTabletCmdEvent;
+                _tablet_form.FormClosed += FormClosed_Tablet;
+                //    _tablet_form.BtnImport.Click += GetGCodeFromTablet;      // assign btn-click event
+                _tablet_form.importWholeDrawingToolStripMenuItem.Click += GetGCodeFromTablet;
+                _tablet_form.BtnCreateGcode.Click += GetGCodeFromTablet;
+                _tablet_form.SetActiveDevice(TC_RouterPlotterLaserLastSelected);
+                EventCollector.SetOpenForm("Ftab");
+            }
+            else
+            {
+                _tablet_form.Visible = false;
+            }
+
+            if (showFormInFront) _tablet_form.Show(this);
+            else _tablet_form.Show(); // this);
+
+            showFormsToolStripMenuItem.Visible = true;
+            _tablet_form.WindowState = FormWindowState.Normal;
+        }
+        private void FormClosed_Tablet(object sender, FormClosedEventArgs e)
+        { _tablet_form = null; EventCollector.SetOpenForm("FCtab"); }
+        private void OnRaiseTabletCmdEvent(object sender, CmdEventArgs e)
+        {
+            if (e.Command.Contains("update"))
+            {
+                Logger.Trace("OnRaiseTabletCmdEvent update");
+                NewCodeStart(false);
+                SetFctbCodeText(_tablet_form.GetCode().ToString());
+                NewCodeEnd();
+                fCTBCode.Refresh();
+                FoldBlocks1();
+                return;
+            }
+            else if (e.Command.Contains("setup"))
+            {
+                FormOpenSetupMain(sender, e);
+                _setup_form?.ShowTab("setup");
+            }
+            else if (e.Command.Contains("tool"))
+            {
+                _setup_form?.UpdateToolTable();
+            }
+            else
+            {
+                string[] commands;
+                commands = e.Command.Split(';');
+                if (!_serial_form.SerialPortOpen)
+                    return;
+                foreach (string btncmd in commands)
+                {
+                    if (btncmd.Contains("stop"))
+                    { if (!Grbl.isVersion_0) SendRealtimeCommand(133); }
+                    else
+                        SendCommand(btncmd.Trim());
+                }
+            }
+        }
+        private void GetGCodeFromTablet(object sender, EventArgs e)
+        {
+            if (!isStreaming)
+            {
+                string tmpCode = "(no gcode)";
+                if (Graphic.GCode != null)
+                {
+                    tmpCode = Graphic.GCode.ToString();
+                }
+                InsertCodeFromForm(tmpCode, "from tablet");
+                Properties.Settings.Default.counterImportText += 1;
+                string source = "Iink";
+                if (LoadProperties.MultipleImportFromForm)
+                    source = "I" + source;
+                AfterImport(source);
+            }
+            else
+                MessageBox.Show(Localization.GetString("mainStreamingActive"), Localization.GetString("mainAttention"), MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
 
         /********************************************************************
          * Barcode
@@ -262,14 +359,14 @@ namespace GrblPlotter
         private void FormClosed_StreamingForm(object sender, FormClosedEventArgs e)
         { _streaming_form = null; _streaming_form2 = null; }
 
-
-
         /********************************************************************
          * Control 2nd grbl via 2nd COM
          * _serial_form2, _2ndGRBL_form
          ********************************************************************/
         private void Control2ndGRBLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+			if (_serial_form == null)
+			{	Logger.Error(" Open 2nd GRBL form: 1st serial form is not available !!!"); return;}
             if (_2ndGRBL_form == null)
             {
                 _2ndGRBL_form = new Control2ndGRBL(_serial_form2);
@@ -451,7 +548,7 @@ namespace GrblPlotter
          * Laser setup
          * _laser_form
          ********************************************************************/
-        private void Laseropen(object sender, EventArgs e)
+        private void FormOpenLaserTools(object sender, EventArgs e)
         {
             if (_laser_form == null)
             {
@@ -502,7 +599,7 @@ namespace GrblPlotter
          * Edge finder
          * _probing_form
          ********************************************************************/
-        private void EdgeFinderopen(object sender, EventArgs e)
+        private void FormOpenEdgeFinder(object sender, EventArgs e)
         {
             if (_probing_form == null)
             {
@@ -562,7 +659,7 @@ namespace GrblPlotter
          * Height map
          * _heightmap_form
          ********************************************************************/
-        private void HeightMapToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FormOpenHeightMap(object sender, EventArgs e)
         {
             if (_heightmap_form == null)
             {
@@ -601,18 +698,20 @@ namespace GrblPlotter
          * Setup Form
          * _setup_form
          ********************************************************************/
-        private void SetupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FormOpenSetupMain(object sender, EventArgs e)
         {
             if (_setup_form == null)
             {
                 _setup_form = new ControlSetupForm();
                 _setup_form.FormClosed += FormClosed_SetupForm;
                 _setup_form.btnApplyChangings.Click += LoadSettings;
+                _setup_form.BtnApply2DViewChanges.Click += Update2DView;
                 _setup_form.btnReloadFile.Click += ReStartConvertFileFromSetup;
                 _setup_form.btnMoveToolXY.Click += MoveToPickup;
                 _setup_form.btnGCPWMUp.Click += MoveToPickup;
                 _setup_form.btnGCPWMDown.Click += MoveToPickup;
                 _setup_form.btnGCPWMZero.Click += MoveToPickup;
+                _setup_form.BtnSetGrblCustomString.Click += MoveToPickup;
                 _setup_form.nUDImportGCPWMP93.ValueChanged += MoveToPickup;
                 _setup_form.nUDImportGCPWMP94.ValueChanged += MoveToPickup;
                 _setup_form.TbImportGCPWMSlider.ValueChanged += MoveToPickup;
@@ -709,7 +808,7 @@ namespace GrblPlotter
          * GRBL Setup
          * _grbl_setup_form
          ********************************************************************/
-        private void GrblSetupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FormOpenGrblSetup(object sender, EventArgs e)
         {
             if (_grbl_setup_form == null)
             {
@@ -728,6 +827,29 @@ namespace GrblPlotter
         private void FormClosed_GrblSetup(object sender, FormClosedEventArgs e)
         { _grbl_setup_form = null; EventCollector.SetOpenForm("FCgrbl"); }
 
+        /********************************************************************
+        * Automatic pen changer Setup
+        * _atc_setup_form
+        ********************************************************************/
+        private void FormOpenAutomaticToolChanger(object sender, EventArgs e)
+        {
+            if (_atc_setup_form == null)
+            {
+                _atc_setup_form = new ControlATC();
+                _atc_setup_form.FormClosed += FormClosed_ATCSetup;
+                _atc_setup_form.RaiseCmdEvent += OnRaiseCmdEvent;
+                _atc_setup_form.RaiseGuiControlEvent += OnRaiseGuiControlEvent;
+                EventCollector.SetOpenForm("Fatc");
+            }
+            else
+            {
+                _atc_setup_form.Visible = false;
+            }
+            _atc_setup_form.Show(null);// this);
+            _atc_setup_form.WindowState = FormWindowState.Normal;
+        }
+        private void FormClosed_ATCSetup(object sender, FormClosedEventArgs e)
+        { _atc_setup_form = null; EventCollector.SetOpenForm("FCatc"); }
 
         /********************************************************************
         * About Form

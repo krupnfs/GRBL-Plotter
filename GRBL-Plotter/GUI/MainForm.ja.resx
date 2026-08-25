@@ -181,226 +181,8 @@
     <value>（Gコードの貼り付けまたはファイルのロード）</value>
     <comment>Editor</comment>
   </data>
-  <data name="lbInfo.Text" xml:space="preserve">
-    <value>メッセージ</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamStop.ToolTip" xml:space="preserve">
-    <value>GRBLへのコード送信を停止</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamCheck.Text" xml:space="preserve">
-    <value>チェックコード</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="lblElapsed.Text" xml:space="preserve">
-    <value>時間</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="lblFileProgress.Text" xml:space="preserve">
-    <value>進捗</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamStart.ToolTip" xml:space="preserve">
-    <value>テキストエディターからGRBLにコードを送信する</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="gBoxStream.Text" xml:space="preserve">
-    <value>Gコードストリーミング</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnOffsetApply.Text" xml:space="preserve">
-    <value>オフセットを適用</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>オフセットY</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value>オフセットY</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>オフセットX</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value>オフセットX</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>原点XY</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="lbDimension.Text" xml:space="preserve">
-    <value>寸法</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="gBoxDimension.Text" xml:space="preserve">
-    <value>Gコード寸法</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>セット：</value>
-  </data>
-  <data name="gBOverrideRGB.Text" xml:space="preserve">
-    <value>ラピッド</value>
-    <comment>groupBox_Override1</comment>
-  </data>
-  <data name="btnOverrideSpindle.Text" xml:space="preserve">
-    <value>スピンドルCW</value>
-  </data>
-  <data name="btnOverrideSpindle.ToolTip" xml:space="preserve">
-    <value>ホールド状態でのみ動作します</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="btnOverrideMist.Text" xml:space="preserve">
-    <value>ミスト</value>
-  </data>
-  <data name="btnOverrideMist.ToolTip" xml:space="preserve">
-    <value>M7はgrblで有効になっていない可能性があります</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="btnOverrideFlood.Text" xml:space="preserve">
-    <value>洪水</value>
-  </data>
-  <data name="gBOverrideASGB.Text" xml:space="preserve">
-    <value>アクセサリ状態の切り替え</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="lblStatusFeed.Text" xml:space="preserve">
-    <value>実際のフィード</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusFeed.ToolTip" xml:space="preserve">
-    <value>mm / minまたはinch / minの実際の送り速度（$ 13に依存）</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>セット：</value>
-  </data>
-  <data name="gBOverrideFRGB.Text" xml:space="preserve">
-    <value>フィード</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusSpeed.Text" xml:space="preserve">
-    <value>実際の速度</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusSpeed.ToolTip" xml:space="preserve">
-    <value>RPMでの実際のスピンドル速度</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>セット：</value>
-  </data>
-  <data name="gBOverrideSSGB.Text" xml:space="preserve">
-    <value>主軸速度</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="gBoxOverride.Text" xml:space="preserve">
-    <value>オーバーライド（grbl 1.1のみ）-クリックして展開/縮小</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="btnJogStop.Text" xml:space="preserve">
-    <value>ジョギングをやめる</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnJogStop.ToolTip" xml:space="preserve">
-    <value>現在のジョギングモーションを停止する</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickA.ToolTip" xml:space="preserve">
-    <value>ジョグ4軸</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickXY.ToolTip" xml:space="preserve">
-    <value>ジョグXおよびY軸</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickZ.ToolTip" xml:space="preserve">
-    <value>ジョグZ軸</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickB.ToolTip" xml:space="preserve">
-    <value>ジョグ4軸</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickC.ToolTip" xml:space="preserve">
-    <value>ジョグ4軸</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="cBSendJogStop.Text" xml:space="preserve">
-    <value>マウスアップでジョギングを停止</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnOverrideDoor.Text" xml:space="preserve">
-    <value>ドア</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnOverrideDoor.ToolTip" xml:space="preserve">
-    <value>通常、安全ドアの開放を検出するために入力ピンに接続されていますが、このコマンドを使用すると、GUIでこのコマンドを使用して安全ドアの動作を実現できます。
-すぐにDOOR状態になり、スピンドルとクーラントが無効になります。 動いている場合、機械は停止するまで減速してから停止します。
-原点復帰中に実行されると、Grblは代わりにモーションを停止し、原点復帰アラームをスローします。
-すでにサスペンド状態またはHOLDにある場合、DOOR状態がそれに優先します。
-コンパイル時の駐車オプションが有効な場合、Grblは指定された場所にスピンドルを駐車します。
-GrblがIDLE、HOLD、RUN、HOMING、またはJOG状態のときにコマンドが実行されます。 それ以外の場合は無視されます。
-ジョギングの場合、安全ドアはジョギングとプランナーバッファー内のすべてのキューに入れられたモーションをキャンセルします。 安全ドアを閉じて再開すると、GrblはIDLE状態に戻ります。
-コンパイル時オプションで有効になっている場合、ボタンまたはスイッチの接続に入力ピンを使用できます。</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnResume.Text" xml:space="preserve">
-    <value>履歴書</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnResume.ToolTip" xml:space="preserve">
-    <value>サイクルの開始または再開コマンド「〜」は、リアルタイムコマンドであるため、いつでも発行できます。
-Grblのバッファーにモーションがキューイングされていて準備ができている場合、〜cycle startコマンドは
-バッファの実行を開始すると、Grblは軸の移動を開始します。</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnFeedHold.Text" xml:space="preserve">
-    <value>フィードホールド</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnFeedHold.ToolTip" xml:space="preserve">
-    <value>フィード保留コマンド「！」 位置を失わないように、制御された減速によってアクティブサイクルを停止します。
-また、リアルタイムであり、いつでもアクティブにできます。 終了または一時停止すると、Grblはサイクル開始コマンドまで待機します
-プログラムを再開するために発行されます。 フィードホールドはサイクルを一時停止するだけで、ホーミングやその他のプロセスには影響しません。
-プログラムの途中でサイクルを停止する必要があり、ポジションを失う余裕がない場合は、フィードホールドを実行してGrblを持ってくる
-制御された停止へのすべて。 終了したら、リセットを発行できます。 常にフィードホールドを実行してみてください
-緊急事態が発生した場合を除き、リセットを押す前にマシンが実行されています。</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnKillAlarm.Text" xml:space="preserve">
-    <value>キルアラーム</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnKillAlarm.ToolTip" xml:space="preserve">
-    <value>Grblのアラームモードは、重大な問題が発生した状態です。
-サイクル中のハードリミットやアボートなど、またはGrblがその位置を知らない場合。
-デフォルトでは、ホーミングを有効にしてArduinoの電源を入れた場合、Grblは
-アラーム状態。位置がわからないため。 アラームモードはすべてをロックします
-'$ H'ホーミングサイクルが実行されるまでGコードコマンド。 または、ユーザーが必要な場合
-アラームロックを無効にして、軸をリミットスイッチから移動するには、たとえば、 '$ X'アラームロックを解除します。
-ロックをオーバーライドし、Gコード機能が再び機能できるようにします。</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnReset.Text" xml:space="preserve">
-    <value>リセット</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnReset.ToolTip" xml:space="preserve">
-    <value>これは、Grblのソフトリセットコマンド「Ctrl-x」です。 リアルタイムであり、いつでも送信できます。
-名前が示すように、Grblをリセットしますが、制御された方法で、マシンの位置を保持し、
-すべてがArduinoの電源を切らずに行われます。 ソフトリセットができるのは
-ポジションを失うとは、問題が発生し、移動中にステッパーが死亡した場合です。
-その場合、Grblのマシン位置の追跡が失われたかどうかを報告します。
-これは、制御されていない減速が失われたステップにつながる可能性があり、Grblにフィードバックがないためです。
-それがどれだけ失われたか（これは一般的なステッパーの問題です）。 それ以外の場合、Grblは再初期化するだけです。
-スタートアップラインを実行し、陽気な方法で続行します。</value>
-    <comment>groupBox_Jogging</comment>
+  <data name="ersetzteG23DurchLinienToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>「ステップ幅」を[設定 - グラフィックインポート - パスインポート - 一般オプション - インポートパラメータ - 円弧の円周上のステップ幅]で設定します。</value>
   </data>
   <data name="unDo2ToolStripMenuItem.Text" xml:space="preserve">
     <value>最後のアクションを元に戻す</value>
@@ -417,100 +199,6 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="tBURL.Text" xml:space="preserve">
     <value>SVG / DXFファイルのURLをここに貼り付けてください</value>
     <comment>2DView</comment>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>カスタムボタン</value>
-    <comment>groupBox_Custom</comment>
-  </data>
-  <data name="btnZeroC.Text" xml:space="preserve">
-    <value>ゼロC</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroC.ToolTip" xml:space="preserve">
-    <value>作業C座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroB.Text" xml:space="preserve">
-    <value>ゼロB</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroB.ToolTip" xml:space="preserve">
-    <value>作業B座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="lblCurrentG.ToolTip" xml:space="preserve">
-    <value>デフォルトの座標系= G54
-カメラ座標系= G59
-「G54;」を追加 Gコードをストリーミングする前に自動的にG54に戻すためのGコードヘッダー</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="label_status0.Text" xml:space="preserve">
-    <value>状態：</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroA.Text" xml:space="preserve">
-    <value>ゼロZ</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroA.ToolTip" xml:space="preserve">
-    <value>作業座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnHome.Text" xml:space="preserve">
-    <value>ホーム</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnHome.ToolTip" xml:space="preserve">
-    <value>ホーミングの開始（GRBLで有効になっている場合）</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXYZ.Text" xml:space="preserve">
-    <value>ゼロXYZ</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXYZ.ToolTip" xml:space="preserve">
-    <value>作業X、Y、Z座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXY.Text" xml:space="preserve">
-    <value>ゼロXY</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXY.ToolTip" xml:space="preserve">
-    <value>作業X、Y座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroZ.Text" xml:space="preserve">
-    <value>ゼロZ</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroZ.ToolTip" xml:space="preserve">
-    <value>作業Z座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroY.Text" xml:space="preserve">
-    <value>ゼロY</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroY.ToolTip" xml:space="preserve">
-    <value>作業Y座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroX.Text" xml:space="preserve">
-    <value>ゼロX</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroX.ToolTip" xml:space="preserve">
-    <value>作業X座標をゼロに設定します</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="label_status.Text" xml:space="preserve">
-    <value>状態</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="groupBoxCoordinates.Text" xml:space="preserve">
-    <value>工具座標（作業/機械）</value>
-    <comment>groupBox_Tool_Coord</comment>
   </data>
   <data name="loadToolStripMenuItem.Text" xml:space="preserve">
     <value>ファイルを開く</value>
@@ -828,37 +516,6 @@ Grblのバッファーにモーションがキューイングされていて準�
     <value>＆約</value>
     <comment>Menu16</comment>
   </data>
-  <data name="toolStripMenuItem3.Text" xml:space="preserve">
-    <value>言語</value>
-    <comment>Menu117</comment>
-  </data>
-  <data name="btnStreamCheck.ToolTip" xml:space="preserve">
-    <value>これは、Grblのgcodeパーサーを切り替えて、すべての着信ブロックを取得し、通常の動作と同様に完全に処理しますが、軸を移動せず、滞留を無視し、スピンドルとクーラントの電源を切ります。 これは、ユーザーに新しいGコードプログラムがGrblのパーサーでどのように動作するかを確認し、エラーを監視する（および有効になっている場合はソフト制限違反を確認する）方法を提供することを目的としています。</value>
-  </data>
-  <data name="btnSimulateSlower.ToolTip" xml:space="preserve">
-    <value>半分のシミュレーション速度</value>
-  </data>
-  <data name="btnSimulateFaster.ToolTip" xml:space="preserve">
-    <value>ダブルシミュレーション速度</value>
-  </data>
-  <data name="btnSimulate.Text" xml:space="preserve">
-    <value>パスシミュレーションを開始</value>
-  </data>
-  <data name="btnJogZeroA.ToolTip" xml:space="preserve">
-    <value>G90 G0 A（またはB、C）0を送信</value>
-  </data>
-  <data name="btnJogZeroX.ToolTip" xml:space="preserve">
-    <value>G90 G0 X0を送信</value>
-  </data>
-  <data name="btnJogZeroXY.ToolTip" xml:space="preserve">
-    <value>G90 G0 X0 Y0を送信</value>
-  </data>
-  <data name="btnJogZeroY.ToolTip" xml:space="preserve">
-    <value>G90 G0 Y0を送信</value>
-  </data>
-  <data name="btnJogZeroZ.ToolTip" xml:space="preserve">
-    <value>G90 G0 Z0を送信</value>
-  </data>
   <data name="toolStripViewDimension.Text" xml:space="preserve">
     <value>Gコード寸法</value>
   </data>
@@ -868,9 +525,6 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="cmsEditMode.Text" xml:space="preserve">
     <value>編集モードを切り替え</value>
   </data>
-  <data name="cBServoButtons.Text" xml:space="preserve">
-    <value>ペンを上/下に表示</value>
-  </data>
   <data name="cmsPicBoxMoveToMarkedPosition.Text" xml:space="preserve">
     <value>マークされた位置に移動G0</value>
   </data>
@@ -878,7 +532,7 @@ Grblのバッファーにモーションがキューイングされていて準�
     <value>マーク位置G10 L20のゼロXY</value>
   </data>
   <data name="cmsPicBoxMoveGraphicsOrigin.Text" xml:space="preserve">
-    <value>マーカー位置によるグラフィックのオフセット</value>
+    <value>グラフィックスのオフセット -&gt; マーカー位置を 0;0 に</value>
   </data>
   <data name="cmsPicBoxResetZooming.Text" xml:space="preserve">
     <value>ズームをリセット</value>
@@ -1030,18 +684,6 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>出口</value>
   </data>
-  <data name="BtnOverrideD3.ToolTip" xml:space="preserve">
-    <value>D3ピン（grbl-Mega-5X）のステータスを表示します。クリックすると、ステータスに応じて「M64 P3（オン）」または「M65P3（オフ）」を送信します。</value>
-  </data>
-  <data name="BtnOverrideD2.ToolTip" xml:space="preserve">
-    <value>D2ピン（grbl-Mega-5X）のステータスを表示します。クリックすると、ステータスに応じて「M64 P2（オン）」または「M65P2（オフ）」を送信します。</value>
-  </data>
-  <data name="BtnOverrideD1.ToolTip" xml:space="preserve">
-    <value>D1ピン（grbl-Mega-5X）のステータスを表示します。クリックすると、ステータスに応じて「M64 P1（オン）」または「M65P1（オフ）」を送信します。</value>
-  </data>
-  <data name="BtnOverrideD0.ToolTip" xml:space="preserve">
-    <value>D0ピン（grbl-Mega-5X）のステータスを表示します。クリックすると、ステータスに応じて「M64 P0（オン）」または「M65P0（オフ）」を送信します。</value>
-  </data>
   <data name="cmsPicBoxRotateSelectedPath.Text" xml:space="preserve">
     <value>選択したパスを回転します</value>
   </data>
@@ -1051,65 +693,17 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="LanguageToolStripMenuItem3.Text" xml:space="preserve">
     <value>言語</value>
   </data>
-  <data name="cBMoveG0.ToolTip" xml:space="preserve">
-    <value>G0 rappidmoveコマンドを使用します-STOPジョギングは機能しません</value>
-  </data>
-  <data name="CbSpindle.Text" xml:space="preserve">
-    <value>スピンドルCW</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="CbCoolant.Text" xml:space="preserve">
-    <value>クーラント</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="CbTool.Text" xml:space="preserve">
-    <value>ツールはスピンドルにあります</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="BtnPenUp.Text" xml:space="preserve">
-    <value>ペンアップ</value>
-  </data>
-  <data name="BtnPenUp.ToolTip" xml:space="preserve">
-    <value>Setup-Servo-PWMの設定を使用する</value>
-  </data>
-  <data name="BtnPenDown.Text" xml:space="preserve">
-    <value>ペンダウン</value>
-  </data>
-  <data name="BtnPenDown.ToolTip" xml:space="preserve">
-    <value>Setup-Servo-PWMの設定を使用する</value>
-  </data>
   <data name="tabPage1.Text" xml:space="preserve">
     <value>ルーター</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>ZおよびPWMに対して有効なペンアップ/ダウン変換の値を適用します</value>
-  </data>
-  <data name="BtnPenZero.Text" xml:space="preserve">
-    <value>ペンゼロ</value>
-  </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>プロッタ</value>
-  </data>
-  <data name="CbLasermode.Text" xml:space="preserve">
-    <value>レーザーモード</value>
-  </data>
-  <data name="RbLaserM4.Text" xml:space="preserve">
-    <value>M4動的電源。</value>
-  </data>
-  <data name="RbLaserM3.Text" xml:space="preserve">
-    <value>M3定数電源。</value>
-  </data>
-  <data name="CbLaser.Text" xml:space="preserve">
-    <value>レーザーオン</value>
   </data>
   <data name="tabPage3.Text" xml:space="preserve">
     <value>レーザ</value>
   </data>
   <data name="control3rdGRBLToolStripMenuItem.Text" xml:space="preserve">
     <value>3番目のシリアルCOMを制御する</value>
-  </data>
-  <data name="gB_Jog0.Text" xml:space="preserve">
-    <value>へ引っ越す</value>
   </data>
   <data name="CbAddGraphic.Text" xml:space="preserve">
     <value>インポートしたグラフィックを2Dビューに追加</value>
@@ -1205,19 +799,6 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="wireCutterToolStripMenuItem.Text" xml:space="preserve">
     <value>熱線カッター</value>
   </data>
-  <data name="BtnJogAbsZ.Text" xml:space="preserve">
-    <value>に移動します</value>
-  </data>
-  <data name="BtnJogAbsY.Text" xml:space="preserve">
-    <value>に移動します</value>
-  </data>
-  <data name="BtnJogAbsX.Text" xml:space="preserve">
-    <value>に移動します</value>
-  </data>
-  <data name="Gb_Jogging.Text" xml:space="preserve">
-    <value>コントロール / ジョギング - クリックして展開します</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
   <data name="applyLastTransformToolStripMenuItem.Text" xml:space="preserve">
     <value>最後の変換を適用する</value>
   </data>
@@ -1230,19 +811,81 @@ Grblのバッファーにモーションがキューイングされていて準�
   <data name="convertToPolarCoordinatesToolStripMenuItem.Text" xml:space="preserve">
     <value>極座標に変換する</value>
   </data>
-  <data name="CbMist.ToolTip" xml:space="preserve">
-    <value>「M7」を設定、「M9」をクリア</value>
+  <data name="cmsPictureBox.Text" xml:space="preserve">
+    <value>オフセットマーカー位置を0;0に設定</value>
   </data>
-  <data name="CbSpindle.ToolTip" xml:space="preserve">
-    <value>「M3」または「M4」を設定し、「M5」をクリアします</value>
+  <data name="Rb2DViewMode1.Text" xml:space="preserve">
+    <value>図形の編集</value>
   </data>
-  <data name="CbCoolant.ToolTip" xml:space="preserve">
-    <value>「M8」を設定、「M9」をクリア</value>
+  <data name="Rb2DViewMode1.ToolTip" xml:space="preserve">
+    <value>2DView の編集モードを有効にして図形を編集します。右クリックでコンテキストメニューを表示します。</value>
   </data>
-  <data name="gBoxDROSetCoord.Text" xml:space="preserve">
-    <value>座標系の設定</value>
+  <data name="Rb2DViewMode2.Text" xml:space="preserve">
+    <value>図形の位置へ移動</value>
   </data>
-  <data name="gBoxDRO.Text" xml:space="preserve">
-    <value>工具座標（作業/機械）</value>
+  <data name="Rb2DViewMode2.ToolTip" xml:space="preserve">
+    <value>図形のジョグモードを有効にすると、クリックした位置に最も近い Gcode 位置にツールが移動します。</value>
+  </data>
+  <data name="Rb2DViewMode3.Text" xml:space="preserve">
+    <value>クリックした位置へ移動</value>
+  </data>
+  <data name="Rb2DViewMode3.ToolTip" xml:space="preserve">
+    <value>機械エリアでジョグモードを有効にし、工具をクリックした位置に移動します。
+Altキーを押しながらクリックすると、位置が0.1ラスターに丸められます。</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOrigin.ToolTipText" xml:space="preserve">
+    <value>すべての G コード座標にオフセットを適用し、マーカー位置が座標 0;0 になるようにします。</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOriginTo00.Text" xml:space="preserve">
+    <value>グラフィックスのオフセット -&gt; マーカー位置を（最後の）ツール位置に</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOriginTo00.ToolTipText" xml:space="preserve">
+    <value>すべての G コード座標にオフセットを適用し、マーカー位置が実際のツール座標になるようにします。</value>
+  </data>
+  <data name="useOrigin.Text" xml:space="preserve">
+    <value>原点 0;0 を使用</value>
+  </data>
+  <data name="useOrigin.ToolTipText" xml:space="preserve">
+    <value>ミラーリング、回転、スケーリングの中心として 0;0 作業座標を使用します</value>
+  </data>
+  <data name="toolStrip_RadiusComp.ToolTipText" xml:space="preserve">
+    <value>半径補正</value>
+  </data>
+  <data name="cms2ToolStripMenuItem.Text" xml:space="preserve">
+    <value>グラフィックのオフセット -&gt; マーカー位置を 0;0 に</value>
+  </data>
+  <data name="cms2ToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>すべての G コード座標にオフセットを適用し、マーカー位置が座標 0;0 になるようにします。</value>
+  </data>
+  <data name="offsetGraphicsMarkerPositionTolastToolPositionToolStripMenuItem.Text" xml:space="preserve">
+    <value>グラフィックのオフセット -&gt; マーカー位置を（最後の）ツール位置に</value>
+  </data>
+  <data name="offsetGraphicsMarkerPositionTolastToolPositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>すべての G コード座標にオフセットを適用し、マーカー位置が実際のツール座標になるようにします。</value>
+  </data>
+  <data name="moveBetweenLastPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>最後の位置間を移動します</value>
+  </data>
+  <data name="directControlToolStripMenuItem.Text" xml:space="preserve">
+    <value>グラフィックタブレット</value>
+  </data>
+  <data name="IndividualSettings.Text" xml:space="preserve">
+    <value>このタブが表示されている場合のみ、セットアップからのインポート設定が完全​​に反映されます。</value>
+  </data>
+  <data name="tabPageLaser.Text" xml:space="preserve">
+    <value>レーザー</value>
+  </data>
+  <data name="tabPagePlotter.Text" xml:space="preserve">
+    <value>プロッター</value>
+  </data>
+  <data name="tabPage5.Text" xml:space="preserve">
+    <value>ルーター</value>
+  </data>
+  <data name="tabPage4.Text" xml:space="preserve">
+    <value>-個別に-</value>
+  </data>
+  <data name="LblDisabled.Text" xml:space="preserve">
+    <value>「ツールリストを適用」が有効になっています！
+ツールリストでツールのプロパティを変更するか、「ツールリストを適用」を無効にしてください。</value>
   </data>
 </root>

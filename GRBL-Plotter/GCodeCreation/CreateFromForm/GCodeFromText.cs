@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
+	Single line fonts will be directly converted to Gcode in GCodeFromFont.cs if "GenerateGCodeOnly"
+	System Font will be converted in the Graphics-Class line 303
+*/
+/*
  * 2019-08-15 add logger
  * 2019-09-07 use plotter class
  * 2019-10-25 remove icon to reduce resx size, load icon on run-time
@@ -27,7 +31,7 @@
  * 2021-09-10 add radioButtons to select line alignment: left, center, right line 168
  * 2022-02-28 check if a font is selected before creating text
  * 2022-03-04 check max in NudFontSize_ValueChanged
- * 2022-09-30 line 155 disable ApplyHatchFill (from SVG import)
+ * 2022-09-30 line 155 disable ApplyHatchFillSVG (from SVG import)
  * 2022-12-30 add win system font choice, word wrap
  * 2023-01-06 ShowTextSize - check if (textFont.Size != null)
  * 2023-01-10 check font before 1st use
@@ -38,10 +42,17 @@
  * 2023-11-24 l:414 f:BtnSelectFont_Click  add try/catch on fontDialog1.ShowDialog - Problem: if a newly installed font was selected, after closing the dialog with 'ok': 
 																			"main Form ThreadException - Only TrueType fonts are supported. This is not a TrueType font."
  * 2024-02-06 add process automation
- * 2024-02-22 update proprties after loading ini-file
+ * 2024-02-22 UpdateToolTip proprties after loading ini-file
  * 2024-11-05 l:540 f:ShowTextSize also check if (textFont != null) issue #422
+ * 2026-03-05 SetActiveDevice 
+ 
+ * 2026-06-02 add SetFontSize / SetAlignment / SetLineDistance for process-automation control
+ * 2026-06-02 SetFontSize/SetLineDistance also set the data-bound setting (binding was reverting the control); SetFontSize also sizes the Windows font
+ * 2026-07-05 add palette- and color selection 
 */
 
+using GrblPlotter.Helper;
+using GrblPlotter.UserControls;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -50,6 +61,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+//using System.Windows.Media;
+//using static System.Net.Mime.MediaTypeNames;
 
 
 // http://imajeenyus.com/computer/20150110_single_line_fonts/
@@ -63,6 +76,7 @@ namespace GrblPlotter
         private static Color textColor;
         private static Font initFont;
         private static Color initColor;
+        private bool isDevice = true;
 
         // Trace, Debug, Info, Warn, Error, Fatal
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -81,41 +95,24 @@ namespace GrblPlotter
 
         private void TextForm_Load(object sender, EventArgs e)
         {
-            initFont = textFont = tBText.Font;
-            initColor = textColor = tBText.ForeColor;
-
             FillFontSelector();
 
             Location = Properties.Settings.Default.locationTextForm;
             Size desktopSize = System.Windows.Forms.SystemInformation.PrimaryMonitorSize;
             if ((Location.X < -20) || (Location.X > (desktopSize.Width - 100)) || (Location.Y < -20) || (Location.Y > (desktopSize.Height - 100))) { CenterToScreen(); }
 
-            int toolCount = ToolTable.Init(" (TextForm_Load)");
-            ToolProp tmpTool;
-            bool defaultToolFound = false;
-            for (int i = 0; i < toolCount; i++)
-            {
-                tmpTool = ToolTable.GetToolProperties(i);
-                if (i == tmpTool.Toolnr)
-                {
-                    cBTool.Items.Add(i.ToString(culture) + ") " + tmpTool.Name);
-                    if (i == Properties.Settings.Default.importGCToolDefNr)
-                    {
-                        cBTool.SelectedIndex = cBTool.Items.Count - 1;
-                        defaultToolFound = true;
-                    }
-                }
-            }
-            if (!defaultToolFound)
-            {
-                cBTool.Items.Add("No tools found");
-                cBTool.SelectedIndex = 0;
-            }
-            CBToolTable_CheckedChanged(sender, e);
-
+            initFont = textFont = tBText.Font;
+            initColor = textColor = tBText.ForeColor;
             UpdateIniVariables();
+            RbFont2.Checked = !Properties.Settings.Default.createTextHersheySelect;
+            //    RbFont1_CheckedChanged(sender, e);
 
             LoadPicture("svg");
+            UpdateColorPaletteList();
+            int index = Colors.GetToolNRByColor(textColor, 0);
+            Logger.Trace("initColor {0}    index {1}", textColor, index);
+            if ((index >= 0) && (index < CboxToolTable.Items.Count))
+                CboxToolTable.SelectedIndex = index;
         }
 
         private bool iniWasSet = false;
@@ -128,8 +125,6 @@ namespace GrblPlotter
             if ((newSize > 0) && (newSize < Single.MaxValue))
             {
                 textFont = new Font(textFont.Name, newSize, textFont.Style);//, GraphicsUnit.Millimeter);
-                tBText.Font = textFont;
-                ShowTextSize();
             }
 
             iniWasSet = true;
@@ -157,31 +152,71 @@ namespace GrblPlotter
                 }
             }
 
-            if (!Properties.Settings.Default.createTextHersheySelect)
-            { RbFont2.PerformClick(); }
-            else
-            { RbFont1_CheckedChanged(null, null); }
-
             tBText.Text = Properties.Settings.Default.createTextFontText;
             tBText.Invalidate();
             ShowTextSize();
         }
 
-        internal void SetText(string tmp)//, string opt, double size)
+        internal void SetText(string tmp)
         {
             tBText.Text = tmp;
-            /*	if (opt.ToLower().Contains("w"))
-                {	if (size > 0) {	NUDWidth.Value = (decimal)size;}
-                    BtnSetWidth.PerformClick();
-                }
-                if (opt.ToLower().Contains("h"))
-                {	if (size > 0) {	NUDHeight.Value = (decimal)size;}
-                    BtnSetHeight.PerformClick();
-                }
-            */
             btnApply.PerformClick();
         }
 
+        /*********************************************************************/
+        // Set the text height in mm. Applies to the next CreateText, for BOTH font modes:
+        //  - Hershey / LFF / SVG single-line font: NudFontSize (GCHeight).
+        //  - Windows system font: the font em-size is used directly as mm (GraphicCollectText.AddText),
+        //    so rebuild the font at the requested size too.
+        internal void SetFontSize(double size)
+        {
+            decimal val = (decimal)size;
+            if (val < NudFontSize.Minimum) val = NudFontSize.Minimum;
+            if (val > NudFontSize.Maximum) val = NudFontSize.Maximum;
+            // NudFontSize is two-way data-bound to createTextHersheyFontSize. Set the bound source too,
+            // otherwise the binding re-reads it and reverts the control to the last UI value before
+            // CreateText runs (this is why script size didn't take effect, but alignment - unbound - did).
+            Properties.Settings.Default.createTextHersheyFontSize = val;
+            NudFontSize.Value = val;            // ValueChanged also adjusts the line spacing
+
+            try
+            {                                   // Windows system font path uses font.Size (as mm)
+                if ((textFont != null) && (size > 0))
+                {
+                    textFont = new Font(textFont.Name, (float)size, textFont.Style);
+                    if (RbFont2.Checked)
+                    {
+                        tBText.Font = textFont;
+                        LblInfoFont.Text = textFont.FontFamily.Name.ToString();
+                        ShowTextSize();
+                    }
+                }
+            }
+            catch (Exception ex) { Logger.Error(ex, "SetFontSize - rebuild Windows font"); }
+        }
+
+        // Set line alignment: left | center | right  (also accepts 1 | 2 | 3). Applies to the next CreateText.
+        internal void SetAlignment(string mode)
+        {
+            string m = (mode ?? "").Trim().ToLower();
+            if (m.StartsWith("c") || m == "2") RbAlign2.Checked = true;          // center
+            else if (m.StartsWith("r") || m == "3") RbAlign3.Checked = true;     // right
+            else RbAlign1.Checked = true;                                        // left (default)
+        }
+
+        // Set the line spacing in mm (distance between text lines). Applies to the next CreateText.
+        // Note: call AFTER SetFontSize, because changing the size resets the line distance to size x 1.5.
+        internal void SetLineDistance(double distance)
+        {
+            decimal val = (decimal)distance;
+            if (val < nUDFontLine.Minimum) val = nUDFontLine.Minimum;
+            if (val > nUDFontLine.Maximum) nUDFontLine.Maximum = val;            // allow larger spacing if requested
+            // nUDFontLine is two-way data-bound to createTextHersheyLineDistance - set the source too
+            // so the binding can't revert it to the last UI value (same fix as SetFontSize).
+            Properties.Settings.Default.createTextHersheyLineDistance = val;
+            nUDFontLine.Value = val;
+        }
+        /********************************************************************/
         private void FillFontSelector()
         {
             cBFont.Items.Clear();
@@ -218,37 +253,54 @@ namespace GrblPlotter
             Properties.Settings.Default.createTextFontColor = ColorTranslator.ToHtml(textColor);
             Properties.Settings.Default.Save();
         }
-
+        public void SetActiveDevice(int device)
+        {
+            isDevice = (device < 3);
+            GbCodeSettings.Visible = !isDevice;
+            LblDevice1.Visible = LblDevice.Visible = isDevice;
+            LblToolDiameter1.Visible = LblToolDiameter.Visible = isDevice;
+            LblDevice.Text = MyControl.GetSelectedDeviceName();
+            LblToolDiameter.Text = string.Format("{0:0.000}", MyControl.GetActualToolDiameter());
+            LblDevice.Left = LblDevice1.Left + LblDevice1.Width;
+            LblToolDiameter.Left = LblToolDiameter1.Left + LblToolDiameter1.Width;
+        }
         #region form_controls
         // get text, break it into chars, get path, etc... This event needs to be assigned in MainForm to poll text
         private void BtnApply_Click(object sender, EventArgs e)     // in MainForm:  _text_form.btnApply.Click += getGCodeFromText;
         { CreateText(); }
 
+
+
+        /********************************************************************/
         public void CreateText()
         {
             VisuGCode.pathBackground.Reset();
             Graphic.CleanUp();
             Graphic.Init(Graphic.SourceType.Text, "", null, null);
-            Graphic.graphicInformation.ApplyHatchFill = CbHatchFill.Checked;
-            Graphic.graphicInformation.OptionNodesOnly = false;
-            Graphic.graphicInformation.OptionCodeSortDistance = Properties.Settings.Default.importGraphicSortDistance; //false;
-            Graphic.graphicInformation.OptionZFromWidth = false;
+            if (!isDevice)
+            {
+                Graphic.graphicInformation.ApplyHatchFillSVG = CbHatchFill.Checked;
+                Graphic.graphicInformation.OptionNodesOnly = false;
+                Graphic.graphicInformation.OptionCodeSortDistance = Properties.Settings.Default.importGraphicSortDistance; //false;
+                                                                                                                           //            Graphic.graphicInformation.OptionZFromWidth = false;
 
-            Graphic.graphicInformation.FigureEnable = true;
-            Graphic.graphicInformation.GroupEnable = true;
-            Graphic.graphicInformation.GroupOption = Graphic.GroupOption.ByType;
+                Graphic.graphicInformation.FigureEnable = true;
+                Graphic.graphicInformation.GroupEnable = true;
+                Graphic.graphicInformation.GroupOption = Graphic.GroupOption.ByType;
+            }
 
             Graphic.maxObjectCountBeforeReducingXML = 0;   // no limit
 
             Graphic.SetType("Text");
 
-            if (CbOutline.Checked)
-                Graphic.SetPenColor(tBText.ForeColor.ToKnownColor().ToString());
+
+            if (CbOutline.Checked || isDevice)
+                Graphic.SetPenColor(ColorTranslator.ToHtml(tBText.ForeColor));//tBText.ForeColor.ToKnownColor().ToString());
             else
                 Graphic.SetPenColor("none");
-            Graphic.SetPenFill(tBText.ForeColor.ToKnownColor().ToString());
+            Graphic.SetPenFill(ColorTranslator.ToHtml(tBText.ForeColor));//tBText.ForeColor.ToKnownColor().ToString());
 
-            if (RbFont1.Checked)
+            if (RbFont1.Checked)    // Hershey
             { /* "Get values from tool table" (importGCToolDefNr and importGCToolDefNrUse) will be processed in "Graphic2GCode.cs" */
                 if (cBFont.SelectedIndex < 0)
                 {
@@ -263,14 +315,15 @@ namespace GrblPlotter
                 Logger.Trace("cbfont via index: '{0}'  name: '{1}'", GCodeFromFont.GCFontName, cBFont.Text);
 
 
-                GCodeFromFont.GCHeight = (double)nUDFontSize.Value;
+                GCodeFromFont.GCHeight = (double)NudFontSize.Value;
                 GCodeFromFont.GCFontDistance = (double)nUDFontDistance.Value;
-                GCodeFromFont.GCLineDistance = (double)(nUDFontLine.Value / nUDFontSize.Value);
-                GCodeFromFont.GCSpacing = (double)(nUDFontLine.Value / nUDFontSize.Value) / 1.5;
+                GCodeFromFont.GCLineDistance = (double)(nUDFontLine.Value / NudFontSize.Value);
+                GCodeFromFont.GCSpacing = (double)(nUDFontLine.Value / NudFontSize.Value) / 1.5;
                 GCodeFromFont.GCPauseChar = cBPauseChar.Checked;
                 GCodeFromFont.GCPauseWord = cBPauseWord.Checked;
                 GCodeFromFont.GCPauseLine = cBPauseLine.Checked;
                 GCodeFromFont.GCConnectLetter = cBConnectLetter.Checked;
+                GCodeFromFont.GCSmoothPath = CbSmoothPath.Checked;
 
                 if (Properties.Settings.Default.createTextHersheyLineBreakEnable)
                     GCodeFromFont.GetCode((double)nUDLineBreak.Value);      // do automatic page break
@@ -282,7 +335,7 @@ namespace GrblPlotter
                 else if (RbAlign3.Checked)
                     Graphic.AlignLines(2);		// 0=left, 1=center, 2=right
             }
-            else
+            else           // windows font
             {
                 Graphic.SetFont(tBText.Font, cBPauseChar.Checked);      // CreateText
                 Logger.Trace("CreateText  fontsize:{0}  size:{1}", textFont.Size, tBText.Font.Size);
@@ -322,17 +375,26 @@ namespace GrblPlotter
             }
             if (CbWordWrap.Checked)
             {
-                decimal newVal = (maxCharPerLine * (nUDFontDistance.Value + nUDFontSize.Value * (decimal)1.1));
-                newVal = Math.Max(newVal, (tBText.Width * (nUDFontSize.Value / (decimal)6.5)));
+                decimal newVal = (maxCharPerLine * (nUDFontDistance.Value + NudFontSize.Value * (decimal)1.1));
+                newVal = Math.Max(newVal, (tBText.Width * (NudFontSize.Value / (decimal)6.5)));
                 if ((newVal > nUDLineBreak.Minimum) && (newVal < nUDLineBreak.Maximum))
                     nUDLineBreak.Value = newVal;
             }
             return text;
         }
         // adapt line distance depending on font size
+
+        private void NudFontSize_KeyDown(object sender, KeyEventArgs e)
+        {
+            NudFontSize.ValueChanged -= NudFontSize_ValueChanged;
+            if (e.KeyData == Keys.Enter)
+                NudFontSize_ValueChanged(sender, null);
+            NudFontSize.ValueChanged += NudFontSize_ValueChanged;
+        }
+
         private void NudFontSize_ValueChanged(object sender, EventArgs e)
         {
-            decimal tmp = nUDFontSize.Value * (decimal)1.5;
+            decimal tmp = NudFontSize.Value * (decimal)1.5;
             if (tmp > nUDFontLine.Maximum)
                 nUDFontLine.Maximum = tmp;
             nUDFontLine.Value = tmp;
@@ -371,7 +433,7 @@ namespace GrblPlotter
         private void CBToolTable_CheckedChanged(object sender, EventArgs e)
         {
             bool enabled = cBToolTable.Checked;
-            label3.Enabled = enabled;
+            LblTool.Enabled = enabled;
             cBTool.Enabled = enabled;
         }
 
@@ -527,6 +589,7 @@ namespace GrblPlotter
                     CbOutline.Enabled = true;
                 }
             }
+            tBText.Invalidate();
         }
 
         private void TbText_TextChanged(object sender, EventArgs e)
@@ -547,14 +610,14 @@ namespace GrblPlotter
 
                 RectangleF b = Graphic.GetTextBounds(GetWrappedText(), StringAlignment.Near);
                 LblInfoSize.Text = string.Format("{0} pt", textFont.Size);
-                //	Properties.Settings.Default.createTextSystemFontSize = textFont.Size;
+                //	Properties.ListSettings.Default.createTextSystemFontSize = textFont.Size;
 
                 LblInfoWidth.Text = string.Format("{0,9:0.00}", b.Width);
                 LblInfoHeight.Text = string.Format("{0,9:0.00}", b.Height);
             }
             catch (Exception err)
             {
-                Logger.Error(err, "ShowTextSize ");// textFont.Name:'{0}'  textFont.Size:'{1}' ", textFont.FontFamily.Name, textFont.Size);
+                Logger.Error(err, "ShowTextSize ");// textFont.ToolName:'{0}'  textFont.Size:'{1}' ", textFont.FontFamily.ToolName, textFont.Size);
             }
         }
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -573,6 +636,8 @@ namespace GrblPlotter
 
         private void BtnSetWidth_Click(object sender, EventArgs e)
         {
+            if (!RbFont2.Checked)
+                RbFont2.PerformClick();
             RectangleF b = Graphic.GetTextBounds(tBText.Text, StringAlignment.Near);
             float newSize = (float)NUDWidth.Value * textFont.Size / b.Width;
             if ((newSize > 0) && (newSize < Single.MaxValue))
@@ -588,6 +653,8 @@ namespace GrblPlotter
 
         private void BtnSetHeight_Click(object sender, EventArgs e)
         {
+            if (!RbFont2.Checked)
+                RbFont2.PerformClick();
             RectangleF b = Graphic.GetTextBounds(tBText.Text, StringAlignment.Near);
             float newSize = (float)NUDHeight.Value * textFont.Size / b.Height;
             if ((newSize > 0) && (newSize < Single.MaxValue))
@@ -691,6 +758,107 @@ namespace GrblPlotter
             }
 
             iniWasSet = false;
+        }
+
+
+        /**************************************************************************/
+        private void UpdateColorPaletteList()
+        {
+            //    if (logEnable)
+            //        Logger.Trace("UpdateToolTableList");
+            FillColorPaletteFileList(Datapath.ColorPalette);			// list tool table files
+            CboxToolFiles.Text = Properties.Settings.Default.colorPaletteLastLoaded;
+            Colors.LoadColorPalette();  // load colorPaletteLastLoaded
+            UpdateColorList();
+        }
+
+        /* list all CSV files from toolProp-folder */
+        private void FillColorPaletteFileList(string filepath)
+        {
+            try
+            {
+                string[] Files = System.IO.Directory.GetFiles(filepath);
+                CboxToolFiles.Items.Clear();
+                for (int i = 0; i < Files.Length; i++)
+                {
+                    {
+                        string name = Path.GetFileName(Files[i]);
+                        CboxToolFiles.Items.Add(name);
+                    }
+                }
+            }
+            catch (Exception err) { Logger.Error(err, "FillColorPaletteFileList "); }
+        }
+
+        /* copy selected tool-file to _current.csv */
+        private void CboxToolFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(CboxToolFiles.Text))
+            {
+                string newPalette = Datapath.ColorPalette + "\\" + CboxToolFiles.Text;
+
+                if (Colors.LoadColorPalette(newPalette))
+                    Properties.Settings.Default.colorPaletteLastLoaded = CboxToolFiles.Text;
+
+                UpdateColorList();
+                //     GetColorPaletteSettings();
+            }
+        }
+
+        /* Display toolProp from selected tool table */
+        private void UpdateColorList()
+        {
+            CboxToolTable.Items.Clear();
+            CboxToolTable.Items.Add("Nr  Color          Name ");
+            int i = 1;
+            foreach (PaletteEntry tmp in Colors.MyPalette)
+            {
+                CboxToolTable.Items.Add(string.Format("{0,3} {1,6} {2,20}", i++, ColorTranslator.ToHtml(tmp.Col), tmp.Name));
+            }
+        }
+
+        /* OwnerDrawFixed - colorize tool-entry lines */
+        private void CboxToolTable_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            int index = e.Index - 1;
+            string text = ((ComboBox)sender).Items[e.Index].ToString();
+
+            SolidBrush brush = new SolidBrush(Color.Black);
+            Color col = Color.Black;
+            if ((index >= 0) && (index < Colors.MyPalette.Count))
+                col = Colors.MyPalette[index].Col;
+
+            if ((e.Index > 0) && (text.Length > 10))
+            {
+                try
+                {
+                    brush = new SolidBrush(Colors.ContrastColor(col));
+                    if (!e.Bounds.IsEmpty)
+                        e.Graphics.FillRectangle(new SolidBrush(col), e.Bounds);
+                }
+                catch { }
+                e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
+            }
+            else
+            {
+                if (!e.Bounds.IsEmpty)
+                    e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
+                e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
+            }
+        }
+
+        private void CboxToolTable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = CboxToolTable.SelectedIndex - 1;
+            if ((index >= 0) && (index < Colors.MyPalette.Count))
+            {
+                Color tmp = Colors.MyPalette[index].Col;
+                initColor = textColor = tBText.ForeColor = Colors.MyPalette[index].Col;
+                CboxToolTable.BackColor = (tmp == Color.Transparent) ? Color.LightGray : tmp;
+                CboxToolTable.ForeColor = Colors.ContrastColor(CboxToolTable.BackColor);
+            }
+            btnApply.Focus();
         }
     }
 

@@ -54,6 +54,7 @@
  * 2025-02-01 l:98 f:GetProcessingTime move 'Est. time' to next line
 */
 
+using GrblPlotter.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -92,9 +93,9 @@ namespace GrblPlotter
         {
             try
             {
-                if (double.IsNaN(gcodeMinutes))
-                    gcodeMinutes = 0.1;
-                TimeSpan t = TimeSpan.FromSeconds(gcodeMinutes * 60);
+                if (double.IsNaN(gcodeExecutionSeconds))
+                    gcodeExecutionSeconds = 0.1;
+                TimeSpan t = TimeSpan.FromSeconds(gcodeExecutionSeconds);
                 return string.Format("Path length: {0:0.0}\r\nEst. time: {1:D2}:{2:D2}:{3:D2}", gcodeDistance, t.Hours, t.Minutes, t.Seconds);
             }
             catch
@@ -217,7 +218,7 @@ namespace GrblPlotter
             if (logDetailed)
                 Logger.Trace("SetPosMarkerNearBy findNode:{0}  checkDistanceToLine:{1}  x:{2:0.00} y:{3:0.00}  ", findNode, checkDistanceToLine, pos.X, pos.Y);
 
-            /* fill list with coordByLine with actual distance to given point */
+            /* FillToolListElements list with coordByLine with actual distance to given point */
             if ((coordList == null) || (coordList.Count == 0))
             {
                 DistanceByLine tmp = new DistanceByLine(0)
@@ -455,7 +456,7 @@ namespace GrblPlotter
             SelectionHandle.SetBounds(selectionBounds);
             float centerX = selectionBounds.X + selectionBounds.Width / 2;
             float centerY = selectionBounds.Y + selectionBounds.Height / 2;
-            selectedFigureInfo = string.Format("Selected figure: {0}\r\nWidth : {1:0.000}\r\nHeight: {2:0.000}\r\nCenter: X {3:0.000} Y {4:0.000}", figureNr, selectionBounds.Width, selectionBounds.Height, centerX, centerY);
+            selectedFigureInfo = string.Format("Selected figure: {0}\r\nWidth : {1:0.000}\r\nHeight: {2:0.000}\r\nCenter: X {3:0.000}\r\n        Y {4:0.000}", figureNr, selectionBounds.Width, selectionBounds.Height, centerX, centerY);
         }
 
         public static void MarkSelectedGroup(int start)		// mark all figures within a group
@@ -581,7 +582,10 @@ namespace GrblPlotter
                 }
             }
 
-            Logger.Info("MarkSelectedCollection end:{0} {1}  lastFig:{2}", line, gcodeList[line].codeLine, lastFigureNumber);
+			if (line < gcodeList.Count)
+				Logger.Info("MarkSelectedCollection end:{0} {1}  lastFig:{2}", line, gcodeList[line].codeLine, lastFigureNumber);
+			else
+				Logger.Warn("MarkSelectedCollection end:{0} gcodeList.count:{1}  lastFig:{2}", line, gcodeList.Count, lastFigureNumber);
 
             RectangleF selectionBounds = pathMarkSelection.GetBounds();
             SelectionHandle.SetBounds(selectionBounds);						// set and activate selection handle

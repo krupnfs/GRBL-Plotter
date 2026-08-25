@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*  GCode2DViewPaths.cs
-	Fill GraphicPaths
+	FillToolListElements GraphicPaths
 */
 /* 
  * 2021-07-08 split code from GCodeVisuAndTransform
  * 2021-07-27 code clean up / code quality
  * 2021-09-02 CreateDrawingPathFromGCode add viewOffset for tiles
  * 2021-09-29 update fiducialDimension
- * 2021-09-30 take care for inch:  if (!Properties.Settings.Default.importUnitmm || (modal.unitsMode == 20))
+ * 2021-09-30 take care for inch:  if (!Properties.ListSettings.Default.importUnitmm || (modal.unitsMode == 20))
  * 2021-11-18 show path-nodes gui2DShowVertexEnable - will be switched off on prog-start	 
  * 2022-04-07 DrawHeightMap add side-view of shape at y=0 and x=0 (below and left of hight-map grid)
  * 2023-04-11 l:683 f:CreateRuler lock object to avoid 'object is currently in use elsewhere'
@@ -34,6 +34,9 @@
  * 2024-01-25 l:262 f:CreateDrawingPathFromGCode get markerSize from graphics dimension
  * 2024-09-13 l:329 add p-word for G2/3
  * 2024-12-09 l:282 f:CreateDrawingPathFromGCode add pixelArtEnable
+ * 2025-06-08 l:287 check if !halfToneEnable
+ * 2025-06-18 l:308 remove if (newL.i == null) { newL.i = 0; } done during parsing in GCodeParser.cs 386
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
 */
 
 using System;
@@ -259,7 +262,7 @@ namespace GrblPlotter
                     { onlyZ++; }
 
                     // mark Z-only movements - could be drills
-                    if ((onlyZ > 1) && (passLimit) && (path == pathPenUp) || (oldL.codeLine.Contains("DOT")))  // pen moved from -z to +z
+                    if (((onlyZ > 1) && (passLimit) && (path == pathPenUp)) || (oldL.codeLine.Contains("DOT") || newL.codeLine.Contains("DOT")))  // pen moved from -z to +z
                     {
                         float markerSize = (float)markerSizeGraphic;
                         int markerType = 1;
@@ -279,17 +282,14 @@ namespace GrblPlotter
 
                         if (pixelArtEnable)
                         {
-                            markerType = 5;
-                            markerSize = (float)pixelArtDotWidth / 4;
-                            CreateMarker(pathPenDown, (XyPoint)newL.actualPos, markerSize * 2, markerType, false); // draw rect
+                            markerType = 4;
+                            markerSize = (float)pixelArtDotWidth;
+                            CreateMarker(pathPenDown, (XyPoint)newL.actualPos, markerSize, markerType, false); // draw rect
                         }
-                        CreateMarker(pathPenDown, (XyPoint)newL.actualPos, markerSize, markerType, false);       // draw cross
-                                                                                                                 //    if ((path == pathPenDown) && (pathActualDown != null))
-                        if (pathActualDown != null)
+                        if (!halfToneEnable && (pathActualDown != null))
                         {
                             XyPoint tmpPoint = new XyPoint(newL.actualPos.X + viewOffset.X, newL.actualPos.Y + viewOffset.Y);
                             CreateMarker(pathActualDown, tmpPoint, markerSize, markerType, false);               // draw cross
-                                                                                                                 //        Logger.Trace("draw x:{0}  z:{1}", tmpPoint.X, markerSize);
                         }
                         CreateMarker(pathPenUp, (XyPoint)newL.actualPos, markerSize, 4, false);       	// draw circle
                         path = pathPenUp;
@@ -297,16 +297,14 @@ namespace GrblPlotter
                         if (fiducialEnable)
                         {
                             fiducialsCenter.Add((XyPoint)newL.actualPos);
-                            //                Logger.Trace("Set fiducial add point {0} {1}  ", newL.actualPos.X, newL.actualPos.Y);
                         }
-                        //       passLimit = false;
                     }
                 }
-                //         }
+
                 else if ((newL.motionMode == 2 || newL.motionMode == 3) && (newL.i != null || newL.j != null))
                 {
-                    if (newL.i == null) { newL.i = 0; }
-                    if (newL.j == null) { newL.j = 0; }
+                    //    if (newL.i == null) { newL.i = 0; }
+                    //    if (newL.j == null) { newL.j = 0; }
 
                     ArcProperties arcMove;
                     arcMove = GcodeMath.GetArcMoveProperties((XyPoint)oldL.actualPos, (XyPoint)newL.actualPos, newL.i, newL.j, (newL.motionMode == 2));
@@ -402,29 +400,49 @@ namespace GrblPlotter
             }
 
             pathToolTable.Reset();
-            if ((ToolTable.toolTableArray != null) && (ToolTable.toolTableArray.Count > 1))
+            if ((ToolList.toolListArray != null) && (ToolList.toolListArray.Count > 0))
+            //                if ((ToolTable.toolTableArray != null) && (ToolTable.toolTableArray.Count > 1))
             {
                 double wx, wy;
+                float size;
                 XyzPoint tmppos;
-                ToolProp tmpTool;
-                for (int i = 1; i < ToolTable.toolTableArray.Count; i++)
+                ToolProperty tmpToolProperty;
+                ToolPosition tmpToolPosition;
+                for (int i = 0; i < ToolChanger.toolPositionArray.Count; i++)
+                //                    for (int i = 1; i < ToolTable.toolTableArray.Count; i++)
                 {
-                    tmpTool = ToolTable.toolTableArray[i];
-                    tmppos = tmpTool.Position;
+                    //     tmpToolProperty = ToolList.toolListArray[i];
+                    tmpToolPosition = ToolChanger.toolPositionArray[i];
+                    tmppos = tmpToolPosition.Position;
+                    size = tmpToolPosition.Diameter;
                     wx = tmppos.X - offsetX + (double)Properties.Settings.Default.toolTableOffsetX;
                     wy = tmppos.Y - offsetY + (double)Properties.Settings.Default.toolTableOffsetY;
                     try
                     {
                         FontFamily myFont = new FontFamily("Arial");
-                        if ((tmpTool.Name != null) && (tmpTool.Name.Length > 1) && (tmpTool.Toolnr >= 0))
+
+                        pathToolTable.StartFigure();
+                        pathToolTable.AddEllipse((float)(wx - size/2), (float)(wy - size/2), size, size);
+                        pathToolTable.Transform(matrix);
+
+                    /*    if (i < ToolTable.toolTableArray.Count)
                         {
-                            pathToolTable.StartFigure();
-                            pathToolTable.AddEllipse((float)(wx - 4), (float)(wy - 4), 8, 8);
-                            pathToolTable.Transform(matrix);
-                            pathToolTable.AddString(tmpTool.Toolnr.ToString() + ") " + tmpTool.Name, myFont, (int)FontStyle.Regular, 4, new Point((int)wx - 12, -(int)wy + 4), StringFormat.GenericDefault);
-                            pathToolTable.Transform(matrix);
+                            tmpToolProperty = ToolList.toolListArray[i];
+                            if ((tmpToolProperty.ToolName != null) && (tmpToolProperty.ToolName.Length > 1) && (tmpToolProperty.ToolNr >= 0))
+                            {
+                                pathToolTable.AddString(tmpToolProperty.ToolNr.ToString() + ") " + tmpToolProperty.ToolName, myFont, (int)FontStyle.Regular, 4, new Point((int)wx - 12, -(int)wy + 4), StringFormat.GenericDefault);
+                            }
+                            else
+                            {
+                                pathToolTable.AddString(tmpToolPosition.ToolNr.ToString() + ") ", myFont, (int)FontStyle.Regular, 4, new Point((int)(wx - size / 2), -(int)wy + 4), StringFormat.GenericDefault);
+                            }
+                        }
+                        else*/
+                        {
+                            pathToolTable.AddString(tmpToolPosition.ToolNr.ToString() + ") ", myFont, (int)FontStyle.Regular, 4, new Point((int)(wx - size / 4), -(int)(wy + size / 4)), StringFormat.GenericDefault);
                         }
                         myFont.Dispose();
+                        pathToolTable.Transform(matrix);
                     }
                     catch (Exception er) { Logger.Error(er, " drawMachineLimit"); }
                 }
@@ -456,7 +474,7 @@ namespace GrblPlotter
 
             // show X shape -> Z on Y axis
             double z, zOld, offsetX = -10, offsetY = -10;
-            //	double dimX = Map.Max.X - Map.Min.X;
+            //	double dimX = Map.ZMax.X - Map.ZMin.X;
             float emSize = 2;
             float emOffset = emSize / 2;
             GraphicsPath pathToDraw = pathBackground;
@@ -489,9 +507,9 @@ namespace GrblPlotter
 
             pathToDraw.StartFigure();
             pathToDraw.AddLine((float)(Map.Min.X + offsetX), (float)Map.Min.Y, (float)(Map.Min.X + offsetX), (float)Map.Max.Y);     // zreo Z
-                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)Map.Min.X, (float)(offsetY + emSize * 1.5)), emSize, string.Format("Z profile over X, at Y={0:0.00}", tmpOld.Y));
-                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)(Map.Max.X + offsetX - emSize), (float)(Map.Min.Y - emSize/2)), emSize, "Z= 0.00", true);
-                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)(Map.Max.X + offsetX + zOld - emOffset), (float)(Map.Min.Y - emSize/2)), emSize, string.Format("Z= {0:0.00}",zOld), true);
+                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)Map.ZMin.X, (float)(offsetY + emSize * 1.5)), emSize, string.Format("Z profile over X, at Y={0:0.00}", tmpOld.Y));
+                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)(Map.ZMax.X + offsetX - emSize), (float)(Map.ZMin.Y - emSize/2)), emSize, "Z= 0.00", true);
+                                                                                                                                    //	AddBackgroundText(pathToDraw, new PointF((float)(Map.ZMax.X + offsetX + zOld - emOffset), (float)(Map.ZMin.Y - emSize/2)), emSize, string.Format("Z= {0:0.00}",zOld), true);
 
             pathToDraw.StartFigure();
             for (y = 1; y < Map.SizeY; y++)
@@ -884,7 +902,8 @@ namespace GrblPlotter
         private static readonly object pathDrawLock = new object();
         private static void CreateMarker(GraphicsPath path, float centerX, float centerY, float dimension, int style, bool rst = true)
         {
-            if (dimension == 0) { return; }
+            //    Logger.Trace("CreateMarker  centerX:{0}  centerY:{1}  dimension:{2}  style:{3}", centerX, centerY, dimension, style);
+            if (dimension <= 0) { return; }
             lock (pathDrawLock)
             {
                 if (rst)

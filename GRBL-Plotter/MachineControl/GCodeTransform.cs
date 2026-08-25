@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2025 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,15 +30,16 @@
  * 2020-08-13 bug fix transformGCodeMirror with G91 
  * 2021-07-12 code clean up / code quality
  * 2022-01-17 process more than one figures (e.g. selected group) for scaling, rotation, move
- * 2022-03-31 line 257 take care of Properties.Settings.Default.importGCTangentialTurn when rotating issue #272
+ * 2022-03-31 line 257 take care of Properties.ListSettings.Default.importGCTangentialTurn when rotating issue #272
  * 2024-02-12 add GetTranslate(int offset)
  * 2024-03-11 add ConvertToPolar()
+ * 2025-04-02 option to use 0;0 as center for mirror, rotation, scale
+ * 2025-06-17 l:297 f:TransformGCodeRotate bug fix nullable... if (gcline.i == null) { gcline.i = 0; }
  */
 
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows.Forms;
 
 namespace GrblPlotter
 {
@@ -120,7 +121,7 @@ namespace GrblPlotter
         /// <summary>
         /// mirror gcode
         /// </summary>
-        public static string TransformGCodeMirror(Translate shiftToZero = Translate.MirrorX)
+        public static string TransformGCodeMirror(Translate shiftToZero = Translate.MirrorX, bool flipAtOrigin = false)
         {
             Logger.Info("●●● TransformGCode-Mirror {0}", shiftToZero);
             EventCollector.SetTransform("Tmir");
@@ -130,8 +131,11 @@ namespace GrblPlotter
             if (lastFigureNumber > 0)
                 centerOfFigure = GetCenterOfMarkedFigure();		// center of selected figure
 
+            if (flipAtOrigin)
+                centerOfFigure = new XyPoint();		            // center of selected figure
+
             oldLine.ResetAll(Grbl.posWork);         			// reset coordinates and parser modes
-            ClearDrawingPath();                    			// reset path, dimensions
+            ClearDrawingPath();                    			    // reset path, dimensions
 
             bool offsetApplied = false;
             double lastAbsPos = 0;
@@ -262,7 +266,6 @@ namespace GrblPlotter
                 {
                     if ((gcline.x != null) || (gcline.y != null))
                     {
-
                         newvalx = (gcline.actualPos.X - offset.X) * Math.Cos(angle * Math.PI / 180) - (gcline.actualPos.Y - offset.Y) * Math.Sin(angle * Math.PI / 180);
                         newvaly = (gcline.actualPos.X - offset.X) * Math.Sin(angle * Math.PI / 180) + (gcline.actualPos.Y - offset.Y) * Math.Cos(angle * Math.PI / 180);
                         if (gcline.isdistanceModeG90)	// absolute
@@ -290,6 +293,9 @@ namespace GrblPlotter
                     }
                     if ((gcline.i != null) || (gcline.j != null))
                     {
+                    //    Logger.Trace("TransformGCodeRotate I:{0:0.00}  J:{1:0.00}", gcline.i, gcline.j);
+                        if (gcline.i == null) { gcline.i = 0; } // not set to 0 in GCode2DViewpath 304?
+                        if (gcline.j == null) { gcline.j = 0; } // not set to 0 in GCode2DViewpath 304?
                         newvali = (double)gcline.i * Math.Cos(angle * Math.PI / 180) - (double)gcline.j * Math.Sin(angle * Math.PI / 180);
                         newvalj = (double)gcline.i * Math.Sin(angle * Math.PI / 180) + (double)gcline.j * Math.Cos(angle * Math.PI / 180);
                         gcline.i = newvali * scale;
@@ -313,9 +319,12 @@ namespace GrblPlotter
         /// <summary>
         /// scale x and y seperatly in %
         /// </summary>
-        public static string TransformGCodeScale(double scaleX, double scaleY)
+        public static string TransformGCodeScale(double scaleX, double scaleY, bool useOrigin)
         {
             XyPoint centerOfFigure = xyzSize.GetCenter();
+            if (useOrigin)
+                centerOfFigure = new XyPoint();
+
             if (lastFigureNumber > 0)
                 centerOfFigure = GetCenterOfMarkedFigure();
             return TransformGCodeScale(scaleX, scaleY, centerOfFigure);

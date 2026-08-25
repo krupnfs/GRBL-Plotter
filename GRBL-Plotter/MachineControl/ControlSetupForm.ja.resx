@@ -3757,7 +3757,7 @@ GCode ヘッダー セクションで指定: 'SVG dimension'。</value>
     <value>ぐらついた線を生成する</value>
   </data>
   <data name="gBNoise.Text" xml:space="preserve">
-    <value>ノイズ</value>
+    <value>線がぐらつく</value>
   </data>
   <data name="CbImportGraphicHatchFillNoise.Text" xml:space="preserve">
     <value>ノイズを追加</value>
@@ -3947,7 +3947,7 @@ X は半径値を取得し、Y は角度値を取得します。
     <value>幾何学的トレース (遅い - 幾何学的形状に適しています)</value>
   </data>
   <data name="rBImportVectorizeAlgoPoTrace.Text" xml:space="preserve">
-    <value>PoTrace (高速 - 写真やスケッチに適しています)</value>
+    <value>Potrace (高速 - 写真やスケッチに適しています)</value>
   </data>
   <data name="groupBox48.Text" xml:space="preserve">
     <value>ベクトル化アルゴリズム</value>
@@ -3989,7 +3989,7 @@ X は半径値を取得し、Y は角度値を取得します。
     <value>申し込む</value>
   </data>
   <data name="groupBox45.Text" xml:space="preserve">
-    <value>自動ベクトル化</value>
+    <value>自動ベクトル化（白黒のみ）</value>
   </data>
   <data name="RrBImportVectorizeWidthSet.Text" xml:space="preserve">
     <value>画像の幅を次のように設定します</value>
@@ -4013,5 +4013,118 @@ X は半径値を取得し、Y は角度値を取得します。
   </data>
   <data name="CbToolChangeM6PassThrough.ToolTip" xml:space="preserve">
     <value>注: Arduino Uno 上の「クラシック」Grbl は M6 コマンドを処理できず、エラーが発生します。</value>
+  </data>
+  <data name="BtnSetGrblCustomString.Text" xml:space="preserve">
+    <value>セット</value>
+  </data>
+  <data name="BtnSetGrblCustomString.ToolTip" xml:space="preserve">
+    <value>カスタム文字列を設定/上書きします。次に、コントローラーをリセットしてカスタム文字列を読み取ります。
+この文字列を設定するには、Grbl $I=xxx を送信します。xxx は 80 文字未満のカスタマイズ文字列です。この文字列は大文字で保存され、スペースは削除され、英数字のみを含めることができます。</value>
+  </data>
+  <data name="label115.Text" xml:space="preserve">
+    <value>文字列 - 必要なファイル名</value>
+  </data>
+  <data name="CbLoadMachineDefaults.Text" xml:space="preserve">
+    <value>デフォルトをロードする</value>
+  </data>
+  <data name="CbLoadMachineDefaults.ToolTip" xml:space="preserve">
+    <value>ファイル名が見つかった場合、接続後にデフォルトを 1 回だけロードします。</value>
+  </data>
+  <data name="label114.Text" xml:space="preserve">
+    <value>カスタム文字列「$I」をファイル名として使用して、data\usecases からユースケースを読み込みます。
+「デフォルト」を保存するには、「マシン設定のエクスポート」を使用します。</value>
+  </data>
+  <data name="GbGrblDefaults.Text" xml:space="preserve">
+    <value>接続時にデフォルトをロードする</value>
+  </data>
+  <data name="groupBox50.Text" xml:space="preserve">
+    <value>情報テキスト</value>
+  </data>
+  <data name="CbShowVertexEnable.ToolTip" xml:space="preserve">
+    <value>有効にするにはグラフィックをリロードする必要があります。</value>
+  </data>
+  <data name="cB2DViewFigureId.ToolTip" xml:space="preserve">
+    <value>有効にするにはグラフィックをリロードする必要があります。</value>
+  </data>
+  <data name="cB2DViewDirectionArrow.ToolTip" xml:space="preserve">
+    <value>有効にするにはグラフィックをリロードする必要があります。</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>ファイルを開く</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INIファイルをテキストエディタ（メモ帳）で開きます。</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>設定を保存</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INIファイルに重要な設定を保存します。</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>INIファイルをテストします</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>INIファイルの重要な設定をいくつか表示します。</value>
+  </data>
+  <data name="BtnApply2DViewChanges.Text" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="label118.Text" xml:space="preserve">
+    <value>文字サイズカーソル</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>文字サイズ情報</value>
+  </data>
+  <data name="label116.Text" xml:space="preserve">
+    <value>背景の透明度</value>
+  </data>
+  <data name="groupBox43.Text" xml:space="preserve">
+    <value>メインフォームのサイズを変更する</value>
+  </data>
+  <data name="NudInfoTextSize2.ToolTip" xml:space="preserve">
+    <value>カーソル付近の情報テキストの文字サイズ</value>
+  </data>
+  <data name="NudInfoTextSize1.ToolTip" xml:space="preserve">
+    <value>2Dビューの左上端の情報テキストの文字サイズ</value>
+  </data>
+  <data name="HsbInfoTransparency.ToolTip" xml:space="preserve">
+    <value>テキスト背景の透明度</value>
+  </data>
+  <data name="GbColorTheme.Text" xml:space="preserve">
+    <value>カラーテーマ</value>
+  </data>
+  <data name="label119.Text" xml:space="preserve">
+    <value>Hueボタンの色</value>
+  </data>
+  <data name="label120.Text" xml:space="preserve">
+    <value>Hueパネルの色</value>
+  </data>
+  <data name="CbColorThemeEnable.Text" xml:space="preserve">
+    <value>プログラム開始時にカラーテーマを適用</value>
+  </data>
+  <data name="label125.Text" xml:space="preserve">
+    <value>彩度</value>
+  </data>
+  <data name="label130.Text" xml:space="preserve">
+    <value>明るさ</value>
+  </data>
+  <data name="label139.Text" xml:space="preserve">
+    <value>工具径（mm）</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbGerberFillEnable.Text" xml:space="preserve">
+    <value>工具でPCB配線を塗りつぶす</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportSVGUseElement.Text" xml:space="preserve">
+    <value>「use」要素を処理する</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportVectorizeInvertResult.Text" xml:space="preserve">
+    <value>結果を反転</value>
+  </data>
+  <data name="CbImportVectorizeOptimize1.Text" xml:space="preserve">
+    <value>エッジの平滑化</value>
   </data>
 </root>

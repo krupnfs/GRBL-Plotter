@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2023 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@
  * 2021-07-14 code clean up / code quality
  * 2021-09-29 reduce polling frequency on missing reports line 376
  * 2021-10-24 handle serial port System.TimeoutException -> close port
- * 2021-12-13 replace serialPort.Write by SerialPortDataSend
+ * 2021-12-13 replace serialPort.WriteXML by SerialPortDataSend
  * 2021-12-14 add run time for spindle, flood, mist
  * 2021-12-22 add Grbl.isConnected
  * 2022-01-04 change readtimeout from 500 to 1000
@@ -69,6 +69,9 @@
  * 2023-06-28 l:665 f:AddToLog limit amount of lines to 10000   replaced RichTextBox by TextBox
  * 2023-07-27 l:269 f:SerialForm_FormClosing  set grblCharacterCounting = true;   // may helps to avoid locking the form
  * 2023-09-16 l:342 f:CopySelectionToClipboard add try catch
+ * 2025-03-06 l:830 f:JustgrblReset - cbPort.Text = "COM1" on TimeoutException, to avoid same exception on next program start
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+ * 2026-06-05 l:405 f:TimerSerial_Tick add Invoke #468 ...accessed from a thread other than the thread it was created on
 */
 
 // OnRaiseStreamEvent(new StreamEventArgs((int)lineNr, codeFinish, buffFinish, status));
@@ -144,7 +147,7 @@ namespace GrblPlotter
     //    private readonly int insertMarlinCounterReload = 5;
     //    private int insertMarlinCounter = 5;
 
-        private bool lowLevelPerformance = false;// Properties.Settings.Default.grblPollIntervalReduce
+        private bool lowLevelPerformance = false;// Properties.ListSettings.Default.grblPollIntervalReduce
 
         // Trace, Debug, Info, Warn, Error, Fatal
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -315,6 +318,8 @@ namespace GrblPlotter
             btnGRBLCommand4.Location = new Point(btnGRBLCommand4.Location.X, this.Height - 62);
             btnGRBLReset.Location = new Point(btnGRBLReset.Location.X, this.Height - 62);
             btnGRBLHardReset.Location = new Point(btnGRBLHardReset.Location.X, this.Height - 62);
+            cbPort.SelectionLength = cbBaud.SelectionLength = 0;
+            BtnOpenPortSerial.Focus();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -399,7 +404,8 @@ namespace GrblPlotter
                 {
                     if (IsConnectedToGrbl())
                     {
-                        this.WindowState = FormWindowState.Minimized;
+                        Invoke(new Action(() =>
+							{this.WindowState = FormWindowState.Minimized;}));
                         Logger.Info("Minimize window");
                         AddToLog("Minimize window...");
                         Application.DoEvents();
@@ -826,6 +832,7 @@ namespace GrblPlotter
                         serialPortError = true;
                         timerSerial.Enabled = false;
                         DisconnectFromGrbl(null, null);   // ClosePortSerial();
+                        cbPort.Text = "COM1";
                         LogError("! Error sending reset (Ctrl-X)", err);
                     }
                     catch (Exception err)
@@ -1266,7 +1273,7 @@ namespace GrblPlotter
             cbPort.Enabled = !isConnected;
             cbBaud.Enabled = !isConnected;
             btnScanPort.Enabled = !isConnected;
-            //    btnClear.Enabled = isConnected;
+            //    btnClear.Enable = isConnected;
             cBCommand.Enabled = isConnected && (!isStreaming || isStreamingPause);
             btnSend.Enabled = isConnected && (!isStreaming || isStreamingPause);
             btnGRBLCommand0.Enabled = isConnected && (!isStreaming || isStreamingPause);
@@ -1313,10 +1320,12 @@ namespace GrblPlotter
 
         private void ShowConnectionControls(bool showEthernet = false)
         {
+            PanelEthernet.Visible= showEthernet;
             LblEthernetIP.Visible = LblEthernetPort.Visible = showEthernet;
             TbEthernetIP.Visible = TbEthernetPort.Visible = showEthernet;
             BtnOpenPortEthernet.Visible = showEthernet;
 
+            PanelSeriell.Visible = !showEthernet;
             cbPort.Visible = cbBaud.Visible = !showEthernet;
             BtnOpenPortSerial.Visible = btnScanPort.Visible = !showEthernet;
         }
@@ -1461,7 +1470,7 @@ namespace GrblPlotter
 
         public bool FlagGrblSettingClick { get; set; } = false;
         private void BtnGRBLCommand1_Click(object sender, EventArgs e)      // $$and $x=val - View and write Grbl settings
-        { RequestSend("$$"); GRBLSettings.Clear(); FlagGrblSettingClick = true; }
+        { RequestSend("$$"); GRBLSettings.Clear(); Grbl.Settings.Clear(); FlagGrblSettingClick = true; }
         private void BtnGRBLCommand2_Click(object sender, EventArgs e)      // $# - View gcode parameters
         { RequestSend("$#"); }
         private void BtnGRBLCmndParser_Click(object sender, EventArgs e)    // $G - View gcode parser state
@@ -1519,5 +1528,10 @@ namespace GrblPlotter
 
         #endregion
 
+        private void cbPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbPort.SelectionLength = cbBaud.SelectionLength = 0;
+            BtnOpenPortSerial.Focus();
+        }
     }
 }

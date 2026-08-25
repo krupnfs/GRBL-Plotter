@@ -3801,7 +3801,7 @@ Disegna una firma nel margine inferiore destro: scala 0,1 o inferiore e utilizza
     <value>Genera linee traballanti</value>
   </data>
   <data name="gBNoise.Text" xml:space="preserve">
-    <value>Rumore</value>
+    <value>Linee traballanti</value>
   </data>
   <data name="CbImportGraphicHatchFillNoise.Text" xml:space="preserve">
     <value>Aggiungi del rumore</value>
@@ -3985,7 +3985,7 @@ Se selezionato, ogni comando 'm' crea una nuova figura.</value>
     <value>Traccia geometrica (lento, ottimo per le forme geometriche)</value>
   </data>
   <data name="rBImportVectorizeAlgoPoTrace.Text" xml:space="preserve">
-    <value>PoTrace (veloce - ottimo per immagini e schizzi)</value>
+    <value>Potrace (veloce - ottimo per immagini e schizzi)</value>
   </data>
   <data name="groupBox48.Text" xml:space="preserve">
     <value>Algoritmo di vettorizzazione</value>
@@ -4027,7 +4027,7 @@ Se selezionato, ogni comando 'm' crea una nuova figura.</value>
     <value>Richiedi</value>
   </data>
   <data name="groupBox45.Text" xml:space="preserve">
-    <value>Vettorializzazione automatica</value>
+    <value>Vettorizzazione automatica (solo in bianco e nero)</value>
   </data>
   <data name="RrBImportVectorizeWidthSet.Text" xml:space="preserve">
     <value>Imposta la larghezza dell'immagine su</value>
@@ -4051,5 +4051,115 @@ La trasparenza deve essere &lt; soglia per essere riconosciuta come sfondo</valu
   </data>
   <data name="CbToolChangeM6PassThrough.ToolTip" xml:space="preserve">
     <value>Nota: il Grbl “classico” su Arduino Uno non riesce a elaborare il comando M6 e restituisce un errore.</value>
+  </data>
+  <data name="BtnSetGrblCustomString.ToolTip" xml:space="preserve">
+    <value>Imposta/sostituisci la stringa personalizzata. Quindi reimpostare il controller per leggere la stringa personalizzata.
+Per impostare questa stringa, invia Grbl $I=xxx, dove xxx è la stringa di personalizzazione che contiene meno di 80 caratteri. Questa stringa viene memorizzata in maiuscolo, gli spazi vengono rimossi e può contenere solo caratteri alfanumerici.</value>
+  </data>
+  <data name="label115.Text" xml:space="preserve">
+    <value>Stringa - nome file necessario</value>
+  </data>
+  <data name="CbLoadMachineDefaults.Text" xml:space="preserve">
+    <value>Carica le impostazioni predefinite</value>
+  </data>
+  <data name="CbLoadMachineDefaults.ToolTip" xml:space="preserve">
+    <value>Carica le impostazioni predefinite solo una volta, dopo la connessione, se viene trovato il nome file.</value>
+  </data>
+  <data name="label114.Text" xml:space="preserve">
+    <value>Utilizza la stringa personalizzata "$I" come nome file per caricare un caso d'uso da data\usecases.
+Utilizzare "Esporta impostazioni macchina" per salvare le "predefinite".</value>
+  </data>
+  <data name="GbGrblDefaults.Text" xml:space="preserve">
+    <value>Carica le impostazioni predefinite durante la connessione</value>
+  </data>
+  <data name="groupBox50.Text" xml:space="preserve">
+    <value>Testo informativo</value>
+  </data>
+  <data name="CbShowVertexEnable.ToolTip" xml:space="preserve">
+    <value>Per rendere effettivo l'effetto, è necessario ricaricare la grafica.</value>
+  </data>
+  <data name="cB2DViewFigureId.ToolTip" xml:space="preserve">
+    <value>Per rendere effettivo l'effetto, è necessario ricaricare la grafica.</value>
+  </data>
+  <data name="cB2DViewDirectionArrow.ToolTip" xml:space="preserve">
+    <value>Per rendere effettivo l'effetto, è necessario ricaricare la grafica.</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>Apri file</value>
+  </data>
+  <data name="BtnOpenGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>Apri il file INI nell'editor di testo Blocco note.</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>Salva impostazioni</value>
+  </data>
+  <data name="BtnSetGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>Salva alcune impostazioni importanti nel file INI.</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.Text" xml:space="preserve">
+    <value>Testa il file INI</value>
+  </data>
+  <data name="BtnTestGrblCustomStringIniFile.ToolTip" xml:space="preserve">
+    <value>Mostra alcune impostazioni importanti del file INI.</value>
+  </data>
+  <data name="BtnApply2DViewChanges.Text" xml:space="preserve">
+    <value>Applica</value>
+  </data>
+  <data name="label118.Text" xml:space="preserve">
+    <value>Cursore dimensione testo</value>
+  </data>
+  <data name="label117.Text" xml:space="preserve">
+    <value>Informazioni dimensione testo</value>
+  </data>
+  <data name="label116.Text" xml:space="preserve">
+    <value>Trasparenza dello sfondo</value>
+  </data>
+  <data name="groupBox43.Text" xml:space="preserve">
+    <value>Ridimensiona il modulo principale</value>
+  </data>
+  <data name="NudInfoTextSize2.ToolTip" xml:space="preserve">
+    <value>Dimensione del testo informativo vicino al cursore</value>
+  </data>
+  <data name="NudInfoTextSize1.ToolTip" xml:space="preserve">
+    <value>Dimensione del testo informativo nel bordo superiore sinistro della vista 2D</value>
+  </data>
+  <data name="HsbInfoTransparency.ToolTip" xml:space="preserve">
+    <value>Trasparenza dello sfondo del testo</value>
+  </data>
+  <data name="GbColorTheme.Text" xml:space="preserve">
+    <value>Tema colore</value>
+  </data>
+  <data name="label119.Text" xml:space="preserve">
+    <value>Colore del pulsante Tonalità</value>
+  </data>
+  <data name="label120.Text" xml:space="preserve">
+    <value>Colore del pannello Tonalità</value>
+  </data>
+  <data name="CbColorThemeEnable.Text" xml:space="preserve">
+    <value>Applica il tema colore all'avvio del programma</value>
+  </data>
+  <data name="label125.Text" xml:space="preserve">
+    <value>Saturazione</value>
+  </data>
+  <data name="label130.Text" xml:space="preserve">
+    <value>Luminosità</value>
+  </data>
+  <data name="label139.Text" xml:space="preserve">
+    <value>Diametro dell'utensile in mm</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbGerberFillEnable.Text" xml:space="preserve">
+    <value>Riempimento delle piste del PCB con un utensile</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportSVGUseElement.Text" xml:space="preserve">
+    <value>Elaborazione dell'elemento 'use'</value>
+    <comment>n</comment>
+  </data>
+  <data name="CbImportVectorizeInvertResult.Text" xml:space="preserve">
+    <value>Inverti risultato</value>
+  </data>
+  <data name="CbImportVectorizeOptimize1.Text" xml:space="preserve">
+    <value>Smussatura dei bordi</value>
   </data>
 </root>

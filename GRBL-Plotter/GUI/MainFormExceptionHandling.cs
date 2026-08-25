@@ -1,7 +1,7 @@
 /*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2023 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
  * 2022-04-01 add UrlEncode line 218
  * 2022-07-29 show abort dialog after 3 exceptions
  * 2023-03-30 l:84 f:ShowException add try catch
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
 */
 
 using System;
@@ -111,9 +112,9 @@ namespace GrblPlotter
             if (strt < 0) { strt = 0; }
             string txt = string.Format("Could not load file ...{0}!!!", fileName.Substring(strt));
             StatusStripSet(2, txt, Color.Fuchsia);
-            this.Text = appName + " | " + txt;
-            lbInfo.Text = "Error loading file";
-            lbInfo.BackColor = Color.Fuchsia;
+            lastLoaded = txt;
+            ShowFormText();
+            SetInfoLabel("Error loading file", Color.Fuchsia);
         }
 
         public static string GetAllFootprints(Exception except, bool full = true)
@@ -152,14 +153,12 @@ namespace GrblPlotter
         }
     }
 
+
+
     public static class EventCollector              // allowed chars: A–Z, a–z, 0–9, - . _ ~
     {
         // collect history of data processing to find error causes
-        // -time.msg_
         private static DateTime start = DateTime.Now;
-        //    private static string WindowsVersion = "";  // System.Environment.OSVersion
-        //    private static string GRBLVersion = "";
-
         internal static string installed = "";			// Installed? - regkey available
         private static string exception = "";
         private static string import = "";
@@ -173,6 +172,10 @@ namespace GrblPlotter
 
         private static readonly Dictionary<string, int> ExceptionCount = new Dictionary<string, int>();     // counter for exceptions
         private static readonly int maxExceptionCount = 3;
+
+		private static bool log=true;
+        // Trace, Debug, Info, Warn, Error, Fatal
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static bool CheckException(string except)
         {
@@ -204,18 +207,21 @@ namespace GrblPlotter
         {
             import = GetElapsedTime() + txt;
             history += import;      //"." + txt;
+			if (log) Logger.Trace("SetImport {0}",txt);
         }
 
         public static void SetStreaming(string txt)	// Sstp, Strt, Schk, Spau, Scnt, Sfin, Serr, 
         {
             stream = GetElapsedTime() + txt;
             history += stream;      //"."+txt;
+			if (log) Logger.Trace("SetStreaming {0}",txt);
         }
 
         public static void SetTransform(string txt) // Tmir, Tscl, Toff, Trot
         {
             transform = GetElapsedTime() + txt;
             history += transform;       //"." + txt;
+			if (log) Logger.Trace("SetTransform {0}",txt);
         }
 
         public static void SetCommunication(string txt, bool show = false)    // COpS, CLost(show), CRst, CRSa, CRSb, CRE, CSSa, CSEa, CSSb, CSEb - ComSendSerial, ComSendEthernet, ComReceiveSerial
@@ -223,11 +229,13 @@ namespace GrblPlotter
             communication = GetElapsedTime() + txt;
             history += communication;       //"." + txt;
             if (show) errorOccured = true;
+			if (log) Logger.Trace("SetCommunication {0}",txt);
         }
         public static void SetOpenForm(string txt) // Ftxt, Fbcd, Fimg, Fsis, Fjog, Fext, Fprb, Fmap, Flas, Fcrd, Fdiy, Fcam, F2nd, F3rd, Fprj
         {
             openForm = GetElapsedTime() + txt;
             history += openForm;       //"." + txt;
+			if (log) Logger.Trace("SetOpenForm {0}",txt);
         }
 
 
@@ -254,6 +262,7 @@ namespace GrblPlotter
             else
                 Properties.Settings.Default.guiLastEndReason = GetElapsedTime() + "END";
             Properties.Settings.Default.Save();
+			if (log) Logger.Trace("SetEnd {0}",final);
         }
 
         public static void StoreException(string txt)

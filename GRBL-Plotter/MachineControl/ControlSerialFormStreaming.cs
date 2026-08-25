@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2025 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@
  * 2023-06-14 l:344 f:StartStreaming add try/catch for writing log files
  * 2023-11-28 l:290 f:StartStreaming add info about missing subroutine
  * 2025-02-23 l:311 f:StartStreaming add M6PassThrough #435
- */
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+*/
 
 // OnRaiseStreamEvent(new StreamEventArgs((int)lineNr, codeFinish, buffFinish, status));
 // OnRaisePosEvent(new PosEventArgs(posWork, posMachine, grblStateNow, machineState, mParserState, rxString));// lastCmd));
@@ -103,6 +104,7 @@ namespace GrblPlotter
             lowLevelPerformance = Properties.Settings.Default.grblPollIntervalReduce;
             grblCharacterCounting = Properties.Settings.Default.grblStreamingProtocol1 && !isMarlin;
             Logger.Info("▼▼▼▼▼ Ser:{0} startStreaming at line:{1} to line:{2} ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼", iamSerial, startAtLine, stopAtLine);
+            SetToolChangeCommand();
 
             string infoProtocol = "Streaming Protocol: ";
             infoProtocol += grblCharacterCounting ? "Character-Counting" : "Simple Send -Response";
@@ -129,7 +131,7 @@ namespace GrblPlotter
             lastError = "";
             countGrblError = 0;
             lastSentToCOM.Clear();
-            ToolTable.Init(" (StartStreaming)");       // fill structure
+            ToolList.Init(" (StartStreaming)");       // FillToolListElements structure
             rtbLog.Clear();
 
             // check if other serial are still alive
@@ -255,9 +257,9 @@ namespace GrblPlotter
 
                 if (stopAtLine >= gCode.Length)
                     stopAtLine = gCode.Length - 1;
-                for (int i = startAtLine; i <= stopAtLine; i++)    // now copy code, replace subroutines
+                for (int i = startAtLine; i <= stopAtLine; i++)     // now copy code, replace subroutines
                 {
-                    tmp = CleanUpCodeLine(gCode[i]);
+                    tmp = CleanUpCodeLine(gCode[i]);                //  set skipM30
                     if ((!string.IsNullOrEmpty(tmp)) && (tmp[0] != ';'))//trim lines and remove all empty lines and comment lines
                     {
                         int cmdMNr = Gcode.GetCodeNrFromGCode('M', tmp);
@@ -312,7 +314,10 @@ namespace GrblPlotter
                                 {
                                     tmp = "(" + tmp + ")";
                                     if (Properties.Settings.Default.ctrlToolChange)
-                                    { InsertToolChangeCode(i, ref tmpToolInSpindle); }// insert external script-code and insert variables 
+                                    {
+                                        InsertToolChangeCode(i, ref tmpToolInSpindle);// insert external script-code and insert variables 
+                                        ToolInSpindle = tmpToolInSpindle;
+                                    }
                                     else
                                     {
                                         AddToLog(tmp + " !!! Tool change is disabled");
@@ -323,7 +328,7 @@ namespace GrblPlotter
                             }
                             if (cmdMNr == 30)
                             {
-                                if (skipM30)
+                                if (skipM30)        // set in CleanUpCodeLine
                                 { tmp = "(" + tmp + ")"; }      // hide M30
                             }
 
@@ -390,7 +395,7 @@ namespace GrblPlotter
             }
         }   // startStreaming
 
-        private void InsertToolChangeCode(int line, ref bool inSpindle)
+    /*    private void InsertToolChangeCode(int line, ref bool inSpindle)
         {
             Logger.Info("InsertToolChangeCode line:{0} tool is in spindle:{1}", line, inSpindle);
             streamingBuffer.Add("($TS)", line);         // keyword for receiving-buffer (sendBuffer.GetConfirmedLine();) "Tool change start"
@@ -426,7 +431,7 @@ namespace GrblPlotter
             gcodeVariable["TOLY"] = gcodeVariable["TOAY"];
             gcodeVariable["TOLZ"] = gcodeVariable["TOAZ"];
             gcodeVariable["TOLA"] = gcodeVariable["TOAA"];
-        }
+        }*/
 
         private void AddCodeFromFile(string fileRaw, int linenr)
         {
@@ -434,10 +439,10 @@ namespace GrblPlotter
                 return;
 
             string file = Datapath.MakeAbsolutePath(fileRaw);
-            if (Path.GetFileName(file) == string.Empty)         // path but no filename
-                return;
+            Logger.Info("◯◯◯ AddCodeFromFile line:{0}  fileRaw:{1}  file:{2}", linenr, fileRaw, file);
 
-            Logger.Info("◯◯◯ AddCodeFromFile file:{0}  line:{1}", file, linenr);
+            if (Path.GetFileName(file) == string.Empty)         // path but no filename
+            { return; }
 
             if (File.Exists(file))
             {
@@ -553,7 +558,7 @@ namespace GrblPlotter
                 }
 
                 AddToLog(string.Format("[Start streaming line:{0} - no echo]", streamingBuffer.GetSentLineNr()));
-                //       AddToLog("[Restore Settings: "+ parserStateGC+" ]");
+                //       AddToLog("[Restore ListSettings: "+ parserStateGC+" ]");
                 Logger.Info("▲▼▲▼▲ pauseStreaming start streaming ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼");
                 streamingStateNow = GrblStreaming.ok;
 
@@ -715,6 +720,7 @@ namespace GrblPlotter
                 }
             }
             else { progressUpdateMarker = true; }
+            //Logger.Trace("Progress:{0,3}%                    sent:{1} confirmed:{2}  time:{3}", codeFinish, lineNrSent, lineNrConfirmed, DateTime.Now.ToString("HH:mm:ss"));
             OnRaiseStreamEvent(new StreamEventArgs(lineNrSent, lineNrConfirmed, codeFinish, buffFinish, status));
         }
 
@@ -835,8 +841,8 @@ namespace GrblPlotter
         ***************************************************************/
         private void StreamingIDLE()
         {
-            // in main GUI: send extra Pause-Code in MainTimer_Tick from Properties.Settings.Default.flowControlText
-            // OnRaiseStreamEvent - case grblStreaming.pause: if (isStreamingPauseFirst && Properties.Settings.Default.flowControlEnable) delayedSend = 2;
+            // in main GUI: send extra Pause-Code in MainTimer_Tick from Properties.ListSettings.Default.flowControlText
+            // OnRaiseStreamEvent - case grblStreaming.pause: if (isStreamingPauseFirst && Properties.ListSettings.Default.flowControlEnable) delayedSend = 2;
             if (countPreventIdle <= 1)
             {
                 waitForIdle = false;
@@ -902,11 +908,11 @@ namespace GrblPlotter
             ListAccessoryStateRunTime(false);
         }
 
-        private void SetToolChangeCoordinates(int cmdTNr, string line = "")
+   /*     private void SetToolChangeCoordinates(int cmdTNr, string line = "")
         {
-            ToolProp toolInfo = ToolTable.GetToolProperties(cmdTNr);
+            ToolProperty toolInfo = ToolList.GetToolProperties(cmdTNr);
             gcodeVariable["TOAN"] = cmdTNr;
-            if (toolInfo.Toolnr != cmdTNr)
+            if (toolInfo.ToolNr != cmdTNr)
             {
                 gcodeVariable["TOAX"] = gcodeVariable["TOAY"] = gcodeVariable["TOAZ"] = gcodeVariable["TOAA"] = 0;
                 if (cBStatus1.Checked || cBStatus.Checked) AddToLog("\r[Tool change: " + cmdTNr.ToString() + " no Information found! (" + line + ")]");
@@ -921,7 +927,7 @@ namespace GrblPlotter
                 string coord = string.Format("X:{0:0.0} Y:{1:0.0} Z:{2:0.0} A:{3:0.0}", tx, ty, tz, ta);
                 if (cBStatus1.Checked || cBStatus.Checked) AddToLog("\r[set tool coordinates " + cmdTNr.ToString() + " " + coord + "]");
             }
-        }
+        }*/
 
         private void StreamingMonitor()
         {

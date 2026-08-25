@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,9 +34,9 @@
  * 2021-04-12 line 876 only send setup-command '$...' if system is IDLE
  * 2021-10-14 grbl 0.9 fix $10=3
  * 2021-11-23 line 446 check dataField.Length, line 793 add if (serialPort.IsOpen) 
- * 2021-12-13 replace serialPort.Write by SerialPortDataSend (in ControlSerialForm.cs)
+ * 2021-12-13 replace serialPort.WriteXML by SerialPortDataSend (in ControlSerialForm.cs)
  * 2021-12-14 add run time for spindle, flood, mist
- * 2021-12-21 line 819 replace serialPort.Write by 	SerialPortDataSend
+ * 2021-12-21 line 819 replace serialPort.WriteXML by 	SerialPortDataSend
  * 2022-01-03 InsertVariable error handling
  * 2022-01-07 rework ResetVariables
  * 2022-02-14 line 1035 use of 3rd, reset counter
@@ -54,6 +54,11 @@
  * 2023-08-03 l:1642 f:MissingConfirmationLength lock loop
  * 2024-02-25 add some locks to secure buffer
  * 2024-03-20 l:952 f:RequestSend take care of (^2
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
+ * 2026-04-29 l:500 f:ProcessGrblRealTimeStatus rework parsing of machineState
+ * 2026-07-26 l:550 f:ProcessGrblRealTimeStatus bug fix upate lblSrPn.Text
+ * 2026-07-28 l:376 f:InsertVariable add check of gcodeVariableString
+ * 2026-08-09 l:554 f:ProcessGrblRealTimeStatus bug fix display of pin state
 */
 
 // OnRaiseStreamEvent(new StreamEventArgs((int)lineNr, codeFinish, buffFinish, status));
@@ -78,6 +83,7 @@ namespace GrblPlotter
         private GrblState grblStateNow = GrblState.unknown;
         private GrblState grblStateLast = GrblState.unknown;
         private string lastMessage = "";
+        private int machineStateAOccured = 10;
 
         public bool IsGrblVers0 { get; private set; } = false;		// use as default grbl 1.x -> ProcessGrblRealTimeStatus
         public string GrblVers { get; private set; } = "";
@@ -332,7 +338,7 @@ namespace GrblPlotter
             else if (rxString.ToUpper().IndexOf("ERROR") >= 0)
             { ProcessGrblErrorMessage(rxString); }   // https://github.com/gnea/grbl/wiki/Grbl-v1.1-Interface#grbl-response-messages
 
-            /***** Show GRBL Settings Info if Version is >= 1.0  *****/
+            /***** Show GRBL ListSettings Info if Version is >= 1.0  *****/
             else if ((rxString.IndexOf("$") >= 0) && (rxString.IndexOf("=") >= 0))
             { ProcessGrblUserQuery(rxString); }
 
@@ -426,6 +432,8 @@ namespace GrblPlotter
          * should occur with same frequent as timer interrupt -> each 200ms
          * old:         <Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000>
          * new in 1.1   < Idle | MPos:0.000,0.000,0.000 | FS:0,0 | WCO:0.000,0.000,0.000 >
+		 * from atomstack: <Idle|WPos:0.000,64.938,3.000|Bf:511,2048,2048|FS:0,0|WCO:100.000,100.000,0.000|APP:33|USB:0>
+		 *				   <Idle|WPos:0.000,64.938,3.000|Bf:511,2048,2048|FS:0,10|Ov:100,100,100|A:S|APP:33|USB:0>
          **********************************************************************************************/
         private void ProcessGrblRealTimeStatus(string text)    // '<' and '>' already removed
         {
@@ -438,9 +446,11 @@ namespace GrblPlotter
                 Logger.Error("processGrblRealTimeStatus dataField.Length<=2: '{0}'", text);
                 return;
             }
-            string _machineState = dataField[0].Trim(' ');       // Valid states types: Idle, Run, Hold, Jog, Alarm, Door, Check, Home, Sleep
-                                                                 // The first (Machine State) and second (Current Position) data fields are always included in every report.
-                                                                 // Assume any following data field may or may not exist and can be in any order.
+            string _machineState = dataField[0].Trim(' ');
+            grblStateNow = Grbl.ParseStatus(_machineState);            // get actual state - Valid states types: Idle, Run, Hold, Jog, Alarm, Door, Check, Home, Sleep
+                                                                       // The first (Machine State) and second (Current Position) data fields are always included in every report.
+                                                                       // Assume any following data field may or may not exist and can be in any order.
+
             if (IsGrblVers0)	//	handle old format from grbl vers. 0.9
             {
                 if (dataField.Length > 3)   // get 1st part
@@ -466,81 +476,92 @@ namespace GrblPlotter
             {
                 if (dataField.Length >= 2)
                 {
-                    if (dataField[1].Contains("MPos"))      // Current position as MPos or WPos
-                    {
-                        axisCount = Grbl.GetPosition(iamSerial, dataField[1], ref posMachine);
-                        posWork = posMachine - posWCO;
-                    }
-                    else
-                    {
-                        axisCount = Grbl.GetPosition(iamSerial, dataField[1], ref posWork);
-                        posMachine = posWork + posWCO;
-                    }
-                }
-                if (dataField.Length > 2)
-                {
                     this.machineState.Pn = "";
-                    for (int i = 2; i < dataField.Length; i++)
+                    for (int i = 1; i < dataField.Length; i++)
                     {
-                        if (dataField[i].Contains("WCO"))           // Work Coordinate Offset
+                        if (dataField[i].Contains("MPos"))      // Current position as MPos or WPos
+                        {
+                            axisCount = Grbl.GetPosition(iamSerial, dataField[1], ref posMachine);
+                            posWork = posMachine - posWCO;
+                            continue;
+                        }
+                        else if (dataField[i].Contains("WPos"))
+                        {
+                            axisCount = Grbl.GetPosition(iamSerial, dataField[1], ref posWork);
+                            posMachine = posWork + posWCO;
+                            continue;
+                        }
+                        else if (dataField[i].Contains("WCO"))           // Work Coordinate Offset
                         {
                             Grbl.GetPosition(iamSerial, dataField[i], ref posWCO);
                             continue;
                         }
+
                         string[] data = dataField[i].Split(':');
                         if (data.Length > 1)
                         {
-                            if (data[0].Contains("Bf"))            // Buffer state - needs to be enabled in config.h file
+                            if (data[0].Contains("APP"))
+                                continue;
+                            else if (data[0].Contains("USB"))
+                                continue;
+                            else if (data[0].Contains("Bf"))            // Buffer state - needs to be enabled in config.h file
                             { this.machineState.Bf = lblSrBf.Text = data[1]; continue; }
-                            if (data[0].Contains("Ln"))            // Line number - needs to be enabled in config.h file
+                            else if (data[0].Contains("Ln"))            // Line number - needs to be enabled in config.h file
                             { this.machineState.Ln = lblSrLn.Text = data[1]; continue; }
-                            if (data[0].Contains("FS"))            // Current Feed and Speed - This data field will always appear, unless it was explicitly disabled in the config.h file
+                            else if (data[0].Contains("FS"))            // Current FeedXY and Speed - This data field will always appear, unless it was explicitly disabled in the config.h file
                             { this.machineState.FS = lblSrFS.Text = data[1]; continue; }
-                            if (data[0].Contains("F"))             // Current Feed - see above is speed is disabled in config.h
+                            else if (data[0].Contains("F"))             // Current FeedXY - see above is speed is disabled in config.h
                             { this.machineState.FS = lblSrFS.Text = data[1]; continue; }
-                            if (data[0].Contains("Pn"))            // Input Pin State - will not appear if No input pins are detected as triggered.
-                            { this.machineState.Pn = data[1]; continue; } //else { this.machineState.Pn = lblSrPn.Text = ""; }
-                            if (data[0].Contains("Ov"))            // Override Values - This data field will not appear if It is disabled in the config.h file
+                            else if (data[0].Contains("Pn"))            // Input Pin State - will not appear if No input pins are detected as triggered.
+                            { this.machineState.Pn = data[1]; continue; }
+                            else if (data[0].Contains("Ov"))            // Override Values - This data field will not appear if It is disabled in the config.h file
                             {
                                 this.machineState.Ov = lblSrOv.Text = data[1];
-
-                                if (dataField[dataField.Length - 1].IndexOf("A:") >= 0)             // Accessory State
+                                if (!text.Contains("|A:"))
                                 {
-                                    this.machineState.A = lblSrA.Text = dataField[dataField.Length - 1].Split(':')[1];
-                                    if (iamSerial == 1)
-                                    {
-                                        if (this.machineState.A.Contains("S") || this.machineState.A.Contains("C"))
-                                        { stopwatchSpindle.Start(); }
-                                        else
-                                        { AddToRunTimer(stopwatchSpindle, "grblRunTimeSpindle"); }
-
-                                        if (this.machineState.A.Contains("F"))
-                                        { stopwatchFlood.Start(); }
-                                        else
-                                        { AddToRunTimer(stopwatchFlood, "grblRunTimeFlood"); }
-
-                                        if (this.machineState.A.Contains("M"))
-                                        { stopwatchMist.Start(); }
-                                        else
-                                        { AddToRunTimer(stopwatchMist, "grblRunTimeMist"); }
-                                    }
-                                }
-                                else
-                                {
-                                    this.machineState.A = lblSrA.Text = "";
                                     AddToRunTimer(stopwatchSpindle, "grblRunTimeSpindle");
                                     AddToRunTimer(stopwatchFlood, "grblRunTimeFlood");
                                     AddToRunTimer(stopwatchMist, "grblRunTimeMist");
                                 }
                                 continue;
                             }
+
+                            else if (data[0].Contains("A"))
+                            {
+                                this.machineState.A = lblSrA.Text = data[1];	//dataField[dataField.Length - 1].Split(':')[1];
+                                machineStateAOccured = 15;
+                                if (iamSerial == 1)
+                                {
+                                    if (this.machineState.A.Contains("S") || this.machineState.A.Contains("C"))
+                                    { stopwatchSpindle.Start(); }
+                                    else
+                                    { AddToRunTimer(stopwatchSpindle, "grblRunTimeSpindle"); }
+
+                                    if (this.machineState.A.Contains("F"))
+                                    { stopwatchFlood.Start(); }
+                                    else
+                                    { AddToRunTimer(stopwatchFlood, "grblRunTimeFlood"); }
+
+                                    if (this.machineState.A.Contains("M"))
+                                    { stopwatchMist.Start(); }
+                                    else
+                                    { AddToRunTimer(stopwatchMist, "grblRunTimeMist"); }
+                                }
+                                continue;
+                            }
                         }
-                    }   // for dataField
+                    }   // for-loop dataField
                     lblSrPn.Text = this.machineState.Pn;
-                    lblSrA.Text = this.machineState.A;
+                    if (machineStateAOccured-- < 0)
+                    {
+                        this.machineState.A = lblSrA.Text = "";
+                        AddToRunTimer(stopwatchSpindle, "grblRunTimeSpindle");
+                        AddToRunTimer(stopwatchFlood, "grblRunTimeFlood");
+                        AddToRunTimer(stopwatchMist, "grblRunTimeMist");
+                        lblSrA.Text = this.machineState.A;
+                    }
                 }
             }   // if (isGrblVers0)
-            grblStateNow = Grbl.ParseStatus(_machineState);            // get actual state
             lblSrState.BackColor = Grbl.GrblStateColor(grblStateNow);
             lblSrState.Text = Grbl.StatusToText(grblStateNow);  // status;
 
@@ -668,7 +689,7 @@ namespace GrblPlotter
             if (Grbl.isVersion_0)
                 RequestSend("$10=3");   // grbl v 0.9 get WPos and MPos
             else
-                RequestSend("$10=2");   // grbl v 1.1 Enable WPos: Disable MPos: Enabled Buf:
+                RequestSend("$10=2");   // grbl v 1.1 Enable WPos: Disable MPos: Enable Buf:
             ReadSettings();
             return;
         }
@@ -706,7 +727,7 @@ namespace GrblPlotter
 
         /****************************************************************
          * processGrblFeedbackMessage
-         * Feed back values in [ ] G54-G59,G28,G92,TLO,PRB,GC 
+         * FeedXY back values in [ ] G54-G59,G28,G92,TLO,PRB,GC 
          ****************************************************************/
         private void ProcessGrblFeedbackMessage(string[] dataField)  // dataField = rxString.Trim(charsToTrim).Split(':')
         {
@@ -899,6 +920,7 @@ namespace GrblPlotter
                         AddToLog(string.Format("< {0}", rxStringTmp));
 
                     GRBLSettings.Add(rxStringTmp);
+                    Grbl.Settings.Add(rxStringTmp);
                     Grbl.SetSettings(id, val);              // splt[1]
                     OnRaiseStreamEvent(new StreamEventArgs(id, 0, 0, 0, GrblStreaming.setting));
                 }
@@ -928,7 +950,7 @@ namespace GrblPlotter
         }
 
         /**********************************************************************************
-         * requestSend fill up send buffer, called by main-prog for single commands or by preProcessStreaming
+         * requestSend FillToolListElements up send buffer, called by main-prog for single commands or by preProcessStreaming
          * or called by preProcessStreaming to stream GCode data
          * requestSend -> processSend -> sendLine
          **********************************************************************************/
@@ -949,15 +971,15 @@ namespace GrblPlotter
                 }
                 else
                 {
-					if (data.StartsWith("(^")) 
-						keepComments = false;
-					
+                    if (data.StartsWith("(^"))
+                        keepComments = false;
+
                     if (keepComments && data.StartsWith("("))       	// just print comment
                     {
                         AddToLog("*** " + data);
                         return true;
                     }
-					
+
                     var tmp = CleanUpCodeLine(data, keepComments);
                     if ((!string.IsNullOrEmpty(tmp)) && (!tmp.StartsWith(";")))  //(tmp[0] != ';'))    // trim lines and remove all empty lines and comment lines
                     {
@@ -1112,7 +1134,7 @@ namespace GrblPlotter
                         int cmdTNr = Gcode.GetCodeNrFromGCode('T', line);
                         if (cmdTNr >= 0)
                         {
-                            ToolTable.Init(" (ProcessSend)");       // fill structure
+                            //                    ToolList.Init(" (ProcessSend)");       // FillToolListElements structure
                             SetToolChangeCoordinates(cmdTNr, line);
                             // save actual tool info as last tool info
                             gcodeVariable["TOLN"] = gcodeVariable["TOAN"];
@@ -1354,40 +1376,44 @@ namespace GrblPlotter
         private string InsertVariable(string line)
         {
             int pos, posold = 0;
-            double myvalue;
+            //    double myvalueDouble;
+            string myvalueString;
             string myvar, mykey;
             int pcmt = line.IndexOf('(');
             if (pcmt < 0) { pcmt = 1000; }
             int safetyExit = 6;
-            if (line.Length > 5)        // min length needed to be replaceable: x#TOLX
+            if (line.Length >= 5)        // min length needed to be replaceable: x#TOLX
             {
                 do
                 {
-                    pos = line.IndexOf('#', posold);				// not found, pos = -1
-                    if ((pos > 0) && (pos < pcmt))                  // don*t care about '#' inside a comment
+                    pos = line.IndexOf('#', posold);                // not found, pos = -1
+                    if ((pos >= 0) && (pos < pcmt))                  // don*t care about '#' inside a comment
                     {
-                        if (pos <= (line.Length - 5))				// max pos exceeded?
+                        if (pos <= (line.Length - 5))               // max pos exceeded?
                         {
-                            myvalue = 0;
+                            myvalueString = "";
                             myvar = line.Substring(pos, 5);
                             mykey = myvar.Substring(1);                         // get variable
 
+                            SetToolChangeCommand();
                             if (gcodeVariable.ContainsKey(mykey))               // find value in gcode
-                            { myvalue = gcodeVariable[mykey]; }
+                            { myvalueString = string.Format("{0:0.000}", gcodeVariable[mykey]).Replace(",", "."); }
+                            else if (gcodeVariableString.ContainsKey(mykey))               // find value in gcode
+                            { myvalueString = gcodeVariableString[mykey]; }
                             else if (GuiVariables.variable.ContainsKey(mykey))  // find value in gui
-                            { myvalue = GuiVariables.variable[mykey]; }
+                            { myvalueString = string.Format("{0:0.000}", GuiVariables.variable[mykey]).Replace(",", "."); }
                             else
                             {
                                 line += " (" + mykey + " not found)";
-                                AddToLog("< replace NOK " + mykey + " = " + myvalue.ToString());
+                                AddToLog("< replace NOK " + mykey + " = " + myvalueString);
                                 Logger.Error("InsertVariable '{0}' not found in '{1}'", mykey, line);
                             }
 
                             if (cBStatus1.Checked || cBStatus.Checked)
-                            { AddToLog("< replace " + mykey + " = " + myvalue.ToString()); }
+                            { AddToLog("< replace " + mykey + " = " + myvalueString); }
 
-                            line = line.Replace(myvar, string.Format("{0:0.000}", myvalue));
-                            Logger.Trace("⚠⚠⚠ InsertVariable var:{0}  value:{1} in line:{2}", mykey, myvalue, line);
+                            line = line.Replace(myvar, myvalueString);// string.Format("{0:0.000}", myvalueDouble));
+                            Logger.Trace("⚠⚠⚠ InsertVariable var:{0}  value:{1} in line:{2}", mykey, myvalueString, line);
                         }
                         else
                         {
@@ -1454,6 +1480,10 @@ namespace GrblPlotter
             gcodeVariable.Add("TOLY", toly);
             gcodeVariable.Add("TOLZ", tolz);
             gcodeVariable.Add("TOLA", tola);
+
+            if (resetToolCoord)
+                SetToolChangeCoordinates(1);    // 2026-07-28 init with tool nr 1
+            SetToolChangeCommand();
         }
         private void SaveLastPos()
         {

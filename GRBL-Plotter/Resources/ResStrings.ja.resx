@@ -117,6 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="grblAlarm" xml:space="preserve">
+    <value>警報</value>
+  </data>
+  <data name="grblCheck" xml:space="preserve">
+    <value>小切手</value>
+  </data>
+  <data name="grblDoor" xml:space="preserve">
+    <value>ドア</value>
+  </data>
+  <data name="grblHold" xml:space="preserve">
+    <value>ホールド</value>
+  </data>
+  <data name="grblHome" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="grblIdle" xml:space="preserve">
+    <value>アイドル状態</value>
+  </data>
+  <data name="grblJog" xml:space="preserve">
+    <value>ジョグ</value>
+  </data>
+  <data name="grblProbe" xml:space="preserve">
+    <value>調査</value>
+  </data>
+  <data name="grblRun" xml:space="preserve">
+    <value>走る</value>
+  </data>
+  <data name="grblSleep" xml:space="preserve">
+    <value>睡眠</value>
+  </data>
+  <data name="grblNotConnected" xml:space="preserve">
+    <value>grblコントローラーが接続されていません！\r\n目的のアクションを実行できません！</value>
+  </data>
   <data name="mainAttention" xml:space="preserve">
     <value>注意</value>
   </data>
@@ -225,6 +258,15 @@
   <data name="mainQuit" xml:space="preserve">
     <value>GRBL-Plotterを終了しますか？</value>
   </data>
+  <data name="mainSimuSpeed" xml:space="preserve">
+    <value>速度</value>
+  </data>
+  <data name="mainSimuStart" xml:space="preserve">
+    <value>パスシミュレーションを開始</value>
+  </data>
+  <data name="mainSimuStop" xml:space="preserve">
+    <value>シミュレーションを停止</value>
+  </data>
   <data name="mainStreamingActive" xml:space="preserve">
     <value>ストリーミングはまだアクティブです-停止を押して再試行してください</value>
   </data>
@@ -276,45 +318,6 @@
   <data name="serialOpen" xml:space="preserve">
     <value>開いた</value>
   </data>
-  <data name="mainSimuStart" xml:space="preserve">
-    <value>パスシミュレーションを開始</value>
-  </data>
-  <data name="mainSimuStop" xml:space="preserve">
-    <value>シミュレーションを停止</value>
-  </data>
-  <data name="mainSimuSpeed" xml:space="preserve">
-    <value>速度</value>
-  </data>
-  <data name="grblAlarm" xml:space="preserve">
-    <value>警報</value>
-  </data>
-  <data name="grblCheck" xml:space="preserve">
-    <value>小切手</value>
-  </data>
-  <data name="grblDoor" xml:space="preserve">
-    <value>ドア</value>
-  </data>
-  <data name="grblHold" xml:space="preserve">
-    <value>ホールド</value>
-  </data>
-  <data name="grblHome" xml:space="preserve">
-    <value>ホーム</value>
-  </data>
-  <data name="grblIdle" xml:space="preserve">
-    <value>アイドル状態</value>
-  </data>
-  <data name="grblJog" xml:space="preserve">
-    <value>ジョグ</value>
-  </data>
-  <data name="grblProbe" xml:space="preserve">
-    <value>調査</value>
-  </data>
-  <data name="grblRun" xml:space="preserve">
-    <value>走る</value>
-  </data>
-  <data name="grblSleep" xml:space="preserve">
-    <value>睡眠</value>
-  </data>
   <data name="statusStripeCheckCOM" xml:space="preserve">
     <value>詳細については、COMウィンドウを確認してください</value>
   </data>
@@ -342,14 +345,14 @@
   <data name="statusStripeResetNeeded" xml:space="preserve">
     <value>おそらくコントローラーのリセットが必要です</value>
   </data>
+  <data name="statusStripeSelectionMoved" xml:space="preserve">
+    <value>選択を移動しました</value>
+  </data>
   <data name="statusStripeStreamingStatusSaved" xml:space="preserve">
     <value>ストリーミングステータスとGコードは「_lastProcessed.nc」に保存されます。 プログラムの再起動後の継続が可能です。</value>
   </data>
   <data name="statusStripeUpKeys" xml:space="preserve">
     <value>Ctrlキーを押しながら選択したブロックを1つ上に移動します。 Control-Shift-Upでトップに移動</value>
-  </data>
-  <data name="statusStripeSelectionMoved" xml:space="preserve">
-    <value>選択を移動しました</value>
   </data>
   <data name="statusStripeCheckUpdate" xml:space="preserve">
     <value>「GitHubで新しいGRBL-Plotterリリースを確認する」-[設定-プログラム制御]で無効にできます</value>
@@ -398,9 +401,6 @@
   </data>
   <data name="cameraDistortionMarker" xml:space="preserve">
     <value>歪みマーカー</value>
-  </data>
-  <data name="grblNotConnected" xml:space="preserve">
-    <value>grblコントローラーが接続されていません！\r\n目的のアクションを実行できません！</value>
   </data>
   <data name="useCaseInfo" xml:space="preserve">
     <value>ユースケースは、特定のマシンやアプリケーションの設定を調整するための事前設定されたセットアップです。\ r \ n選択して適用したユースケースの設定は、グラフィックのインポート後も残ります。\ r \ nユースケースのニーズアクセスできるように\ data \ usecasesに保存されます。\ r \ nエクスポートされたマシン設定とそのサブセットも使用できます。</value>
@@ -713,5 +713,74 @@ https://librecad.readthedocs.io/en/latest/ref/widgets.html#widget-layerlistを�
   </data>
   <data name="loadMessageReload" xml:space="preserve">
     <value>リロード</value>
+  </data>
+  <data name="ucSetupUnfoldOnMouseOver" xml:space="preserve">
+    <value>マウスオーバーで展開</value>
+  </data>
+  <data name="ucSetupControlSize" xml:space="preserve">
+    <value>サイズ制御</value>
+  </data>
+  <data name="ucSetupJoyStickRaster" xml:space="preserve">
+    <value>ジョイスティックラスタ</value>
+  </data>
+  <data name="ucSetupStopJoggingOnMouseUp" xml:space="preserve">
+    <value>マウスアップでジョグを停止</value>
+  </data>
+  <data name="ucSetupShowClassicButtons" xml:space="preserve">
+    <value>クラシックボタンを表示</value>
+  </data>
+  <data name="ucSetupShowArrows" xml:space="preserve">
+    <value>ジョイスティックに矢印を表示</value>
+  </data>
+  <data name="ucSetupShowLabel" xml:space="preserve">
+    <value>ステップサイズラベルを表示</value>
+  </data>
+  <data name="optionFillHeadlineLaser" xml:space="preserve">
+    <value>レーザーのハッチング塗りつぶし</value>
+  </data>
+  <data name="optionFillEnable" xml:space="preserve">
+    <value>ハッチング塗りつぶしを有効にする</value>
+  </data>
+  <data name="optionFillDistance" xml:space="preserve">
+    <value>線間隔</value>
+  </data>
+  <data name="optionFillAngle" xml:space="preserve">
+    <value>線角度</value>
+  </data>
+  <data name="optionFillAngleIncrementEnable" xml:space="preserve">
+    <value>角度増分を有効にする</value>
+  </data>
+  <data name="optionFillAngleIncrement" xml:space="preserve">
+    <value>角度を増分する</value>
+  </data>
+  <data name="optionFillInsetDistance" xml:space="preserve">
+    <value>インデント</value>
+  </data>
+  <data name="optionFillDeletePath" xml:space="preserve">
+    <value>周囲のパスを削除</value>
+  </data>
+  <data name="optionFillHeadlinePlotter" xml:space="preserve">
+    <value>プロッター用のハッチング充填</value>
+  </data>
+  <data name="optionFillCross" xml:space="preserve">
+    <value>クロスハッチ</value>
+  </data>
+  <data name="optionFillGradient" xml:space="preserve">
+    <value>グラデーション開始（0＝オフ）</value>
+  </data>
+  <data name="deviceSetupOffsetOrigin" xml:space="preserve">
+    <value>グラフィック原点を設定</value>
+  </data>
+  <data name="deviceSetupOffsetOriginX" xml:space="preserve">
+    <value>グラフィック原点 X</value>
+  </data>
+  <data name="deviceSetupOffsetOriginY" xml:space="preserve">
+    <value>グラフィック原点 Y</value>
+  </data>
+  <data name="deviceSetupPathOptimation" xml:space="preserve">
+    <value>ツールパスを最適化</value>
+  </data>
+  <data name="importMessagePDNJErrorMyTrace" xml:space="preserve">
+    <value>「Geometric trace」の使用中にエラーが発生しました。「Edge smoothing」を無効にするか、代わりに Potrace アルゴリズムを使用してみてください。</value>
   </data>
 </root>

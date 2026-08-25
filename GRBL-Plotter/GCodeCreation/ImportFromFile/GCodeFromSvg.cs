@@ -24,7 +24,7 @@
  *
  * Level 2: graphicRelated: collect dots, lines, arcs; sorting by distance, merging, clipping, grouping, tangential axis
  *			- collect path-data (pen-down path): either path with line and arc or just a dot
- *			- path modifications: remove offset, hatch fill, repeat paths, sort by distance and merge, 
+ *			- path modifications: remove offset, hatch FillToolListElements, repeat paths, sort by distance and merge, 
  *			- tangential axis, drag-knife, clipping and tiling, path extension
  *
  * Level 3: graphic2Gcode: translate graphic-paths into GCode commands
@@ -34,7 +34,7 @@
 
 /*  GCodeFromSVG.cs a static class to convert SVG data into G-Code 
     Not implemented: 
-        Basic-shapes: Text, Image
+        Basic-shapes: Text, ImageForm
         Transform: rotation with offset, skewX, skewY
 
     GCode will be written to gcodeString[gcodeStringIndex] where gcodeStringIndex corresponds with color of element to draw
@@ -44,7 +44,7 @@
    2018-01-02 Bugfix SVG rect transform (G3 in roundrect)
               Bugfix SVG End GCode Path before next SVG subpath
               Bugfix Scale to max dimension
-   2018-07    importInMM = Properties.Settings.Default.importUnitmm;
+   2018-07    importInMM = Properties.ListSettings.Default.importUnitmm;
    2018-11-04 Y-Offset Problem line 347: ...(svgHeightPx * scale)
               Transform problem: overwrite old matrix[index] line 467: end if here
    2019-01-23 Change order line 165
@@ -62,7 +62,7 @@
    2019-12-07 add extended log
    2019-12-22 Line 100 add try/catch for bad SVG-XML
    2020-02-28 Bug fix "polygon"
-   2020-03-30 Grouping also by Layer-Name (ID of 1st level groups)
+   2020-03-30 Grouping also by Layer-ToolName (ID of 1st level groups)
    2020-04-08 Line 466 adapt changing from arkypita-LaserGRBL  Experimental SVG support #451
  * 2020-05-07 Replace class Plotter by class Graphic for sorting
  * 2020-07-20 clean up
@@ -96,20 +96,23 @@
  * 2023-09-07 l:1375 f:ParsePathCommand check and fix arguments before processing   // Example to fix: '68.93206.00002'
  *            l:1600 f:ParsePathCommand bug fix relative commands for C, S
  * 2023-09-12 l:1390 f:ParsePathCommand also take care of this combination          // 1.042.018.751.751
- * 2023-11-07 l:483  f:ParseGlobals set default color and fill, also ParseAttributes (fill, stroke)        
+ * 2023-11-07 l:483  f:ParseGlobals set default color and FillToolListElements, also ParseAttributes (FillToolListElements, stroke)        
  * 2023-11-09 l:224  f:ConvertFromFile add "<svg "
  * 2023-11-10 l:298	 f:ConvertSVG import 2nd fix file, if importSVGAddOnEnable
  * 2023-11-11 replace floats by double
  * 2024-01-24 l:1349 f:ParsePath check if d-attribute exists before processing #2139 LaserGRBL
- * 2024-07-22 l:710  f:ParseAttributs if is stroke not set, use fill color
- * 2024-12-16 l:1160 take care of Properties.Settings.Default.importSVGCircleToDotS
- * 2025-02-26 l:1054 f:ParseBasicElement also check for fill-opacity="0" to exclude objects #436
+ * 2024-07-22 l:710  f:ParseAttributs if is stroke not set, use FillToolListElements color
+ * 2024-12-16 l:1160 take care of Properties.ListSettings.Default.importSVGCircleToDotS
+ * 2025-02-26 l:1054 f:ParseBasicElement also check for FillToolListElements-opacity="0" to exclude objects #436
+ * 2025-04-04 l:441  f:ParseGlobals accept ',' in viewbox parameter #440
+ * 2026-05-18 l:1086 f:ParseBasicElement remove all leading and trailing white-space characters		LaserGRBL: LINES MISSING FROM SVG FILE LOAD INTO LASERGRBL  #2763
+ * 2026-07-21 l:780  f:CalcPenWidth limit width-number to 3 digits -> Format("{0:0.000}
 */
 
 /* SetHeaderMessages...
  * 1101 Unknown SVG-Path-Element
  * 1102 Element not visible
- * 1103 Not supported SVG element: Image
+ * 1103 Not supported SVG element: ImageForm
  * 1104 Unknown SVG element
  * 1105 'tspan' within 'textPath'
  * 1106 Attribute not implemented
@@ -124,9 +127,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 using System.Xml.Linq;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace GrblPlotter
 {
@@ -137,7 +140,7 @@ namespace GrblPlotter
         private static bool svgNodesOnly = true;            // if true only do pen-down -up on given coordinates
         private static bool svgComments = true;             // if true insert additional comments into GCode
         private static bool svgConvertCircleToDot = false;  // if true, a dot with deptj of circle radius will be created
-        private static bool svgPathStartNewFigure = false;  // if true, each 'm' in the path, creates a new figure
+        private static readonly bool svgPathStartNewFigure = false;  // if true, each 'm' in the path, creates a new figure
 
         private static bool svgConvertToMM = true;
         private static double gcodeScale = 1;                    // finally scale with this factor if svgScaleApply and svgMaxSize
@@ -289,7 +292,7 @@ namespace GrblPlotter
             svgConvertToMM = Properties.Settings.Default.importUnitmm;                  // Target units and display in setup
             svgNodesOnly = Properties.Settings.Default.importSVGNodesOnly;
             svgConvertCircleToDot = Properties.Settings.Default.importSVGCircleToDot;
-            //svgPathStartNewFigure = Properties.Settings.Default.importSVGPathNewFigure;
+            //svgPathStartNewFigure = Properties.ListSettings.Default.importSVGPathNewFigure;
 
             ConversionInfo = "";
             shapeCounter = 0; skipCounter = 0;
@@ -407,7 +410,7 @@ namespace GrblPlotter
             {
                 string viewbox = svgCode.Attribute("viewBox").Value;
                 logSource = "viewBox " + viewbox;
-                viewbox = Regex.Replace(viewbox, @"\s+", " ").Replace(' ', '|');    // remove double space
+                viewbox = Regex.Replace(viewbox, @"\s+", " ").Replace(',', '|').Replace(' ', '|');    // remove double space
                 var split = viewbox.Split('|');
                 vbOffX = -ConvertToPixel(split[0]);
                 vbOffY = -ConvertToPixel(split[1]);
@@ -516,7 +519,7 @@ namespace GrblPlotter
                 if (svgComments) Graphic.SetHeaderInfo(" SVG Dimension not given ");
 
             /***************************************************************************************/
-            //if (Properties.Settings.Default.importSVGApplyFill)
+            //if (Properties.ListSettings.Default.importSVGApplyFill)
             Graphic.SetPenColor("black");
             //Graphic.SetPenFill("black");
             SetPenWidth("1");
@@ -711,7 +714,7 @@ namespace GrblPlotter
             attributeFill = "";
             if (element.Attribute("style") != null)
             {
-                attributeStroke = GetStyleProperty(element, "stroke");  // if is stroke not set, use fill color
+                attributeStroke = GetStyleProperty(element, "stroke");  // if is stroke not set, use FillToolListElements color
                 if (logEnable) Logger.Trace("  ParseAttributs style stroke:'{0}'", attributeStroke);
                 logSource = "ParseAttributs: stroke: " + attributeStroke;
                 if (attributeStroke.Length > 1)
@@ -726,7 +729,7 @@ namespace GrblPlotter
                         Graphic.SetPenColor(globalTextProp.fill = attributeFill.StartsWith("#") ? attributeFill.Substring(1) : attributeFill);
                     Graphic.SetPenFill(globalTextProp.fill = attributeFill.StartsWith("#") ? attributeFill.Substring(1) : attributeFill);
                 }
-                /*    attributeStrokeWidth = GetStyleProperty(element, "stroke-width"); -> globalTextProp.Update(element);
+                /*    attributeStrokeWidth = GetStyleProperty(element, "stroke-width"); -> globalTextProp.UpdateToolTip(element);
                     logSource = "ParseAttributs: stroke-width: " + attributeStrokeWidth;
                     if (attributeStrokeWidth.Length > 0)
                         filterKeepWidth = SetPenWidth(attributeStrokeWidth);
@@ -734,7 +737,7 @@ namespace GrblPlotter
                 SetDashPattern(GetStyleProperty(element, "stroke-dasharray"));
             }
 
-            if (element.Attribute("stroke") != null)    // if is stroke not set, use fill color
+            if (element.Attribute("stroke") != null)    // if is stroke not set, use FillToolListElements color
             {
                 attributeStroke = element.Attribute("stroke").Value;
                 if (logEnable) Logger.Trace("  ParseAttributs stroke:'{0}'", attributeStroke);
@@ -753,7 +756,7 @@ namespace GrblPlotter
                     Graphic.SetPenFill(attributeFill.StartsWith("#") ? attributeFill.Substring(1) : attributeFill);
                 }
             }
-            /*    if (element.Attribute("stroke-width") != null)    -> globalTextProp.Update(element);
+            /*    if (element.Attribute("stroke-width") != null)    -> globalTextProp.UpdateToolTip(element);
                 {
                     attributeStrokeWidth = element.Attribute("stroke-width").Value;
                     logSource = "ParseAttributs: stroke-width2: " + attributeStrokeWidth;
@@ -781,7 +784,7 @@ namespace GrblPlotter
                 nr = ConvertToPixel(txt);   // = txt * 96
             }
             if (logEnable) Logger.Trace("CalcPenWidth txt:{0}   converted:{1}  scale:{2}  result:{3}", txt, nr, svgStrokeWidthScale, nr * svgStrokeWidthScale);
-            return Math.Round(nr * svgStrokeWidthScale, 3).ToString().Replace(',', '.');
+            return string.Format("{0:0.000}",Math.Round(nr * svgStrokeWidthScale, 3)).Replace(',', '.');
         }
 
         /// <summary>
@@ -1052,7 +1055,7 @@ namespace GrblPlotter
                 string visibility = "";
                 if (pathElement.Attribute("visibility") != null) { visibility = pathElement.Attribute("visibility").Value; }
                 if (pathElement.Attribute("fill-opacity") != null) { visibility = pathElement.Attribute("fill-opacity").Value; }
-                if (Properties.Settings.Default.importSVGDontPlot && (visibility.Contains("hidden")||visibility.Contains("0")))
+                if (Properties.Settings.Default.importSVGDontPlot && (visibility.Contains("hidden") || visibility.Contains("0")))
                 {
                     Graphic.SetHeaderInfo(string.Format(" Hide SVG Element:{0}   Id:{1}", form, attrId));
                     Graphic.SetHeaderMessage(string.Format(" {0}-1102: SVG Element '{1}' is not visible and will not be imported", CodeMessage.Attention, form));
@@ -1081,7 +1084,7 @@ namespace GrblPlotter
                 if (pathElement.Attribute("r") != null) r = ConvertToPixel(pathElement.Attribute("r").Value);
                 if (pathElement.Attribute("points") != null)
                 {
-                    points = pathElement.Attribute("points").Value.Split(' ');
+                    points = pathElement.Attribute("points").Value.Trim().Split(' ');	// 2026-05-18 remove all leading and trailing white-space characters
                     if (points.Length == 1)     // not separated by ' '
                     {
                         string[] values = pathElement.Attribute("points").Value.Split(',');

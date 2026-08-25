@@ -1,0 +1,858 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&gt;&gt;nudLaserDiameter.Name" xml:space="preserve">
+    <value>nudLaserDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Name" xml:space="preserve">
+    <value>cbLaserAir</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Name" xml:space="preserve">
+    <value>cbLaserM3</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Name" xml:space="preserve">
+    <value>nudLaserPasses</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Name" xml:space="preserve">
+    <value>nudLaserPower</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Name" xml:space="preserve">
+    <value>nudLaserFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panelLaser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>60, 0</value>
+  </data>
+  <data name="panelLaser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 23</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panelLaser.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelLaser.Name" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;panelLaser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelLaser.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelLaser.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="nudLaserDiameter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 1</value>
+  </data>
+  <data name="nudLaserDiameter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudLaserDiameter.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="nudLaserDiameter.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.Name" xml:space="preserve">
+    <value>nudLaserDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserDiameter.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cbLaserAir.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbLaserAir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>243, 5</value>
+  </data>
+  <data name="cbLaserAir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>15, 14</value>
+  </data>
+  <data name="cbLaserAir.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Name" xml:space="preserve">
+    <value>cbLaserAir</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;cbLaserAir.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cbLaserM3.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
+    <value>Button</value>
+  </data>
+  <data name="cbLaserM3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>204, 1</value>
+  </data>
+  <data name="cbLaserM3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 22</value>
+  </data>
+  <data name="cbLaserM3.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="cbLaserM3.Text" xml:space="preserve">
+    <value>M3</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Name" xml:space="preserve">
+    <value>cbLaserM3</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;cbLaserM3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="nudLaserPasses.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 1</value>
+  </data>
+  <data name="nudLaserPasses.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 20</value>
+  </data>
+  <data name="nudLaserPasses.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="nudLaserPasses.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Name" xml:space="preserve">
+    <value>nudLaserPasses</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPasses.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="nudLaserPower.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 1</value>
+  </data>
+  <data name="nudLaserPower.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudLaserPower.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="nudLaserPower.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Name" xml:space="preserve">
+    <value>nudLaserPower</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserPower.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="nudLaserFeedXY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>51, 1</value>
+  </data>
+  <data name="nudLaserFeedXY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
+  </data>
+  <data name="nudLaserFeedXY.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="nudLaserFeedXY.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Name" xml:space="preserve">
+    <value>nudLaserFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.Parent" xml:space="preserve">
+    <value>panelLaser</value>
+  </data>
+  <data name="&gt;&gt;nudLaserFeedXY.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tbName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="tbName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 2</value>
+  </data>
+  <data name="tbName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 20</value>
+  </data>
+  <data name="tbName.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tbName.Name" xml:space="preserve">
+    <value>tbName</value>
+  </data>
+  <data name="&gt;&gt;tbName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbName.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbName.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="btnSetupFill.Location" type="System.Drawing.Point, System.Drawing">
+    <value>324, 1</value>
+  </data>
+  <data name="btnSetupFill.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 23</value>
+  </data>
+  <data name="btnSetupFill.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btnSetupFill.Text" xml:space="preserve">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;btnSetupFill.Name" xml:space="preserve">
+    <value>btnSetupFill</value>
+  </data>
+  <data name="&gt;&gt;btnSetupFill.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSetupFill.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSetupFill.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Name" xml:space="preserve">
+    <value>CbPlotterUseLaser</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Name" xml:space="preserve">
+    <value>nudPlotterDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Name" xml:space="preserve">
+    <value>nudPlotterSPD</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Name" xml:space="preserve">
+    <value>nudPlotterZPD</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Name" xml:space="preserve">
+    <value>nudPlotterFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="panelPlotter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 30</value>
+  </data>
+  <data name="panelPlotter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 23</value>
+  </data>
+  <data name="panelPlotter.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;panelPlotter.Name" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;panelPlotter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelPlotter.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelPlotter.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="CbPlotterUseLaser.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="CbPlotterUseLaser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>180, 4</value>
+  </data>
+  <data name="CbPlotterUseLaser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>15, 14</value>
+  </data>
+  <data name="CbPlotterUseLaser.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Name" xml:space="preserve">
+    <value>CbPlotterUseLaser</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;CbPlotterUseLaser.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="nudPlotterDiameter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 1</value>
+  </data>
+  <data name="nudPlotterDiameter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudPlotterDiameter.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="nudPlotterDiameter.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Name" xml:space="preserve">
+    <value>nudPlotterDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterDiameter.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="nudPlotterSPD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 1</value>
+  </data>
+  <data name="nudPlotterSPD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudPlotterSPD.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="nudPlotterSPD.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Name" xml:space="preserve">
+    <value>nudPlotterSPD</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterSPD.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="nudPlotterZPD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 1</value>
+  </data>
+  <data name="nudPlotterZPD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudPlotterZPD.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="nudPlotterZPD.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Name" xml:space="preserve">
+    <value>nudPlotterZPD</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterZPD.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="nudPlotterFeedXY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>51, 1</value>
+  </data>
+  <data name="nudPlotterFeedXY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
+  </data>
+  <data name="nudPlotterFeedXY.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="nudPlotterFeedXY.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Name" xml:space="preserve">
+    <value>nudPlotterFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.Parent" xml:space="preserve">
+    <value>panelPlotter</value>
+  </data>
+  <data name="&gt;&gt;nudPlotterFeedXY.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Name" xml:space="preserve">
+    <value>nudRouterDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Name" xml:space="preserve">
+    <value>nudRouterZPD</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Name" xml:space="preserve">
+    <value>nudRouterFeedZ</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Name" xml:space="preserve">
+    <value>nudRouterFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panelRouter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 60</value>
+  </data>
+  <data name="panelRouter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 23</value>
+  </data>
+  <data name="panelRouter.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;panelRouter.Name" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;panelRouter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelRouter.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelRouter.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="nudRouterDiameter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 1</value>
+  </data>
+  <data name="nudRouterDiameter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudRouterDiameter.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="nudRouterDiameter.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Name" xml:space="preserve">
+    <value>nudRouterDiameter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterDiameter.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="nudRouterZPD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 1</value>
+  </data>
+  <data name="nudRouterZPD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudRouterZPD.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="nudRouterZPD.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Name" xml:space="preserve">
+    <value>nudRouterZPD</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterZPD.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="nudRouterFeedZ.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 1</value>
+  </data>
+  <data name="nudRouterFeedZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 20</value>
+  </data>
+  <data name="nudRouterFeedZ.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="nudRouterFeedZ.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Name" xml:space="preserve">
+    <value>nudRouterFeedZ</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedZ.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="nudRouterFeedXY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>51, 1</value>
+  </data>
+  <data name="nudRouterFeedXY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
+  </data>
+  <data name="nudRouterFeedXY.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="nudRouterFeedXY.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Name" xml:space="preserve">
+    <value>nudRouterFeedXY</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.Parent" xml:space="preserve">
+    <value>panelRouter</value>
+  </data>
+  <data name="&gt;&gt;nudRouterFeedXY.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tbGcode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 2</value>
+  </data>
+  <data name="tbGcode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 20</value>
+  </data>
+  <data name="tbGcode.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;tbGcode.Name" xml:space="preserve">
+    <value>tbGcode</value>
+  </data>
+  <data name="&gt;&gt;tbGcode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbGcode.Parent" xml:space="preserve">
+    <value>panelCoordinates</value>
+  </data>
+  <data name="&gt;&gt;tbGcode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panelCoordinates.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 90</value>
+  </data>
+  <data name="panelCoordinates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 23</value>
+  </data>
+  <data name="panelCoordinates.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;panelCoordinates.Name" xml:space="preserve">
+    <value>panelCoordinates</value>
+  </data>
+  <data name="&gt;&gt;panelCoordinates.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelCoordinates.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelCoordinates.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="CmsMoveTo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="CmsMoveTo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 26</value>
+  </data>
+  <data name="&gt;&gt;CmsMoveTo.Name" xml:space="preserve">
+    <value>CmsMoveTo</value>
+  </data>
+  <data name="&gt;&gt;CmsMoveTo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TsmiMoveToPosition.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
+  </data>
+  <data name="TsmiMoveToPosition.Text" xml:space="preserve">
+    <value>Move to Z, XY position</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>583, 113</value>
+  </data>
+  <data name="&gt;&gt;TsmiMoveToPosition.Name" xml:space="preserve">
+    <value>TsmiMoveToPosition</value>
+  </data>
+  <data name="&gt;&gt;TsmiMoveToPosition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>UCToolListElement</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

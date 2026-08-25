@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2018-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2018-2025 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 /*
  * 2021-04-17 new
  * 2021-07-02 code clean up / code quality
- * 2022-01-02 update
+ * 2022-01-02 UpdateToolTip
  * 2024-01-17 laser engraving useLaser
- * 2024-12-11 update
+ * 2024-12-11 UpdateToolTip
+ * 2025-04-02 change PixelArt attribute from 'Width' to 'Source' = axis-name or 'S' value
 */
 
 using System;
@@ -101,27 +102,41 @@ namespace GrblPlotter
                 GenerateGCodePreset(cncCoordX, cncCoordY);
             }
 
+            bool pixelArtSpecial = applyPixelArt && RbStartGraySpecial.Checked;
+            string pixelArtSource = "";
+            long lineCount = 0;
+
             if (applyPixelArt)
             {
                 penWidth = (double)NuDPixelArtDotSize.Value;
             }
-            if (useZnotS)   // set 2D-View display option to translate S/Z value to pen width
+            if (pixelArtSpecial)
             {
-                Gcode.GcodeZApply = true;
-                Gcode.GcodePWMEnable = false;
+                Gcode.OptionZAxis.Enable = false;
+                Gcode.OptionPWM.Enable = false;
+                Gcode.Comment(finalString, string.Format("{0} Min=\"{1:0.000}\" Max=\"{2:0.000}\" Width=\"{3:0.000}\" />", XmlMarker.HalftoneZ, nUDSpecialTop.Value, nUDSpecialBottom.Value, penWidth));
+                specialCodeValue1 = tBCodeValue1.Text;
+                if (specialCodeValue1.Length > 0)
+                    pixelArtSource = specialCodeValue1.Substring(specialCodeValue1.Length - 1);
+            }
+            else if (useZnotS)   // set 2D-View display option to translate S/Z value to pen width
+            {
+                Gcode.OptionZAxis.Enable = true;
+                Gcode.OptionPWM.Enable = false;
                 Gcode.Comment(finalString, string.Format("{0} Min=\"{1:0.000}\" Max=\"{2:0.000}\" Width=\"{3:0.000}\" />", XmlMarker.HalftoneZ, nUDZTop.Value, nUDZBottom.Value, penWidth));
+                pixelArtSource = "Z";
             }
             else
             {
-                Gcode.GcodeZApply = false;
-                Gcode.GcodePWMEnable = true;
+                Gcode.OptionZAxis.Enable = false;
+                Gcode.OptionPWM.Enable = true;
                 Gcode.Comment(finalString, string.Format("{0} Min=\"{1:0.000}\" Max=\"{2:0.000}\" Width=\"{3:0.000}\" />", XmlMarker.HalftoneS, nUDSTop.Value, nUDSBottom.Value, penWidth));
+                pixelArtSource = "S";
             }
             if (applyPixelArt)
             {
-                Gcode.Comment(finalString, string.Format("{0} Width=\"{1:0.0}\" />", XmlMarker.PixelArt, NuDPixelArtDotSize.Value));
-                //      penWidth = (double)NuDPixelArtDotSize.Value / 4;
-                      Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"black\" PenWidth=\"{2:0.00}\">", XmlMarker.FigureStart, 1, penWidth));
+                Gcode.Comment(finalString, string.Format("{0} Source=\"{1}\" />", XmlMarker.PixelArt, pixelArtSource));
+                Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"black\" PenWidth=\"{2:0.00}\">", XmlMarker.FigureStart, 1, 0.01));
             }
             else
                 Gcode.Comment(finalString, string.Format("{0} Id=\"{1}\" PenColor=\"black\" >", XmlMarker.FigureStart, 1));
@@ -130,7 +145,7 @@ namespace GrblPlotter
             if (applyPixelArt)
             {
                 Logger.Info("Create halftone Pixel Art width:{0} height:{1} resoX:{2} resoY:{3}", resultImage.Width, resultImage.Height, cncPixelResoX, cncPixelResoY);
-                CreatePixelPatternHeight(resultImage.Width, resultImage.Height, useZnotS);
+                lineCount=CreatePixelPatternHeight(resultImage.Width, resultImage.Height, useZnotS, pixelArtSpecial);
             }
             else if (RbEngravingLine.Checked)        // line by line with angle
             {
@@ -139,7 +154,7 @@ namespace GrblPlotter
                 CreateLinePattern((double)nUDResoY.Value, cncPixelResoX, (double)NudEngravingAngle.Value, resultImage.Width, resultImage.Height);
                 if (CbEngravingCross.Checked)
                     CreateLinePattern((double)nUDResoY.Value, cncPixelResoX, 90 + (double)NudEngravingAngle.Value, resultImage.Width, resultImage.Height);
-                // fill path with brightnes values
+                // FillToolListElements path with brightnes values
                 CreateScanPath(resultImage.Width, resultImage.Height, 0, 0);// resultImage.Width, resultImage.Height);
                                                                             // improove path
                                                                             //    RemoveIntermediateSteps();
@@ -149,7 +164,7 @@ namespace GrblPlotter
             {
                 Logger.Info("Create halftone spiral width:{0} height:{1} resoX:{2} resoY:{3}", resultImage.Width, resultImage.Height, cncPixelResoX, cncPixelResoY);
                 CreateSpiral((double)nUDResoY.Value, cncPixelResoX, Math.Sqrt(resultImage.Width * resultImage.Width + resultImage.Height * resultImage.Height));
-                // fill path with brightnes values
+                // FillToolListElements path with brightnes values
                 CreateScanPath(resultImage.Width, resultImage.Height, resultImage.Width * (double)NuDSpiralCenterX.Value, resultImage.Height * (double)NuDSpiralCenterY.Value);
                 // improove path
                 RemoveIntermediateSteps();
@@ -171,15 +186,15 @@ namespace GrblPlotter
             if (RbStartGrayS.Checked && cBLaserModeOffEnd.Checked)
             { finalString.AppendLine("$32=0 (Lasermode off)"); }
 
-            imagegcode = "( Generated by GRBL-Plotter )\r\n";
-            imagegcode += Gcode.GetHeader("Image import", "") + finalString.Replace(',', '.').ToString() + Gcode.GetFooter();
+            imagegcode = "";// "( Generated by GRBL-Plotter )\r\n";
+            imagegcode += Gcode.GetHeader("Image import", "", lineCount) + finalString.Replace(',', '.').ToString() + Gcode.GetFooter();
         }
 
         /*      private int GetPixelValue(int picX, int picY, bool useZ)
               {
                   if ((picX < 0) || (picY < 0) || (picX >= resultImage.Width) || (picY >= resultImage.Height))
                       return useZ ? 255 : 0;
-                  Color myColor = resultImage.GetPixel(picX, (resultImage.Height - 1) - picY);    // Get pixel color
+                  GroupColor myColor = resultImage.GetPixel(picX, (resultImage.Height - 1) - picY);    // Get pixel color
                   int brightness = (int)Math.Round((double)(myColor.R + myColor.G + myColor.B) / 3);        // calc height FF=white, 0=black
                   if (myColor.A < 128)        // assume transparency as white
                       return useZ ? 255 : 0;
@@ -304,7 +319,7 @@ namespace GrblPlotter
             bool doPenUpLater = false;
             Logger.Trace("applyScanPath noPen:{0}", noPen);
 
-            cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+            cncCoordLastZ = cncCoordZ = Gcode.OptionZAxis.Up;
             pixelValLast = -1; pixelValNow = pixelValNext = scanCNCPos[0].brightnes;    // GetPixelValue(scanCNCPos[0].X, scanCNCPos[0].Y, useZnotS);
 
             if (relative) { finalString.AppendLine("G91G1 (relative mode)"); }
@@ -324,7 +339,7 @@ namespace GrblPlotter
                         {
                             //       finalString.AppendLine("G90 (absolute mode 1)"); }  // switch to absolute
                             Gcode.PenUp(finalString, "PU");
-                            cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+                            cncCoordLastZ = cncCoordZ = Gcode.OptionZAxis.Up;
                             //    if (relative) { finalString.AppendLine("G91G1 (relative mode 1)"); }
                         }
                     }
@@ -347,7 +362,7 @@ namespace GrblPlotter
                             {
                                 //finalString.AppendLine("G90 (absolute mode 2 )"); }  // switch to absolute
                                 Gcode.PenUp(finalString, "PU");
-                                cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+                                cncCoordLastZ = cncCoordZ = Gcode.OptionZAxis.Up;
                             } //if (relative) { finalString.AppendLine("G91G1 (relative mode 2)"); }
                         }
                         isPenUp = true;
@@ -362,13 +377,13 @@ namespace GrblPlotter
                             if (doPenUpLater)
                             {
                                 Gcode.PenUp(finalString, "PU");
-                                cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+                                cncCoordLastZ = cncCoordZ = Gcode.OptionZAxis.Up;
                             }
                         }  // switch to absolute
                         //Gcode.MoveToRapid(finalString, cncCoordX, cncCoordY,"");
                         //   finalString.AppendFormat("G{0} X{1} Y{2} F10000\r\n", Gcode.FrmtCode(1), Gcode.FrmtNum(cncCoordX), Gcode.FrmtNum(cncCoordY));
-                        //   if (useZnotS) finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(Gcode.GcodeZUp)); //Gcode.PenUp(finalString, "PU");
-                        //   cncCoordLastZ = cncCoordZ = Gcode.GcodeZUp;
+                        //   if (useZnotS) finalString.AppendFormat("G{0} Z{1} (PU)\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(Gcode.Up)); //Gcode.PenUp(finalString, "PU");
+                        //   cncCoordLastZ = cncCoordZ = Gcode.Up;
                         finalString.AppendFormat("G{0} X{1} Y{2}\r\n", Gcode.FrmtCode(0), Gcode.FrmtNum(cncCoordX), Gcode.FrmtNum(cncCoordY));
 
                         if (useZnotS)

@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2015-2024 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2015-2026 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,16 +21,19 @@
  * 2021-07-14 code clean up / code quality
  * 2022-11-04 line 57 set dash pattern to 0
  * 2023-01-15 line 90 bug-fix in log-output
- * 2023-08-14 l:48  f: ShrinkPaths Hatch fill extension: shrink enveloping path , delete enveloping path (Vers 1.7.0.1)
- * 2023-11-07 l:369 f:ClipLineByPolygone if distance is too small, delete both intersection point
+ * 2023-08-14 l:48  f: ShrinkPaths Hatch FillToolListElements extension: shrink enveloping path , delete enveloping path (Vers 1.7.0.1)
+ * 2023-11-07 l:369 f:ClipLineByPolygone if Distance is too small, delete both intersection point
  * 2023-12-29 l:113 f:HatchFill do correct copy from tmpPath2 to tmpPath
+ * 2026-02-25 add control by tool list
+ * 2026-04-09 GUI rework for vers. 1.8.0.0
 */
 
-
+using GrblPlotter.Helper;
+using GrblPlotter.UserControls;
 using System;
 using System.Collections.Generic;
-using System.Web.Hosting;
 using System.Windows;
+using static GrblPlotter.DeviceToolProperties;
 
 namespace GrblPlotter
 {
@@ -40,26 +43,45 @@ namespace GrblPlotter
         {
             if (graphicToFill == null) return;
 
-            double distance = (double)Properties.Settings.Default.importGraphicHatchFillDistance;
-            double distOffset = 0;
-            double offset = (double)Properties.Settings.Default.importGraphicHatchFillOffset;
-            double angle = (double)Properties.Settings.Default.importGraphicHatchFillAngle;
-            double angle2 = (double)Properties.Settings.Default.importGraphicHatchFillAngle2;
-            bool cross = Properties.Settings.Default.importGraphicHatchFillCross;
-            bool incrementAngle = Properties.Settings.Default.importGraphicHatchFillAngleInc;
-            bool incrementOffset = Properties.Settings.Default.importGraphicHatchFillOffsetInc;
-            bool deletePath = Properties.Settings.Default.importGraphicHatchFillDeletePath;
+            bool DeviceSpecificOptions = MyControl.UseSpecificDevice();	// device Laser, Plotter or Router
+            if (!DeviceSpecificOptions)
+            {
+                if (!Properties.Settings.Default.importGraphicHatchFillEnable)
+                    return;
+            }
 
-            bool inset2 = Properties.Settings.Default.importGraphicHatchFillInsetEnable && Properties.Settings.Default.importGraphicHatchFillInsetEnable2;
-            double insetVal = (double)Properties.Settings.Default.importGraphicHatchFillInset;
+            OptionPropHatchFill Fill = new OptionPropHatchFill
+            {
+                Cross = Properties.Settings.Default.importGraphicHatchFillCross,
+                Distance = (float)Properties.Settings.Default.importGraphicHatchFillDistance,
+                DistanceOffsetEnable = Properties.Settings.Default.importGraphicHatchFillOffsetInc,
+                DistanceOffset = (float)Properties.Settings.Default.importGraphicHatchFillOffset,
+                Gradient = 0,
+                Angle = (float)Properties.Settings.Default.importGraphicHatchFillAngle,
+                AngleIncrementEnable = Properties.Settings.Default.importGraphicHatchFillAngleInc,
+                AngleIncrement = (float)Properties.Settings.Default.importGraphicHatchFillAngle2,
+                InsetEnable = Properties.Settings.Default.importGraphicHatchFillInsetEnable && Properties.Settings.Default.importGraphicHatchFillInsetEnable2,
+                InsetDistance = (float)Properties.Settings.Default.importGraphicHatchFillInset,
+                DeletePath = Properties.Settings.Default.importGraphicHatchFillDeletePath
+            };
+            if (DeviceSpecificOptions && !MyControl.ApplyToolList)
+            {
+                Fill = MyControl.GetActualFill();
+                Logger.Trace("►►► HatchFill Get fill from device:{0}  enabled:{1}", MyControl.GetSelectedDeviceName(), Fill.Enable);
+                if (!Fill.Enable)
+                    return;
+            }
+
+            bool shortenLines = Properties.Settings.Default.importGraphicHatchFillInsetEnable && !Properties.Settings.Default.importGraphicHatchFillInsetEnable2;
+            double distOffset = 0;
 
             bool nextIsSameHatch;
-            bool fillColor = graphicInformation.ApplyHatchFill;	// only hatch if fillColor is set
+            bool fillColorEnable = graphicInformation.ApplyHatchFillSVG;	// only hatch if fillColorEnable is set
 
             bool applyDash = Properties.Settings.Default.importGraphicHatchFillDash;
             int maxObject = graphicToFill.Count;
 
-            Logger.Trace("...HatchFill objects:{0}  distance:{1} angle:{2} cross:{3}  dash:{4}  inset2:{5}", maxObject, distance, angle, cross, applyDash, inset2);
+            Logger.Info("►►► HatchFill objects:{0}  useToolList:{1}  defaults: distance:{2} angle:{3} cross:{4}  dash:{5}  inset2:{6}", maxObject, DeviceSpecificOptions, Fill.Distance, Fill.Angle, Fill.Cross, applyDash, Fill.InsetEnable);
 
             List<int> indexToDelete = new List<int>();
             List<Point[]> hatchPattern = new List<Point[]>();
@@ -69,10 +91,12 @@ namespace GrblPlotter
             List<PathObject> tmpPath2 = new List<PathObject>();
             Dimensions pathDimension = new Dimensions();
 
+            //    logModification = true;
+
             if (!applyDash)
             { SetDash(new double[0]); }
 
-            for (int index = 0; index < maxObject; index++)
+            for (int index = 0; index < maxObject; index++)		// foreach (PathObject pathObject in completeGraphic)
             {
                 PathObject itemNow = graphicToFill[index];
 
@@ -80,19 +104,65 @@ namespace GrblPlotter
                 {
                     nextIsSameHatch = false;
                     if ((index < (maxObject - 1)) && (graphicToFill[index + 1] is ItemPath PathDataNext))
-                    { nextIsSameHatch = ((PathData.Info.Id == PathDataNext.Info.Id) && (IsEqual(PathDataNext.Start, PathDataNext.End) && (PathDataNext.Path.Count > 2))); }
+                    {
+                        nextIsSameHatch = ((PathData.Info.Id == PathDataNext.Info.Id) && (IsEqual(PathDataNext.Start, PathDataNext.End) && (PathDataNext.Path.Count > 2)));
+                        //    Logger.Trace("►►► HatchFill id1:{0}  id2:{1}  next-cnt:{2}  nextIsSameHatch:{3}", PathData.Info.Id, PathDataNext.Info.Id, PathDataNext.Path.Count, nextIsSameHatch);
+                    }
+
+                    //    Logger.Trace("►►► HatchFill isCLose {0}   count {1}", IsEqual(PathData.Start, PathData.End), PathData.Path.Count);
 
                     if (IsEqual(PathData.Start, PathData.End) && (PathData.Path.Count > 2))      //(PathData.Start.X == PathData.End.X) && (PathData.Start.Y == PathData.End.Y))
                     {
-                        string fill = PathData.Info.GroupAttributes[(int)GroupOption.ByFill];
-                        if (logModification) Logger.Trace("### HatchFill '{0}'", fill);
+                        string fillColor = PathData.Info.GroupAttributes[(int)GroupOption.ByFill];
 
-                        if (fillColor && ((string.IsNullOrEmpty(fill)) || (fill == "none")))	// SVG: only hatch if fillColor is set
-                        {   //Logger.Trace("no fill");
+                        if (logModification)
+                            Logger.Trace("### HatchFill fillColorEnable:{0}  fillColor '{1}'", fillColorEnable, fillColor);
+
+                        if (fillColorEnable && ((string.IsNullOrEmpty(fillColor)) || (fillColor == "none")))	// SVG: only hatch if fillColorEnable is set
+                        {
                             continue;
                         }
                         else
-                            CountProperty((int)GroupOption.ByColor, fill);      // now fill-color is also penColor -> for grouping
+                        {
+                            CountProperty((int)GroupOption.ByColor, fillColor);      // now FillToolListElements-color is also penColor -> for grouping
+                            if (!MyControl.ApplyToolList)
+                                ToolList.Add(new ToolProperty(fillColor));
+                        }
+
+                        if (DeviceSpecificOptions && MyControl.ApplyToolList)	// Device is Laser, Plotter, Router
+                        {
+                            shortenLines = false;
+
+                            int toolNr = 1;
+
+                            switch (graphicInformation.GroupOption)
+                            {
+                                case GroupOption.ByColor:
+                                    if (fillColorEnable)
+                                        toolNr = ToolList.GetToolNRByToolColor(fillColor, 0);
+                                    else
+                                        toolNr = ToolList.GetToolNRByToolColor(itemNow.Info.GroupAttributes[(int)GroupOption.ByColor], 0);
+                                    break;
+                                case GroupOption.ByWidth:
+                                    toolNr = ToolList.GetToolNRByToolWidth(itemNow.Info.GroupAttributes[(int)GroupOption.ByWidth]);
+                                    break;
+                                case GroupOption.ByLayer:
+                                    toolNr = ToolList.GetToolNRByToolLayer(itemNow.Info.GroupAttributes[(int)GroupOption.ByLayer]);
+                                    break;
+                                default: break;
+                            }
+
+                            Logger.Trace("...HatchFill GroupOption:'{0}'  Group-Value:'{1}'  fillColor:'{2}'  toolNr:{3}", graphicInformation.GroupOption, itemNow.Info.GroupAttributes[(int)GroupOption.ByColor], fillColor, toolNr);
+
+                            Fill = ToolList.GetToolFill(toolNr, MyControl.SelectedDevice);	// no match?, get new OptionPropHatchFill(); -> Enable=false;
+
+                            if (!Fill.Enable)
+                            {
+                                Logger.Trace("!!! DeviceSpecificOptions && MyControl.ApplyToolList && !Fill.Enable -> continue");
+                                continue;
+                            }
+                        }
+                        //      Logger.Trace(".....HatchFill IncAngle:{0}  angle2:{1}", Fill.AngleIncrementEnable, Fill.AngleIncrement);
 
                         tmpPath.Add(PathData.Copy());                       // collect paths
                         tmpPath2.Add(PathData.Copy());                       // collect paths
@@ -101,20 +171,22 @@ namespace GrblPlotter
                         { Logger.Trace("no dim"); continue; }
 
                         // collect paths of same id, process if id changes
-                        if (logModification && (index < (maxObject - 1))) Logger.Trace("  Add to PathData1 ID:{0}  nextIsSameHatch:{1}  max:{2}  index:{3}  id_now:{4}  id_next:{5}  fill:{6}  inset2:{7}  tmpPath.count:{8}", PathData.Info.Id, nextIsSameHatch, maxObject, index, graphicToFill[index].Info.Id, graphicToFill[index + 1].Info.Id, fill, inset2, tmpPath.Count);
+                        if (logModification && (index < (maxObject - 1)))
+                            Logger.Trace("  Add to PathData1 ID:{0}  nextIsSameHatch:{1}  max:{2}  index:{3}  id_now:{4}  id_next:{5}  fill:{6}  inset2:{7}  tmpPath.count:{8}", PathData.Info.Id, nextIsSameHatch, maxObject, index, graphicToFill[index].Info.Id, graphicToFill[index + 1].Info.Id, fillColor, Fill.InsetEnable, tmpPath.Count);
                         if (nextIsSameHatch)
                         {
+                            //    Logger.Trace("nextIsSameHatch");
                             indexToDelete.Add(index);
                             continue;
                         }
 
-                        //if (logModification && (index < (maxObject - 1))) Logger.Trace("  Add to PathData2 ID:{0}  nextIsSameHatch:{1}  max:{2}  index:{3}  id_now:{4}  id_next:{5}  fill:{6}  inset2:{7}  tmpPath.count:{8}", PathData.Info.Id, nextIsSameHatch, maxObject, index, graphicToFill[index].Info.Id, graphicToFill[index + 1].Info.Id, fill, inset2, tmpPath.Count);
+                        //if (logModification && (index < (maxObject - 1))) Logger.Trace("  Add to PathData2 ID:{0}  nextIsSameHatch:{1}  max:{2}  index:{3}  id_now:{4}  id_next:{5}  FillToolListElements:{6}  InsetEnable:{7}  tmpPath.count:{8}", PathData.Info.Id, nextIsSameHatch, maxObject, index, graphicToFill[index].Info.Id, graphicToFill[index + 1].Info.Id, FillToolListElements, InsetEnable, tmpPath.Count);
 
-                        if (inset2)
+                        if (Fill.InsetEnable)
                         {
-                            if (!ShrinkPaths(tmpPath, insetVal))
+                            if (!ShrinkPaths(tmpPath, Fill.InsetDistance))	// repeat ShrinkPaths, if dimension increased
                             {
-                                ShrinkPaths(tmpPath2, -insetVal);
+                                ShrinkPaths(tmpPath2, -Fill.InsetDistance);
                                 tmpPath.Clear();
                                 foreach (PathObject tmp in tmpPath2)
                                     tmpPath.Add(tmp.Copy());
@@ -123,24 +195,27 @@ namespace GrblPlotter
 
                         // create hatch pattern
                         hatchPattern.Clear();
-                        hatchPattern.AddRange(CreateLinePattern(pathDimension, angle, distance, distOffset));
-                        if (cross)
-                            hatchPattern.AddRange(CreateLinePattern(pathDimension, angle + 90, distance, distOffset));
+                        hatchPattern.AddRange(CreateLinePattern(pathDimension, Fill.Angle, Fill.Distance, distOffset, Fill.Gradient));
+                        if (Fill.Cross)
+                            hatchPattern.AddRange(CreateLinePattern(pathDimension, Fill.Angle + 90, Fill.Distance, distOffset, Fill.Gradient));
 
-                        if (incrementOffset) distOffset += offset;
-                        if (incrementAngle) angle += angle2;
+                        if (logModification) Logger.Trace("### HatchFill hatchPattern.count:{0}  ", hatchPattern.Count);
+
+                        if (Fill.DistanceOffsetEnable) distOffset += Fill.DistanceOffset;
+                        if (Fill.AngleIncrementEnable) Fill.Angle += Fill.AngleIncrement;
 
                         // process single hatch lines - shorten to match inside polygone
                         finalPattern.Clear();
-                        //if (logModification && (index < (maxObject - 1))) Logger.Trace("  Add to PathData3 hatchPattern count:{0}  tmpPath count:{1}", hatchPattern.Count, tmpPath.Count);
-
+                        string log = "ok";
                         foreach (Point[] hatchLine in hatchPattern)
                         {
-                            //Logger.Trace("  0:{0}  1:{1} ", hatchLine[0], hatchLine[1]);
-                            ClipLineByPolygone(hatchLine[0], hatchLine[1], tmpPath, finalPattern);
+                            try
+                            {
+                                log = ClipLineByPolygone(hatchLine[0], hatchLine[1], tmpPath, finalPattern, shortenLines, ref log);
+                            }
+                            catch (Exception err) { Logger.Error(err, " ClipLineByPolygone '{0}'", log); }
+                            log = "ok";
                         }
-
-                        //if (logModification && (index < (maxObject - 1))) Logger.Trace("  Add to PathData4 finalPattern count:{0}  tmpPath count:{1}", finalPattern.Count, tmpPath.Count);
 
                         // add processed hatch lines to final graphic
                         AddLinesToGraphic(finalPattern, PathData);
@@ -150,7 +225,7 @@ namespace GrblPlotter
                         tmpPath2.Clear();
                         pathDimension = new Dimensions();
 
-                        if (deletePath)
+                        if (Fill.DeletePath)
                         {
                             indexToDelete.Add(index);
                             foreach (int id in indexToDelete)
@@ -171,13 +246,15 @@ namespace GrblPlotter
         }
 
 
-        private static List<Point[]> CreateLinePattern(Dimensions dim, double angle, double distance, double offset)
-        { return CreateLinePattern(dim.minx, dim.miny, dim.maxx, dim.maxy, angle, distance, offset); }
-        private static List<Point[]> CreateLinePattern(double minx, double miny, double maxx, double maxy, double angle, double distance, double offset)
+        private static List<Point[]> CreateLinePattern(Dimensions dim, double angle, double distance, double offset, double gradient)
+        { return CreateLinePattern(dim.minx, dim.miny, dim.maxx, dim.maxy, angle, distance, offset, gradient); }
+        private static List<Point[]> CreateLinePattern(double minx, double miny, double maxx, double maxy, double angle, double distance, double offset, double gradientStart)
         {
             double width = maxx - minx;
             double height = maxy - miny;
             double r = Math.Sqrt(width * width + height * height) / 2;
+            distance = Math.Abs(distance);
+            double gap = distance;
 
             // Rotation information
             double ca = Math.Cos((angle - 90) * Math.PI / 180);
@@ -190,15 +267,30 @@ namespace GrblPlotter
             double x1, y1, x2, y2;
             List<Point[]> lines = new List<Point[]>();
 
-            //     int count = 0;
-            for (double i = - (r+offset); i < r; i += distance)
+            bool incrementDistance = false;
+            gradientStart = Math.Abs(gradientStart);
+            if ((gradientStart >= 0.1))
+            {
+                incrementDistance = true;
+                if (gradientStart >= gap)
+                    gradientStart = gap;
+            }
+            double gapByPercent;
+            for (double i = -(r + offset); i < r; i += gap)
             {
                 x1 = cx + (i * ca) + (r * sa);//  # i * ca - (-r) * sa
                 y1 = cy + (i * sa) - (r * ca);  //# i * sa + (-r) * ca
                 x2 = cx + (i * ca) - (r * sa);  //# i * ca - (+r) * sa
                 y2 = cy + (i * sa) + (r * ca);  //# i * sa + (+r) * ca
-                                                // Remove any potential hatch lines which are entirely
-                                                // outside of the bounding box
+
+                if (incrementDistance)
+                {
+                    gapByPercent = distance * ((2 * r) - (i + r)) / (2 * r);
+                    gap = Math.Max(gradientStart, gapByPercent);
+                }
+
+                // Remove any potential hatch lines which are entirely
+                // outside of the bounding box
                 if ((x1 < minx && x2 < minx) || (x1 > maxx && x2 > maxx))
                     continue;
                 if ((y1 < miny && y2 < miny) || (y1 > maxy && y2 > maxy))
@@ -212,7 +304,7 @@ namespace GrblPlotter
         {
             if (logModification) Logger.Trace("  AddLinesToGraphic");
             Point start, end;
-            bool switchColor = graphicInformation.ApplyHatchFill;
+            bool switchColor = graphicInformation.ApplyHatchFillSVG;
 
             bool noiseAdd = !Properties.Settings.Default.importGraphicNoiseEnable && Properties.Settings.Default.importGraphicHatchFillNoise;
             double noiseAmplitude = (double)Properties.Settings.Default.importGraphicNoiseAmplitude;
@@ -337,22 +429,25 @@ namespace GrblPlotter
             }
         };
         // process single hatch lines - shorten to match inside polygone
-        private static void ClipLineByPolygone(Point p1, Point p2, List<PathObject> paths, List<Point[]> hatch)//, hatches, b_hold_back_hatches, f_hold_back_steps):
+        private static string ClipLineByPolygone(Point p1, Point p2, List<PathObject> paths, List<Point[]> hatch, bool shortenLines, ref string log)//, hatches, b_hold_back_hatches, f_hold_back_steps):
         {
             Point p3, p4;
             double intersect;
 
+            log = "0 ";
             List<IntersectionInfo> d_and_a = new List<IntersectionInfo>();
 
             double holdBack = (double)Properties.Settings.Default.importGraphicHatchFillInset;
-            bool holdBackEnable = Properties.Settings.Default.importGraphicHatchFillInsetEnable && !Properties.Settings.Default.importGraphicHatchFillInsetEnable2; ;
+            bool holdBackEnable = shortenLines;	//Properties.Settings.Default.importGraphicHatchFillInsetEnable && !Properties.Settings.Default.importGraphicHatchFillInsetEnable2; ;
             bool b_unconditionally_excise_hatch;
             double prelim_length_to_be_removed = 0;
             double dist_intersection_to_relevant_end, dist_intersection_to_irrelevant_end;
 
+            log = "1 ";
             foreach (PathObject path in paths)
             {
-                if (path is ItemPath ipath)
+
+                if ((path is ItemPath ipath) && (ipath.Path.Count > 0))
                 {
                     p3 = ipath.Path[0].MoveTo;
 
@@ -384,7 +479,7 @@ namespace GrblPlotter
                                     b_unconditionally_excise_hatch = true;
 
                                 if (!b_unconditionally_excise_hatch)
-                                {    //# The relevant end of the segment is the end from which the hatch approaches at an acute angle.
+                                {    //# The relevant end of the segment is the end from which the hatch approaches at an acute Angle.
                                     Point intersection = new Point
                                     {
                                         X = p1.X + intersect * (p2.X - p1.X),  //# compute intersection point of hatch with segment
@@ -426,13 +521,16 @@ namespace GrblPlotter
                     }
                 }
             }
+            log += string.Format("d_and_a.Count {0}", d_and_a.Count);
             //# Return now if there were no intersections
-            if (d_and_a.Count == 0)
+            if (d_and_a.Count < 2)	// ==0 2026-07-16
             {
-                return;
+                return log + " 1 < 2";
             }
+            log = "sort";
             // d_and_a.sort() - by s
             d_and_a.Sort((x, y) => x.s.CompareTo(y.s));
+            log = "sort ready";
 
             // Remove duplicate intersections
             int i_last = 1;
@@ -440,22 +538,27 @@ namespace GrblPlotter
 
             for (int i = 1; i < d_and_a.Count; i++)
             {
+            //    log = "loop " + i.ToString();
                 //Logger.Trace(" s1:{0:0.000}  slast:{1:0.000}  diff:{2:0.000}", d_and_a[i].s , last.s, Math.Abs(d_and_a[i].s - last.s));
-                if ((Math.Abs(d_and_a[i].s - last.s)) > 0.0000000001)
+                if ((Math.Abs(d_and_a[i].s - last.s)) > 0.00001)
+                //    if (d_and_a[i].s != last.s)
                 {
+            //        log = string.Format("true d_and_a.count:{0}  i_last:{1}  i:{2}", d_and_a.Count, i_last, i);
                     d_and_a[i_last] = last = d_and_a[i];    // different positions - take over
                     i_last++;
                 }
                 else
                 {
-                    d_and_a[--i_last] = last = d_and_a[i];    // same positions - skip both 2023-11-07
+            //        log = string.Format("false d_and_a.count:{0}  i_last:{1}  i:{2}", d_and_a.Count, i_last, i);
+                    if (i_last > 0)
+                        d_and_a[--i_last] = last = d_and_a[i];    // same positions - skip both 2023-11-07
                 }
             }
 
             d_and_a = d_and_a.GetRange(0, i_last);          // correct size
             if (d_and_a.Count < 2)
             {
-                return;
+                return log + " 2 <2";
             }
 
 
@@ -490,6 +593,7 @@ namespace GrblPlotter
                 }
                 j += 2;
             }
+            return log + " end";
         }
 
         private static double CalcHypotenuse(double a, double b)
@@ -497,8 +601,8 @@ namespace GrblPlotter
 
         private static Point RelativeControlPointPosition(double distance, double f_delta_x, double f_delta_y, double delta_x, double delta_y)
         {
-            //# returns the point, relative to 0, 0 offset by delta_x, delta_y,
-            //# which extends a distance of "distance" at a slope defined by f_delta_x and f_delta_y
+            //# returns the point, relative to 0, 0 DistanceOffset by delta_x, delta_y,
+            //# which extends a Distance of "Distance" at a slope defined by f_delta_x and f_delta_y
             Point pt_return = new Point();
 
             if (f_delta_x == 0)
@@ -524,7 +628,7 @@ namespace GrblPlotter
 
         private static bool ShrinkPaths(List<PathObject> paths, double distance)
         {
-            // Check dimension before and after shrink, to decide if distance must be inverteed
+            // Check dimension before and after shrink, to decide if Distance must be inverteed
             if (logModification) Logger.Info(" ShrinkPaths count:{0}  distance:{1}", paths.Count, distance);
             Dimensions dimBefore = new Dimensions();
             Dimensions dimAfter = new Dimensions();

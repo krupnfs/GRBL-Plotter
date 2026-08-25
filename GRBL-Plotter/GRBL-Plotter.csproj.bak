@@ -1,0 +1,3080 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8079D7D8-2B91-4A22-A13E-7E5AC5A9E5FC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GrblPlotter</RootNamespace>
+    <AssemblyName>GRBL-Plotter</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>..\publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <TargetCulture>en</TargetCulture>
+    <ProductName>GRBL-Plotter</ProductName>
+    <PublisherName>GRBL-Plotter</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.8.0.3</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GrblPlotter.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>186D66FB9A6200BA5A9AEEF93F4A1EAF157226F6</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge">
+      <HintPath>DLLs\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging">
+      <HintPath>DLLs\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math">
+      <HintPath>DLLs\AForge.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video">
+      <HintPath>DLLs\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow">
+      <HintPath>DLLs\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="DXFLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\DXFLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.8.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.8.0\lib\net462\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="FastColoredTextBox, Version=2.16.11.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\FastColoredTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="QRCoder">
+      <HintPath>DLLs\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>DLLs\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput">
+      <HintPath>DLLs\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TabletControl">
+      <HintPath>DLLs\TabletControl.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GCodeCreation\CreateFromForm\BarcodeLib.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\BarcodeLibSymbologies.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.Designer.cs">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.Designer.cs">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImageCreatePixel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImageMisc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromTablet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromTablet.Designer.cs">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\curves\CubicBezier.cs" />
+    <Compile Include="GCodeCreation\curves\CurveBuilder.cs" />
+    <Compile Include="GCodeCreation\curves\CurveFit.cs" />
+    <Compile Include="GCodeCreation\curves\CurveFitBase.cs" />
+    <Compile Include="GCodeCreation\curves\CurvePreprocess.cs" />
+    <Compile Include="GCodeCreation\curves\Spline.cs" />
+    <Compile Include="GCodeCreation\curves\SplineBuilder.cs" />
+    <Compile Include="GCodeCreation\curves\VectorHelper.cs" />
+    <Compile Include="GCodeCreation\Graphic2GCodeRelatedDevice.cs" />
+    <Compile Include="GCodeCreation\GraphicClasses.cs" />
+    <Compile Include="GCodeCreation\GraphicCollectText.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateClipAndTile.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateMisc.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateHatchFill.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateSpecial.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateTangential.cs" />
+    <Compile Include="GCodeCreation\GraphicGenerateTransform.cs" />
+    <Compile Include="GCodeCreation\GraphicWorker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromCsv.cs" />
+    <Compile Include="GCodeCreation\GraphicCollectData.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromGerber.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromPDNJson.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromSVGText.cs" />
+    <Compile Include="GCodeCreation\Graphic2GCodeMove.cs" />
+    <Compile Include="GCodeCreation\Vectorize\CsPotrace.cs" />
+    <Compile Include="GCodeCreation\Vectorize\CsPtoraceExport.cs" />
+    <Compile Include="GCodeCreation\Vectorize\Vectorize.cs" />
+    <Compile Include="GCodeCreation\Vectorize\Vectorize_FitCurves.cs" />
+    <Compile Include="GCodeCreation\Vectorize\Vectorize_Helper.cs" />
+    <Compile Include="Helper\XlsxReader.cs" />
+    <Compile Include="Helper\XmlMarker.cs" />
+    <Compile Include="GUI\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\AForge_Imaging_Filter_HueShift.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\AForge_Imaging_Filter_RemoveArtefact.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromFontHershey.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromFont.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromHpgl.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImageCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImageOutline.cs" />
+    <Compile Include="GCodeCreation\ImportMath.cs" />
+    <Compile Include="GCodeCreation\Graphic2GCode.cs" />
+    <Compile Include="GUI\ButtonEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ButtonEdit.Designer.cs">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImageCreateHeight.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormExceptionHandling.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormGamePad.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormImportWorker.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormInterface.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormOtherForms.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormProcessAutomation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormSimulatePath.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormStreaming.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormStreamSection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormStreamSection.Designer.cs">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainFormUpdate.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormUserControls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MessageText.cs" />
+    <Compile Include="GUI\Notifier.cs" />
+    <Compile Include="GUI\Splashscreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Splashscreen.Designer.cs">
+      <DependentUpon>Splashscreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\XML.cs" />
+    <Compile Include="MachineControl\ControlCameraFormMisc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlCoordSystem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlCoordSystem.Designer.cs">
+      <DependentUpon>ControlCoordSystem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlDIYControlPad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlDIYControlPad.Designer.cs">
+      <DependentUpon>ControlDIYControlPad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlHeightMapClass.cs" />
+    <Compile Include="MachineControl\ControlJogPathCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlJogPathCreator.Designer.cs">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlLaser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlLaser.Designer.cs">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlPowerSaving.cs" />
+    <Compile Include="MachineControl\ControlProbing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlProbing.Designer.cs">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlProcessAutomation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlProcessAutomation.Designer.cs">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlProjector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlProjector.Designer.cs">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlSerialFormConnect.cs">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSerialFormInterface.cs">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSerialFormStreaming.cs">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSerialFormToolChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSetupFormIni.cs" />
+    <Compile Include="MachineControl\ControlSetupUseCase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSetupUseCase.Designer.cs">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlMoveXY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlMoveXY.Designer.cs">
+      <DependentUpon>ControlMoveXY.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\GCode2DViewpaths.cs" />
+    <Compile Include="MachineControl\GCodeAnalyze.cs" />
+    <Compile Include="MachineControl\GCodeParser.cs" />
+    <Compile Include="MachineControl\GCodeSelectionHandle.cs" />
+    <Compile Include="MachineControl\GCodeSelectionProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\GCodeSelectionProperties.Designer.cs">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\GCodeSimulate.cs" />
+    <Compile Include="MachineControl\GCodeSynthesize.cs" />
+    <Compile Include="MachineControl\GCodeTransform.cs" />
+    <Compile Include="MachineControl\GCodeVisuWorker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\GrblSetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\GrblSetupForm.Designer.cs">
+      <DependentUpon>GrblSetupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\NativeMethods.cs" />
+    <Compile Include="MachineControl\SerialPortFixer.cs" />
+    <Compile Include="GUI\MainFormGetCodeTransform.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormObjects.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromDrill.cs" />
+    <Compile Include="MachineControl\ControlCameraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlCameraForm.Designer.cs">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\Control2ndGRBL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\Control2ndGRBL.Designer.cs">
+      <DependentUpon>Control2ndGRBL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlGamePad.cs" />
+    <Compile Include="MachineControl\ControlHeightMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlHeightMap.Designer.cs">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromDxf.cs" />
+    <Compile Include="GCodeCreation\Graphic2GCodeRelated.cs" />
+    <Compile Include="MachineControl\GrblRelated.cs" />
+    <Compile Include="MachineControl\IniFile.cs" />
+    <Compile Include="MachineControl\GCodeVisuAndTransform.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromImage.Designer.cs">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainFormFCTB.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainFormLoadFile.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MainFormPictureBox.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MessageForm.Designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\SimpleSerialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\SimpleSerialForm.Designer.cs">
+      <DependentUpon>SimpleSerialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MachineControl\ControlSerialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSerialForm.Designer.cs">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="MachineControl\ControlSetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlSetupForm.Designer.cs">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlStreamingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlStreamingForm.Designer.cs">
+      <DependentUpon>ControlStreamingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\ControlStreamingForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineControl\ControlStreamingForm2.Designer.cs">
+      <DependentUpon>ControlStreamingForm2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\ToolTable.cs" />
+    <Compile Include="GCodeCreation\ImportFromFile\GCodeFromSvg.cs" />
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromText.Designer.cs">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromShape.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCodeCreation\CreateFromForm\GCodeFromShape.Designer.cs">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MachineControl\CheckUpdate.cs" />
+    <Compile Include="Resources\ResStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\Colors.cs" />
+    <Compile Include="Helper\Dimensions.cs" />
+    <Compile Include="Helper\GrblPoint.cs" />
+    <Compile Include="Helper\ToolList.cs" />
+    <Compile Include="UserControls\UCDeviceLaser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceLaser.Designer.cs">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceLaser2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceLaser2.Designer.cs">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDevicePlotter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDevicePlotter.Designer.cs">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDevicePlotter2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDevicePlotter2.Designer.cs">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceRouter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceRouter.Designer.cs">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceRouter2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDeviceRouter2.Designer.cs">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDRO.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCDRO.Designer.cs">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCFlowControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCFlowControl.Designer.cs">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlAll.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlAll.Designer.cs">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlUD.Designer.cs">
+      <DependentUpon>UCJogControlUD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlXY.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCJogControlXY.Designer.cs">
+      <DependentUpon>UCJogControlXY.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCMoveToGraphic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCMoveToGraphic.Designer.cs">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCMoveToZero.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCMoveToZero.Designer.cs">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCOverrides.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCOverrides.Designer.cs">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCSetCoordinateSystem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCSetCoordinateSystem.Designer.cs">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCSetOffset.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCSetOffset.Designer.cs">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCStreaming.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCStreaming.Designer.cs">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCToolList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCToolList.Designer.cs">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCToolListElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCToolListElement.Designer.cs">
+      <DependentUpon>UCToolListElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserControl.cs" />
+    <Content Include="data\automations\BulkText\BulkText.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\BulkText\BulkText_Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\CardAdressing\CardAddressing.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\CardAdressing\CardAddressing_Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\example_beep_melody.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\example_camera_fiducial_correction.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\example_probe_fiducial_correction.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\example_sounds.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\File_load\file_load.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\File_load\file_load_list.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\Name_tag\Name_tag.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\Name_tag\Name_Tag_Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\addon_frame_stamp1.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\addon_frame_stamp2.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\addon_frame_stamp3.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\addon_sign_mysign.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\exampleFrameFix.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\exampleFrameXy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_fiducial_circle.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_grbl_4colors.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_grbl_5colors.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\pattern_spiral.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\pattern_wave.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\GCode_Conic_Spiral.hta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\GCode_Knock_in_Nut_Recess.hta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\GCode_Knock_in_Nut_Recess.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\GCode_Nut_Recess.hta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\GCode_Spherical_Bowl.hta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\SVG_simple_example.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\extensions\_script_functions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSAllure.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSBird.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSBirdSwashCaps.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSBrush.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSCapitol.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSCasualHand.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSDecorousScript.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSDelight.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSDelightSwashCaps.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSElfin.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSFelix.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSHerculean.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSInvite.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSLeague.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSLittlePrincess.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSMistyNight.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSNeato.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSNixish.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSNixishItalic.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSOsmotron.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSPancakes.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSPepita.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSQwandry.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSReadability.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSReadabilityItalic.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSSociety.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSSpaceRocks.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSSwiss.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\EMSTech.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheyGothEnglish.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheyGothGerman.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheyGothItalian.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySans1.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySansMed.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheyScript1.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheyScriptMed.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySerifBold.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySerifBoldItalic.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySerifMed.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\HersheySerifMedItalic.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\svg\OFL.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\jogpaths\L_50mm_1.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\palettes\GRBL-Plotter_StabiloPoint88.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\palettes\GRBL-Plotter_StabiloPower.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\palettes\GRBL-Plotter_Watercolor.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\palettes\PaintDotNet_Default.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\palettes\PaintDotNet_Herlitz_Zettel.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\papersize.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_plotter_pen_changer_automatic.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_plotter_pen_change_manual.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_router.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_tangential.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\fonts-in-librecad-examples-sheet1.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\fonts-in-librecad-examples-sheet2.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\fonts-in-librecad-examples-sheet3.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\fonts-in-librecad-examples-sheet4.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_move_arround_dimension.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\test_layer.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_plotter_Z_axis.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_find_Z_set_zero.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_my_logo.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\paint_StabiloPoint88.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Find_Z_set_zero.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_around_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_around_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_left_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_left_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_right_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_right_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_center_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_center_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_left_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_left_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_right_rapid.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_right_slow.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Laser_off.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Laser_on_weak.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_down_Servo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_down_Z.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_up_Servo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_up_Z.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Reset_hard.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Reset_soft.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Add_logo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_v1583_brush_clean.nc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_v1583_brush_refresh.nc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_v1583_brush_select.nc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\paint_watercolor.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\import_simple_z.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\usecase_simple_z.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\pattern_rect.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\pattern_star1.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\pattern_star2.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\egg_extruded.map" />
+    <Content Include="data\filters\OpenStreetMap_Buildings.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\filters\OpenStreetMap_Streets.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\filters\OpenStreetMap_Text_Streets.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_stamp_refresh.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_fiducial.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_dot_Servo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\Name_tag\Name_Tag_CreateText.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\automation__Name_tag.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\disable_options.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\Name_tag\Name_tag_CreateText_Segoe.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\automations\Name_tag\Name_tag_setup_use_laser.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DLLs\AForge.dll" />
+    <Content Include="DLLs\AForge.Imaging.dll" />
+    <Content Include="DLLs\AForge.Math.dll" />
+    <Content Include="DLLs\AForge.Video.DirectShow.dll" />
+    <Content Include="DLLs\AForge.Video.dll" />
+    <Content Include="DLLs\DXFLib.dll" />
+    <Content Include="DLLs\FastColoredTextBox.dll" />
+    <Content Include="DLLs\NLog.dll" />
+    <Content Include="DLLs\QRCoder.dll" />
+    <Content Include="DLLs\SharpDX.DirectInput.dll" />
+    <Content Include="DLLs\SharpDX.dll" />
+    <Content Include="DLLs\TabletControl.dll" />
+    <Content Include="Resources\framing.png" />
+    <None Include="data\automations\BulkText\BulkText_Data.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\framing_c.png" />
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.ar.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.cs.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.de-DE.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.es.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.fr.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.it.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.ja.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.pl.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.pt.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.ru.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.tr.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.zh-CN.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.ar.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.cs.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.de-DE.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.es.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.fr.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.it.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.ja.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.pl.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.pt.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.ru.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.tr.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.zh-CN.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.ar.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.cs.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.de-DE.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.es.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.fr.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.it.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.ja.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.pl.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.pt.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.ru.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.tr.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.zh-CN.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.ar.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.cs.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.de-DE.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.es.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.fr.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.it.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.ja.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.pl.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.pt.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.ru.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.tr.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.zh-CN.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.ar.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.cs.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.de-DE.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.es.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.fr.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.it.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.ja.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.pl.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.pt.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.ru.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.tr.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.zh-CN.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.ar.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.cs.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.de-DE.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.es.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.fr.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.it.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.ja.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.pl.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.pt.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.ru.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.tr.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.zh-CN.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.ar.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.cs.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.de-DE.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.es.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.fr.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.it.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.ja.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.pl.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.pt.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.ru.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.tr.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.zh-CN.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.ar.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.cs.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.de-DE.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.es.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.fr.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.it.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.ja.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.pl.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.pt.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.ru.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.tr.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.zh-CN.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.ar.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.cs.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.de-DE.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.es.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.fr.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.it.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.ja.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.pl.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.pt.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.ru.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.tr.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.zh-CN.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.ar.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.cs.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.de-DE.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.es.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.fr.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.it.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.ja.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.pl.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.pt.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.ru.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.tr.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.zh-CN.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.ar.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.cs.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.de-DE.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.es.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.fr.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.it.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.ja.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.pl.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.pt.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.ru.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.tr.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.zh-CN.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.ar.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.cs.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.de-DE.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.es.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.fr.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.it.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.ja.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.pl.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.pt.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.ru.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.tr.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.zh-CN.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.ar.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.cs.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.de-DE.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.es.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.fr.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.it.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.ja.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.pl.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.pt.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.ru.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.tr.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetCoordinateSystem.zh-CN.resx">
+      <DependentUpon>UCSetCoordinateSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.ar.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.cs.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.de-DE.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.es.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.fr.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.it.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.ja.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.pl.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.pt.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.ru.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.tr.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.zh-CN.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.ar.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.cs.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.de-DE.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.es.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.fr.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.it.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.ja.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.pl.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.pt.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.ru.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.tr.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.zh-CN.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.ar.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.cs.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.de-DE.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.es.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.fr.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.it.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.ja.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.pl.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.pt.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.ru.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.tr.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.zh-CN.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolListElement.resx">
+      <DependentUpon>UCToolListElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="data\palettes\Inkscape_svg.gpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\setup.png" />
+    <EmbeddedResource Include="UserControls\UCDeviceLaser2.resx">
+      <DependentUpon>UCDeviceLaser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter.resx">
+      <DependentUpon>UCDevicePlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDevicePlotter2.resx">
+      <DependentUpon>UCDevicePlotter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter.resx">
+      <DependentUpon>UCDeviceRouter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDeviceRouter2.resx">
+      <DependentUpon>UCDeviceRouter2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCToolList.resx">
+      <DependentUpon>UCToolList.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\stop.png" />
+    <EmbeddedResource Include="UserControls\UCDeviceLaser.resx">
+      <DependentUpon>UCDeviceLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCDRO.resx">
+      <DependentUpon>UCDRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCFlowControl.resx">
+      <DependentUpon>UCFlowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlAll.resx">
+      <DependentUpon>UCJogControlAll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlUD.resx">
+      <DependentUpon>UCJogControlUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCJogControlXY.resx">
+      <DependentUpon>UCJogControlXY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToGraphic.resx">
+      <DependentUpon>UCMoveToGraphic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCMoveToZero.resx">
+      <DependentUpon>UCMoveToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCOverrides.resx">
+      <DependentUpon>UCOverrides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCSetOffset.resx">
+      <DependentUpon>UCSetOffset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCStreaming.resx">
+      <DependentUpon>UCStreaming.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="data\automations\automation_File_load.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="data\automations\File_load\file_load_setup_use_z.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="data\buttons\Graphic_move_around_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_left_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_bottom_right_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_center_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_left_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Graphic_move_to_top_right_fast.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_center_Servo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\buttons\Pen_zero_Servo.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\bunny_new.pdn-json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\line.isf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\sinus.isf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\tulip.isf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\app.manifest" />
+    <None Include="Resources\LeadInOut.png" />
+    <None Include="Resources\rndOff.png" />
+    <None Include="Resources\rndOn.png" />
+    <None Include="data\buttons\Pen_down_up_Z.ini" />
+    <None Include="data\usecases\example_micro_plotter.ini" />
+    <None Include="Resources\qrcode.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\tlOn.png" />
+    <None Include="Resources\cfOff1.png" />
+    <None Include="Resources\cfOff2.png" />
+    <None Include="Resources\cfOn1.png" />
+    <None Include="Resources\cfOn2.png" />
+    <None Include="Resources\barcode.png" />
+    <None Include="Resources\bevOff.png" />
+    <None Include="Resources\bevOn.png" />
+    <None Include="Resources\a_ce.png" />
+    <None Include="Resources\a_de.png" />
+    <None Include="Resources\a_re.png" />
+    <None Include="Resources\a_d.png" />
+    <None Include="Resources\a_r.png" />
+    <Content Include="Resources\efOff1.png" />
+    <Content Include="Resources\efOff2.png" />
+    <Content Include="Resources\efOff3.png" />
+    <Content Include="Resources\efOff4.png" />
+    <Content Include="Resources\efOff5.png" />
+    <Content Include="Resources\efOff6.png" />
+    <Content Include="Resources\efOff7.png" />
+    <Content Include="Resources\efOff8.png" />
+    <Content Include="Resources\efOff9.png" />
+    <Content Include="Resources\efOn1.png" />
+    <Content Include="Resources\efOn2.png" />
+    <Content Include="Resources\efOn3.png" />
+    <Content Include="Resources\efOn4.png" />
+    <Content Include="Resources\efOn5.png" />
+    <Content Include="Resources\efOn6.png" />
+    <Content Include="Resources\efOn7.png" />
+    <Content Include="Resources\efOn8.png" />
+    <Content Include="Resources\efOn9.png" />
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForBarcode.pl.resx" />
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.ar.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.cs.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.de-DE.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.es.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.fr.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.it.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.ja.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.pl.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.pt.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.ru.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.tr.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeForWireCutter.zh-CN.resx">
+      <DependentUpon>GCodeForWireCutter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.ar.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.cs.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.de-DE.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.es.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.fr.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.it.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.ja.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.pl.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.pt.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.ru.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.tr.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromBarcode.zh-CN.resx">
+      <DependentUpon>GCodeFromBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.cs.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.it.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.pl.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.tr.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.cs.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.it.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.pl.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.tr.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.ar.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.cs.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.de-DE.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.es.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.fr.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.it.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.ja.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.pl.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.pt.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.ru.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.tr.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromTablet.zh-CN.resx">
+      <DependentUpon>GCodeFromTablet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.cs.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.it.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.pl.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.tr.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.ar.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.cs.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.de-DE.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.es.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.fr.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.it.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.ja.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.pl.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.pt.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.ru.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.tr.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\AboutForm.zh-CN.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.ar.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.es.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.fr.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.ja.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.pt.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.ru.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.zh-CN.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.ar.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.es.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.fr.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.ja.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.pt.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.ru.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.zh-CN.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.ar.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.es.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.fr.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.ja.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.pt.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.ru.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.zh-CN.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.ar.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.cs.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.de-DE.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.es.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.fr.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.it.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.ja.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.pl.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.pt.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.ru.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.tr.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ButtonEdit.zh-CN.resx">
+      <DependentUpon>ButtonEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.cs.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.it.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.pl.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.tr.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.ar.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.cs.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.de-DE.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.es.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.fr.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.it.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.ja.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.pl.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.pt.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.ru.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.tr.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainFormStreamSection.zh-CN.resx">
+      <DependentUpon>MainFormStreamSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.ar.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.cs.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.de-DE.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.es.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.fr.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.it.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.ja.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.pl.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.pt.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.ru.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.tr.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.zh-CN.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Splashscreen.resx">
+      <DependentUpon>Splashscreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\Control2ndGRBL.de-DE.resx">
+      <DependentUpon>Control2ndGRBL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\Control2ndGRBL.it.resx">
+      <DependentUpon>Control2ndGRBL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\Control2ndGRBL.pl.resx">
+      <DependentUpon>Control2ndGRBL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.ar.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.cs.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.de-DE.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.es.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.fr.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.it.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.ja.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.pl.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.pt.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\Control2ndGRBL.resx">
+      <DependentUpon>Control2ndGRBL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.ru.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.tr.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCameraForm.zh-CN.resx">
+      <DependentUpon>ControlCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlCoordSystem.resx">
+      <DependentUpon>ControlCoordSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlDIYControlPad.resx">
+      <DependentUpon>ControlDIYControlPad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.ar.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.cs.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.de-DE.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.es.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.fr.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.it.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.ja.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.pl.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.pt.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.ru.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.tr.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlHeightMap.zh-CN.resx">
+      <DependentUpon>ControlHeightMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.ar.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.cs.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.de-DE.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.es.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.fr.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.ja.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.pl.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.pt.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.ru.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.tr.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlJogPathCreator.zh-CN.resx">
+      <DependentUpon>ControlJogPathCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.ar.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.cs.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.de-DE.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.es.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.fr.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.it.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.ja.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.pl.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.pt.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.ru.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.tr.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlLaser.zh-CN.resx">
+      <DependentUpon>ControlLaser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlMoveXY.resx">
+      <DependentUpon>ControlMoveXY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.ar.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.cs.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.de-DE.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.es.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.fr.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.it.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.ja.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.pl.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.pt.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.ru.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.tr.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProbing.zh-CN.resx">
+      <DependentUpon>ControlProbing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.ar.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.cs.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.de-DE.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.es.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.fr.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.it.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.ja.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.pl.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.pt.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.ru.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.tr.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProcessAutomation.zh-CN.resx">
+      <DependentUpon>ControlProcessAutomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.ar.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.cs.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.de-DE.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.es.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.fr.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.ja.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.pl.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.pt.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.ru.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.tr.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlProjector.zh-CN.resx">
+      <DependentUpon>ControlProjector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.ar.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.cs.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.de-DE.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.es.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.fr.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.it.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.ja.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.pl.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.pt.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.ru.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.tr.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.zh-CN.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.ar.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.cs.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.de-DE.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.es.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.fr.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.it.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.ja.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.pl.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.pt.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.ru.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.tr.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.zh-CN.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.ar.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.cs.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.de-DE.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.es.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.fr.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.it.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.ja.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.pl.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.pt.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.ru.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.tr.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupUseCase.zh-CN.resx">
+      <DependentUpon>ControlSetupUseCase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlStreamingForm.de-DE.resx">
+      <DependentUpon>ControlStreamingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.de-DE.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromImage.resx">
+      <DependentUpon>GCodeFromImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.de-DE.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.de-DE.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.ar.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.de-DE.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.es.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.fr.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.ja.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.pt.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.ru.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainForm.zh-CN.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageForm.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.ar.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.cs.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.de-DE.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.es.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.fr.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.ja.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.pl.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.pt.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.ru.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.tr.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GCodeSelectionProperties.zh-CN.resx">
+      <DependentUpon>GCodeSelectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\GrblSetupForm.resx">
+      <DependentUpon>GrblSetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\SimpleSerialForm.resx">
+      <DependentUpon>SimpleSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="MachineControl\ControlSerialForm.resx">
+      <DependentUpon>ControlSerialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlSetupForm.resx">
+      <DependentUpon>ControlSetupForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlStreamingForm.resx">
+      <DependentUpon>ControlStreamingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineControl\ControlStreamingForm2.resx">
+      <DependentUpon>ControlStreamingForm2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromText.resx">
+      <DependentUpon>GCodeFromText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCodeCreation\CreateFromForm\GCodeFromShape.resx">
+      <DependentUpon>GCodeFromShape.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="data\examples\graphic_bunny_string_art.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\image_flying_devil.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\image_fry.png" />
+    <Content Include="data\examples\graphic_grbl_popup.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\amiri-regular.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\azomix.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\azomix_i.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\cursive.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\cyrillic_ii.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\gothgbt.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\gothgrt.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\gothitt.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\greekc.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\greekcs.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\greekp.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\greeks.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\greek_ol.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\iso.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\iso3098.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\iso3098_i.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\italicc.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\italiccs.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\italict.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\kochigothic.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\kochimincho.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\kst32b.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\lc_opengost-ar.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\lc_opengost-br.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\OpenGostTypeA-Regular.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\OpenGostTypeB-Regular.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romanc.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romancs.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romand.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romanp.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romans.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romansi.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\romant.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\scriptc.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\scripts.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\simplex.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\standard.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\syastro.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symap.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symath.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symbol.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symbol_misc1.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symbol_misc2.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symeteo.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\symusic.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\fonts\lff\unicode.lff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_plotter_image.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Resources\ResStrings.ar.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.cs.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.de-DE.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.es.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.fr.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.it.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.ja.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.pl.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.pt.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResStrings.ru.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.tr.resx" />
+    <EmbeddedResource Include="Resources\ResStrings.zh-CN.resx" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="data\hotkeys.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Recent.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\down.png" />
+    <None Include="Resources\fctb_hotkeys.txt" />
+    <None Include="Resources\led_on.png" />
+    <None Include="Resources\led_off.png" />
+    <None Include="Resources\up.png" />
+    <Content Include="data\scripts\script_pen_pickup.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_pen_remove.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_pen_select.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_probing_gripper.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_probing_tool.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_bunny.dxf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\gcode_scale.nc" />
+    <Content Include="data\examples\gcode_absolute_and_relative.nc" />
+    <Content Include="data\examples\gcode_relative.nc" />
+    <Content Include="data\examples\gcode_subroutine.nc" />
+    <Content Include="data\examples\heightmap_cent.map" />
+    <Content Include="data\examples\heightmap_lens.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\Test_Pen_change.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\alarm_codes_en_US.csv" />
+    <None Include="Resources\error_codes_en_US.csv" />
+    <None Include="Resources\setting_codes_en_US.csv" />
+    <Content Include="data\examples\heightmap_pfennig.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_brush_clean.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_brush_refresh.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_brush_select.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\examples\graphic_Hershey_Fonts.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\router_tools.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_down_up.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_pen2_remove.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\scripts\script_pen2_select.nc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\paint_Stabilopower.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\laser_popup.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_laser.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\_current_.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\tools\laser_and_pen.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_laser_and_pen.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_laser_and_Z_axis.ini" />
+    <Content Include="data\usecases\example_router_just_drill.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\usecases\example_eggbot.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,KB2468871">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 und x64%29 und Update für .NET Framework 4 %28KB2468871%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <Content Include="data\examples\image_modell.png" />
+    <Content Include="data\examples\image_cent.bmp" />
+    <Content Include="data\examples\graphic_Testbild.svg" />
+    <None Include="Resources\inv2.png" />
+    <None Include="Resources\turn_r.png" />
+    <None Include="Resources\turn_l.png" />
+    <None Include="Resources\flip_vertical.png" />
+    <None Include="Resources\flip_horizontal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="data\hotkeys.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

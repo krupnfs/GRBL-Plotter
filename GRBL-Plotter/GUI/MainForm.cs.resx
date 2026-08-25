@@ -289,277 +289,6 @@
     <value>(Vložte G-Code nebo načtěte soubor)</value>
     <comment>Editor</comment>
   </data>
-  <data name="btnSimulateSlower.ToolTip" xml:space="preserve">
-    <value>Poloviční rychlost simulace</value>
-  </data>
-  <data name="btnSimulateFaster.ToolTip" xml:space="preserve">
-    <value>Dvojitá rychlost simulace</value>
-  </data>
-  <data name="btnSimulate.Text" xml:space="preserve">
-    <value>Spusťte simulaci cesty</value>
-  </data>
-  <data name="lbInfo.Text" xml:space="preserve">
-    <value>Zpráva</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamStop.ToolTip" xml:space="preserve">
-    <value>Zastavit odesílání kódu do GRBL</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamCheck.Text" xml:space="preserve">
-    <value>Kontrolní kód</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamCheck.ToolTip" xml:space="preserve">
-    <value>Tím se přepne analyzátor gcode Grbl tak, aby vzal všechny příchozí bloky a úplně je zpracoval, jako by to bylo za normálního provozu, ale nepohybuje žádnou z os, ignoruje prodlevy a vypne vřeteno a chladicí kapalinu. Toto je zamýšleno jako způsob, jak poskytnout uživateli způsob, jak zkontrolovat, jak si jejich nový program G-code vede pomocí analyzátoru Grbl a monitorovat případné chyby (a kontroluje překročení měkkých limitů, je-li povoleno).</value>
-  </data>
-  <data name="lblElapsed.Text" xml:space="preserve">
-    <value>Čas</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="lblFileProgress.Text" xml:space="preserve">
-    <value>Pokrok</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnStreamStart.ToolTip" xml:space="preserve">
-    <value>Odešlete kód z textového editoru do GRBL
-Kliknutím pravým tlačítkem vyberte číslo startovní řady</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="gBoxStream.Text" xml:space="preserve">
-    <value>Streamování G-Code</value>
-    <comment>groupBox_Streaming</comment>
-  </data>
-  <data name="btnOffsetApply.Text" xml:space="preserve">
-    <value>Použít odsazení</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Offset Y</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value>Offset Y</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Offset X</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value>Offset X</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Původ XY</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="gBoxDimension.Text" xml:space="preserve">
-    <value>Rozměr G-kódu</value>
-    <comment>groupBox_Dimension</comment>
-  </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>Soubor:</value>
-  </data>
-  <data name="BtnOverrideD3.ToolTip" xml:space="preserve">
-    <value>Zobrazuje stav pinu D3 (grbl-Mega-5X), kliknutím odešlete „M64 P3 (on)“ nebo „M65 P3 (off)“ v závislosti na stavu</value>
-  </data>
-  <data name="BtnOverrideD2.ToolTip" xml:space="preserve">
-    <value>Zobrazuje stav pinu D2 (grbl-Mega-5X), kliknutím odešlete „M64 P2 (on)“ nebo „M65 P2 (off)“ v závislosti na stavu</value>
-  </data>
-  <data name="BtnOverrideD1.ToolTip" xml:space="preserve">
-    <value>Zobrazuje stav pinu D1 (grbl-Mega-5X), kliknutím odešlete „M64 P1 (on)“ nebo „M65 P1 (off)“ v závislosti na stavu</value>
-  </data>
-  <data name="BtnOverrideD0.ToolTip" xml:space="preserve">
-    <value>Zobrazuje stav kolíku D0 (grbl-Mega-5X), kliknutím odešlete „M64 P0 (zapnuto)“ nebo „M65 P0 (vypnuto)“ v závislosti na stavu</value>
-  </data>
-  <data name="btnOverrideSpindle.Text" xml:space="preserve">
-    <value>Vřeteno CW</value>
-  </data>
-  <data name="btnOverrideSpindle.ToolTip" xml:space="preserve">
-    <value>Funguje pouze ve stavu HOLD</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="btnOverrideMist.Text" xml:space="preserve">
-    <value>Mlha</value>
-  </data>
-  <data name="btnOverrideMist.ToolTip" xml:space="preserve">
-    <value>M7 nemusí být povoleno v grbl</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="btnOverrideFlood.Text" xml:space="preserve">
-    <value>Zaplavit</value>
-  </data>
-  <data name="gBOverrideASGB.Text" xml:space="preserve">
-    <value>Přepnout stavy příslušenství</value>
-    <comment>groupBox_Override2</comment>
-  </data>
-  <data name="lblStatusFeed.Text" xml:space="preserve">
-    <value>skutečné krmivo</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusFeed.ToolTip" xml:space="preserve">
-    <value>Skutečná rychlost posuvu v mm/min nebo palcích/min (v závislosti na $13)</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Soubor:</value>
-  </data>
-  <data name="gBOverrideFRGB.Text" xml:space="preserve">
-    <value>Krmit</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusSpeed.Text" xml:space="preserve">
-    <value>skutečná rychlost</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="lblStatusSpeed.ToolTip" xml:space="preserve">
-    <value>Skutečné otáčky vřetena v ot./min</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Soubor:</value>
-  </data>
-  <data name="gBOverrideSSGB.Text" xml:space="preserve">
-    <value>Rychlost vřetena</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="gBoxOverride.Text" xml:space="preserve">
-    <value>Přepsání (pouze grbl 1.1) – kliknutím rozbalíte / zmenšíte</value>
-    <comment>groupBox_Override3</comment>
-  </data>
-  <data name="cBServoButtons.Text" xml:space="preserve">
-    <value>Zobrazit pero nahoru/dolů</value>
-  </data>
-  <data name="btnJogStop.Text" xml:space="preserve">
-    <value>PŘESTAŇTE běhat</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnJogStop.ToolTip" xml:space="preserve">
-    <value>Zastavte aktuální joggingový pohyb</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnJogZeroA.ToolTip" xml:space="preserve">
-    <value>Pošlete G90 G0 A(nebo B,C)0</value>
-  </data>
-  <data name="btnJogZeroX.ToolTip" xml:space="preserve">
-    <value>Pošlete G90 G0 X0</value>
-  </data>
-  <data name="btnJogZeroXY.Text" xml:space="preserve">
-    <value>Pohyb XY=0</value>
-  </data>
-  <data name="btnJogZeroXY.ToolTip" xml:space="preserve">
-    <value>Pošlete G90 G0 X0 Y0</value>
-  </data>
-  <data name="btnJogZeroY.Text" xml:space="preserve">
-    <value>Y=0</value>
-  </data>
-  <data name="btnJogZeroY.ToolTip" xml:space="preserve">
-    <value>Pošlete G90 G0 Y0</value>
-  </data>
-  <data name="btnJogZeroZ.Text" xml:space="preserve">
-    <value>Z=0</value>
-  </data>
-  <data name="btnJogZeroZ.ToolTip" xml:space="preserve">
-    <value>Pošlete G90 G0 Z0</value>
-  </data>
-  <data name="cBMoveG0.Text" xml:space="preserve">
-    <value>použijte G0</value>
-  </data>
-  <data name="gB_Jog0.Text" xml:space="preserve">
-    <value>Přesunout do</value>
-  </data>
-  <data name="virtualJoystickA.ToolTip" xml:space="preserve">
-    <value>Jog 4. osa</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickXY.ToolTip" xml:space="preserve">
-    <value>Jog X a Y osa</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickZ.ToolTip" xml:space="preserve">
-    <value>Jog Z osa</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickB.ToolTip" xml:space="preserve">
-    <value>Jog 4. osa</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="virtualJoystickC.ToolTip" xml:space="preserve">
-    <value>Jog 4. osa</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="cBSendJogStop.Text" xml:space="preserve">
-    <value>STOP běhání s myší nahoru</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnOverrideDoor.Text" xml:space="preserve">
-    <value>Dveře</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnOverrideDoor.ToolTip" xml:space="preserve">
-    <value>Ačkoli je tento příkaz obvykle připojen ke vstupnímu kolíku pro detekci otevření bezpečnostních dveří, umožňuje GUI pomocí tohoto příkazu aktivovat chování bezpečnostních dveří.
-Okamžitě přejde do stavu DOOR a deaktivuje vřeteno a chladicí kapalinu. Pokud je stroj v pohybu, zpomalí až do zastavení a poté se pozastaví.
-Pokud je proveden během navádění, Grbl místo toho zastaví pohyb a spustí alarm navádění.
-Pokud je již ve stavu pozastavení nebo HOLD, nahradí jej stav DOOR.
-Pokud je povolena možnost parkování v době kompilace, Grbl zaparkuje vřeteno na určené místo.
-Příkaz se provede, když je Grbl ve stavu IDLE, HOLD, RUN, HOMING nebo JOG. Jinak se to ignoruje.
-Pokud provádíte krokování, bezpečnostní dveře zruší krokování a všechny pohyby ve frontě ve vyrovnávací paměti plánovače. Když jsou bezpečnostní dveře zavřeny a obnoveny, Grbl se vrátí do stavu NEČINNOSTI.
-Vstupní kolík je k dispozici pro připojení tlačítka nebo přepínače, pokud je povolen s možností kompilace.</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnResume.Text" xml:space="preserve">
-    <value>Životopis</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnResume.ToolTip" xml:space="preserve">
-    <value>Příkaz spuštění nebo obnovení cyklu '~' lze vydat kdykoli, protože se jedná o příkaz v reálném čase.
-Když má Grbl ve vyrovnávací paměti ve frontě pohyby a je připraven jít, spustí se příkaz ~ cycle start
-začněte provádět vyrovnávací paměť a Grbl začne pohybovat osami.</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnFeedHold.Text" xml:space="preserve">
-    <value>Zastavení podávání</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnFeedHold.ToolTip" xml:space="preserve">
-    <value>Příkaz podržení kanálu '!' řízeným zpomalením zastaví aktivní cyklus, aby nedošlo ke ztrátě polohy.
-Je také v reálném čase a může být kdykoli aktivován. Po dokončení nebo pozastavení bude Grbl čekat na příkaz ke spuštění cyklu
-je vydáno k obnovení programu. Zastavení podávání může pouze pozastavit cyklus a neovlivní navádění nebo jakýkoli jiný proces.
-Pokud potřebujete zastavit cyklus uprostřed programu a nemůžete si dovolit ztrátu pozice, proveďte pozastavení posuvu, aby Grbl přinesl
-vše řízeně zastavit. Po dokončení můžete provést reset. Vždy se pokuste provést pozastavení kanálu, kdykoli
-stroj je v chodu, než dojde k resetování, samozřejmě kromě případu, kdy dojde k nějaké nouzové situaci.</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnKillAlarm.Text" xml:space="preserve">
-    <value>Kill Alarm</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnKillAlarm.ToolTip" xml:space="preserve">
-    <value>Grblův alarmový režim je stav, kdy se něco kriticky pokazilo,
-jako je pevný limit nebo přerušení během cyklu, nebo pokud Grbl nezná svou pozici.
-Ve výchozím nastavení, pokud máte povoleno navádění a zapnete Arduino, vstoupí Grbl
-stav alarmu, protože nezná svou polohu. Režim budíku vše uzamkne
-Příkazy G-kódu, dokud nebude proveden cyklus navádění „$H“. Nebo pokud uživatel potřebuje
-přepsat zámek alarmu a přesunout jejich osy mimo jejich koncové spínače, například '$X' kill alarm lock
-přepíše zámky a umožní, aby funkce G-kódu znovu fungovaly.</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnReset.Text" xml:space="preserve">
-    <value>RESETOVAT</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="btnReset.ToolTip" xml:space="preserve">
-    <value>Toto je Grblův příkaz pro měkký reset 'Ctrl-x'. Je to v reálném čase a lze je odeslat kdykoli.
-Jak název napovídá, resetuje Grbl, ale kontrolovaným způsobem zachová polohu vašeho stroje,
-a vše se děje bez vypínání vašeho Arduina. Jediný případ, kdy mohl měkký reset
-ztráta pozice je, když nastanou problémy a steppery byly zabity, když se pohybovali.
-Pokud ano, ohlásí, zda se Grblovo sledování polohy stroje ztratilo.
-Nekontrolované zpomalení totiž může vést ke ztrátě kroků a Grbl nemá zpětnou vazbu
-na kolik ztratil (to je problém stepperů obecně). V opačném případě se Grbl pouze znovu inicializuje,
- spustit startovací linky a pokračovat ve své veselé cestě.</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
   <data name="unDo2ToolStripMenuItem.Text" xml:space="preserve">
     <value>Vrátit zpět poslední akci</value>
     <comment>Menu131</comment>
@@ -571,7 +300,7 @@ na kolik ztratil (to je problém stepperů obecně). V opačném případě se G
     <value>Nula XY na označené pozici G10 L20</value>
   </data>
   <data name="cmsPicBoxMoveGraphicsOrigin.Text" xml:space="preserve">
-    <value>Offset grafiky podle pozice značky</value>
+    <value>Offsetová grafika -&gt; Poz. značky. na 0;0</value>
   </data>
   <data name="cmsPicBoxResetZooming.Text" xml:space="preserve">
     <value>Obnovit přiblížení</value>
@@ -624,100 +353,6 @@ na kolik ztratil (to je problém stepperů obecně). V opačném případě se G
     <value>Sem vložte adresu URL souboru SVG / DXF</value>
     <comment>2DView</comment>
   </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>Vlastní tlačítka</value>
-    <comment>groupBox_Custom</comment>
-  </data>
-  <data name="btnZeroC.Text" xml:space="preserve">
-    <value>nula C</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroC.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnici C na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroB.Text" xml:space="preserve">
-    <value>nula B</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroB.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnici B na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="lblCurrentG.ToolTip" xml:space="preserve">
-    <value>Výchozí souřadnicový systém = G54
-Souřadnicový systém kamery = G59
-Přidat 'G54;' do hlavičky G-Code, aby se před streamováním G-Code automaticky přepnul zpět na G54</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="label_status0.Text" xml:space="preserve">
-    <value>Postavení:</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroA.Text" xml:space="preserve">
-    <value>Nula Z</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroA.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnice na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnHome.Text" xml:space="preserve">
-    <value>Domov</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnHome.ToolTip" xml:space="preserve">
-    <value>Spustit navádění (pokud je povoleno v GRBL)</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXYZ.Text" xml:space="preserve">
-    <value>Nula XYZ</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXYZ.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnice X,Y,Z na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXY.Text" xml:space="preserve">
-    <value>Nula XY</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroXY.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnice X,Y na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroZ.Text" xml:space="preserve">
-    <value>Nula Z</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroZ.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní Z souřadnici na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroY.Text" xml:space="preserve">
-    <value>nula Y</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroY.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní souřadnici Y na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroX.Text" xml:space="preserve">
-    <value>nula X</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="btnZeroX.ToolTip" xml:space="preserve">
-    <value>Nastavte pracovní X souřadnici na nulu</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="label_status.Text" xml:space="preserve">
-    <value>Postavení</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
-  <data name="groupBoxCoordinates.Text" xml:space="preserve">
-    <value>Souřadnice nástroje (práce / stroj)</value>
-    <comment>groupBox_Tool_Coord</comment>
-  </data>
   <data name="loadToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Otevřít soubor</value>
     <comment>Menu111</comment>
@@ -757,10 +392,6 @@ Přidat 'G54;' do hlavičky G-Code, aby se před streamováním G-Code automatic
   <data name="loadMachineParametersToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Importujte nastavení GUI (definice tlačítek, parametry joysticku) ze souboru INI</value>
     <comment>Menu116</comment>
-  </data>
-  <data name="toolStripMenuItem3.Text" xml:space="preserve">
-    <value>Jazyk</value>
-    <comment>Menu117</comment>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Výstup</value>
@@ -1062,56 +693,11 @@ Přidat 'G54;' do hlavičky G-Code, aby se před streamováním G-Code automatic
   <data name="LanguageToolStripMenuItem3.Text" xml:space="preserve">
     <value>Jazyk</value>
   </data>
-  <data name="cBMoveG0.ToolTip" xml:space="preserve">
-    <value>Použijte příkaz rychlého pohybu G0 - STOP jogging nebude fungovat</value>
-  </data>
-  <data name="CbSpindle.Text" xml:space="preserve">
-    <value>Vřeteno CW</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="CbCoolant.Text" xml:space="preserve">
-    <value>Chladicí kapalina</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="CbTool.Text" xml:space="preserve">
-    <value>Nástroj je ve vřetenu</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
-  <data name="BtnPenUp.Text" xml:space="preserve">
-    <value>Pen Up</value>
-  </data>
-  <data name="BtnPenUp.ToolTip" xml:space="preserve">
-    <value>Použijte nastavení z Setup-Servo-PWM</value>
-  </data>
-  <data name="BtnPenDown.Text" xml:space="preserve">
-    <value>Pen Down</value>
-  </data>
-  <data name="BtnPenDown.ToolTip" xml:space="preserve">
-    <value>Použijte nastavení z Setup-Servo-PWM</value>
-  </data>
   <data name="tabPage1.Text" xml:space="preserve">
     <value>Směrovač</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Použije hodnoty povoleného překladu perem nahoru / dolů pro Z a PWM</value>
-  </data>
-  <data name="BtnPenZero.Text" xml:space="preserve">
-    <value>Pen Zero</value>
-  </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Plotter</value>
-  </data>
-  <data name="CbLasermode.Text" xml:space="preserve">
-    <value>Laserový režim</value>
-  </data>
-  <data name="RbLaserM4.Text" xml:space="preserve">
-    <value>M4 Dynamic Pwr.</value>
-  </data>
-  <data name="RbLaserM3.Text" xml:space="preserve">
-    <value>M3 Konstantní pwr.</value>
-  </data>
-  <data name="CbLaser.Text" xml:space="preserve">
-    <value>Laser zapnutý</value>
   </data>
   <data name="tabPage3.Text" xml:space="preserve">
     <value>Laser</value>
@@ -1207,19 +793,6 @@ Změna nastavení importu po prvním importu může vést k nežádoucím efekt�
   <data name="wireCutterToolStripMenuItem.Text" xml:space="preserve">
     <value>Štípačky</value>
   </data>
-  <data name="BtnJogAbsZ.Text" xml:space="preserve">
-    <value>Convidar a</value>
-  </data>
-  <data name="BtnJogAbsY.Text" xml:space="preserve">
-    <value>Convidar a</value>
-  </data>
-  <data name="BtnJogAbsX.Text" xml:space="preserve">
-    <value>Convidar a</value>
-  </data>
-  <data name="Gb_Jogging.Text" xml:space="preserve">
-    <value>Ovládání / Jogging - kliknutím rozbalte</value>
-    <comment>groupBox_Jogging</comment>
-  </data>
   <data name="applyLastTransformToolStripMenuItem.Text" xml:space="preserve">
     <value>Použít poslední transformaci</value>
   </data>
@@ -1232,19 +805,84 @@ Změna nastavení importu po prvním importu může vést k nežádoucím efekt�
   <data name="convertToPolarCoordinatesToolStripMenuItem.Text" xml:space="preserve">
     <value>Převést na polární souřadnice</value>
   </data>
-  <data name="CbMist.ToolTip" xml:space="preserve">
-    <value>Nastavit 'M7', vymazat 'M9'</value>
+  <data name="cmsPictureBox.Text" xml:space="preserve">
+    <value>Posunout značku pozice na 0;0</value>
   </data>
-  <data name="CbSpindle.ToolTip" xml:space="preserve">
-    <value>Nastavte „M3“ nebo „M4“, vymažte „M5“</value>
+  <data name="Rb2DViewMode1.Text" xml:space="preserve">
+    <value>Upravit obrázek</value>
   </data>
-  <data name="CbCoolant.ToolTip" xml:space="preserve">
-    <value>Nastavit 'M8', vymazat 'M9'</value>
+  <data name="Rb2DViewMode1.ToolTip" xml:space="preserve">
+    <value>Povolí režim úprav pro 2DView pro úpravu obrázků - kliknutím pravým tlačítkem zkontrolujte kontextovou nabídku</value>
   </data>
-  <data name="gBoxDROSetCoord.Text" xml:space="preserve">
-    <value>Nastavit souřadnicový systém</value>
+  <data name="Rb2DViewMode2.Text" xml:space="preserve">
+    <value>Jog to figure poz.</value>
   </data>
-  <data name="gBoxDRO.Text" xml:space="preserve">
-    <value>Souřadnice nástroje (práce / stroj)</value>
+  <data name="Rb2DViewMode2.ToolTip" xml:space="preserve">
+    <value>Povolit režim krokování na obrázku: přesune nástroj do pozice gcode, která je nejblíže pozici, na kterou jste kliknuli</value>
+  </data>
+  <data name="Rb2DViewMode3.Text" xml:space="preserve">
+    <value>Přejděte na kliknutou pozici.</value>
+  </data>
+  <data name="Rb2DViewMode3.ToolTip" xml:space="preserve">
+    <value>Povolí krokový režim v oblasti stroje, přesune nástroj do klepnuté polohy. 
+Kliknutí se stisknutou klávesou Alt zaokrouhlí pozici na 0,1 rastru,</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOrigin.ToolTipText" xml:space="preserve">
+    <value>Použije posun na všechny souřadnice G-kódu, takže poloha značky bude mít souřadnice 0;0.</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOriginTo00.Text" xml:space="preserve">
+    <value>Offsetová grafika -&gt; Poz. značky. do (poslední) pozice nástroje.</value>
+  </data>
+  <data name="cmsPicBoxMoveGraphicsOriginTo00.ToolTipText" xml:space="preserve">
+    <value>Použije offset na všechny souřadnice G-kódu, takže poloha značky získá skutečné souřadnice nástroje.</value>
+  </data>
+  <data name="useOrigin.Text" xml:space="preserve">
+    <value>Použít počátek 0;0</value>
+  </data>
+  <data name="useOrigin.ToolTipText" xml:space="preserve">
+    <value>Použijte pracovní souřadnici 0;0 jako střed pro zrcadlení, otáčení a změnu měřítka</value>
+  </data>
+  <data name="toolStrip_RadiusComp.ToolTipText" xml:space="preserve">
+    <value>Kompenzace poloměru</value>
+  </data>
+  <data name="cms2ToolStripMenuItem.Text" xml:space="preserve">
+    <value>Grafika odsazení -&gt; Pozice značky na 0;0</value>
+  </data>
+  <data name="cms2ToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Použijte odsazení na všechny souřadnice G-kódu, aby pozice značky získala souřadnici 0;0.</value>
+  </data>
+  <data name="offsetGraphicsMarkerPositionTolastToolPositionToolStripMenuItem.Text" xml:space="preserve">
+    <value>Grafika odsazení -&gt; Pozice značky na (poslední) pozici nástroje.</value>
+  </data>
+  <data name="offsetGraphicsMarkerPositionTolastToolPositionToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Použijte odsazení na všechny souřadnice G-kódu, aby pozice značky získala skutečnou souřadnici nástroje.</value>
+  </data>
+  <data name="moveBetweenLastPositionsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Pohyb mezi posledními pozicemi</value>
+  </data>
+  <data name="directControlToolStripMenuItem.Text" xml:space="preserve">
+    <value>Grafický tablet</value>
+  </data>
+  <data name="ersetzteG23DurchLinienToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>قم بتعيين "عرض الخطوة" في [الإعداد - استيراد الرسومات - استيراد المسار - الخيارات العامة - معلمات الاستيراد - عرض الخطوة على محيط الأقواس]</value>
+  </data>
+  <data name="IndividualSettings.Text" xml:space="preserve">
+    <value>Nastavení importu z nastavení se plně použije, pouze pokud je tato záložka viditelná.</value>
+  </data>
+  <data name="tabPageLaser.Text" xml:space="preserve">
+    <value>Laserový</value>
+  </data>
+  <data name="tabPagePlotter.Text" xml:space="preserve">
+    <value>Plotterový</value>
+  </data>
+  <data name="tabPage5.Text" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="tabPage4.Text" xml:space="preserve">
+    <value>-Jednotlivě-</value>
+  </data>
+  <data name="LblDisabled.Text" xml:space="preserve">
+    <value>Funkce 'Apply tool list' je aktivní!
+Změňte vlastnosti nástrojů v seznamu nebo deaktivujte funkci 'Apply tool list'.</value>
   </data>
 </root>
